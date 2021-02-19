@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="listeners" name="listeners" schema="schema/listeners.exsd"/>
+   <extension-point id="parsers" name="parsers" schema="schema/parsers.exsd"/>
+   <extension
+         point="org.eclipse.debug.core.launchDelegates">
+      <launchDelegate
+            delegate="io.jitclipse.core.launch.internal.JitLauncherDelegate"
+            id="io.jitclipse.core.core.launchDelegate"
+            modes="run,debug"
+            name="Jit Watch"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer"
+            type="org.eclipse.jdt.launching.localJavaApplication">
+      </launchDelegate>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchModes">
+      <launchMode
+            label="Jit Watch"
+            mode="jit">
+      </launchMode>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.core.resources.IProject"
+            class="io.jitclipse.core.resources.internal.ProjectAdapterFactory">
+         <adapter
+               type="io.jitclipse.core.resources.IJitProject">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="org.eclipse.core.resources.IFile"
+            class="io.jitclipse.core.resources.internal.FileAdapterFactory">
+         <adapter
+               type="io.jitclipse.core.resources.IHotspotLogFile">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="io.jitclipse.core.model.IPackage"
+            class="io.jitclipse.core.model.internal.PackageAdapterFactory">
+         <adapter
+               type="io.jitclipse.core.model.IHotspotLog">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="io.jitclipse.core.model.IClass"
+            class="io.jitclipse.core.model.internal.ClassAdapterFactory">
+         <adapter
+               type="io.jitclipse.core.model.IHotspotLog">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="io.jitclipse.core.model.IMethod"
+            class="io.jitclipse.core.model.internal.MethodAdapterFactory">
+         <adapter
+               type="io.jitclipse.core.model.IHotspotLog">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="io.jitclipse.core.resources.IHotspotLogFile"
+            class="io.jitclipse.core.resources.internal.HotspotLogAdapterFactory">
+         <adapter
+               type="io.jitclipse.core.model.IHotspotLog">
+         </adapter>
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-patterns="hotspot*.log"
+            id="io.jitclipse.core.hotspot.xml"
+            name="Hotspot XML Content Type"
+            priority="high">
+      </content-type>
+   </extension>
+</plugin>

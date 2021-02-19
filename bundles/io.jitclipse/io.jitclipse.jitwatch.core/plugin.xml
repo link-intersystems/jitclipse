@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="listeners" name="JIT Watch Listeners" schema="schema/listeners.exsd"/>
+   <extension
+         point="io.jitclipse.core.parsers">
+      <parser
+            class="io.jitclipse.jitwatch.core.parser.internal.JitWatchLogParser">
+      </parser>
+   </extension>
+</plugin>

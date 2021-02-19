@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="io.jitclipse.jitwatch.core.listeners">
+      <parserLogParticipant
+            class="io.jitclipse.jitwatch.ui.console.ConsoleJITListenerAdapter">
+      </parserLogParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+            class="io.jitclipse.jitwatch.ui.console.ConsolePageParticipant"
+            id="io.jitclipse.jitwatch.ui.consolePageParticipant1">
+         <enablement></enablement>
+      </consolePageParticipant>
+   </extension>
+
+</plugin>

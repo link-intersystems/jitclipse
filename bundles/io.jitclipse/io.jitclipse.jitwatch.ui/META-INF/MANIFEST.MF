@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Automatic-Module-Name: io.jitclipse.jitwatch.ui
+Bundle-SymbolicName: io.jitclipse.jitwatch.ui;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: io.jitclipse.jitwatch.ui.JitWatchUIPlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Require-Bundle: io.jitclipse.jitwatch.core;bundle-version="1.0.0",
+ com.link_intersystems.eclipse.ui.jface;bundle-version="1.0.18",
+ org.eclipse.ui.console
+Import-Package: javax.inject

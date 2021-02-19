@@ -1,0 +1,251 @@
+package io.jitclipse.ui.views;
+
+import java.lang.reflect.TypeVariable;
+import java.util.List;
+
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionManager;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.ViewPart;
+
+import com.link_intersystems.eclipse.ui.jface.viewers.AdaptableSelectionList;
+import com.link_intersystems.eclipse.ui.jface.viewers.SelectionList;
+import com.link_intersystems.lang.reflect.Class2;
+
+import io.jitclipse.core.model.IHotspotLog;
+import io.jitclipse.core.model.IPackage;
+import io.jitclipse.ui.JitUIImages;
+import io.jitclipse.ui.JitUIPlugin;
+import io.jitclipse.ui.navigator.JitNavigatorContentProvider;
+import io.jitclipse.ui.perspectives.HotspotPerspective;
+
+public abstract class AbstractHotspotView<T> extends ViewPart implements ISelectionListener {
+
+	private static TypeVariable<?> TYPE_VAR = Class2.get(AbstractHotspotView.class).getTypeVariable("T");
+
+	private Action doubleClickAction = new Action("") {
+	};
+
+	private StructuredViewer structuredViewer;
+	private Action linkWithSelection;
+
+	private HotspotViewerFilter hotspotViewerFilter;
+
+	private JitSelection jitSelection = new JitSelection();
+
+	@Override
+	public final void createPartControl(Composite parent) {
+		structuredViewer = createViewer(parent);
+
+		hotspotViewerFilter = new HotspotViewerFilter(structuredViewer, this::toHotspotViewElement);
+		hotspotViewerFilter.setViewSite(getSite());
+		hotspotViewerFilter.setViewIdToLinkWith("io.jitclipse.ui.hotspotNavigator");
+		hotspotViewerFilter.setTreeContentProvider(new JitNavigatorContentProvider());
+		structuredViewer.setFilters(hotspotViewerFilter);
+
+		getSite().setSelectionProvider(structuredViewer);
+		getSite().getPage().addSelectionListener(this);
+
+		configureHelpSystem();
+
+		registerActions();
+
+		syncSelectionFromNavigator();
+	}
+
+	protected Object toHotspotViewElement(Object viewerElement) {
+		return viewerElement;
+	}
+
+	private void syncSelectionFromNavigator() {
+		IViewReference[] viewReferences = getSite().getPage().getViewReferences();
+
+		for (IViewReference viewReference : viewReferences) {
+			String id = viewReference.getId();
+			if (HotspotPerspective.isHotspotNavigator(id)) {
+				IViewPart view = viewReference.getView(false);
+				if (view != null) {
+					ISelection selection = view.getSite().getSelectionProvider().getSelection();
+					selectionChanged(selection);
+					break;
+				}
+			}
+		}
+	}
+
+	protected void setFilterPackages(List<IPackage> packages) {
+	}
+
+	protected final void configureHelpSystem() {
+		String helpId = getHelpId();
+
+		if (helpId != null) {
+			IWorkbench workbench = getWorkbench();
+			workbench.getHelpSystem().setHelp(getViewer().getControl(), helpId);
+		}
+	}
+
+	protected IWorkbench getWorkbench() {
+		return PlatformUI.getWorkbench();
+	}
+
+	protected String getHelpId() {
+		return null;
+	}
+
+	protected abstract StructuredViewer createViewer(Composite parent);
+
+	protected void registerActions() {
+		makeActions();
+		hookDoubleClickAction();
+		hookContextMenu();
+		contributeToActionBars();
+	}
+
+	protected Class<T> getElementType() {
+		Class2<?> thisClass = Class2.get(getClass());
+		return thisClass.getBoundClass(TYPE_VAR);
+	}
+
+	protected void makeActions() {
+		doubleClickAction = new Action() {
+			public void run() {
+				StructuredViewer viewer = getViewer();
+				IStructuredSelection selection = viewer.getStructuredSelection();
+				Class<T> elementType = getElementType();
+				SelectionList<T> typedSelectionList = new AdaptableSelectionList<>(elementType, selection);
+				typedSelectionList.getFirstElement().ifPresent(AbstractHotspotView.this::doubleClicked);
+			}
+		};
+
+		linkWithSelection = new Action("Link with Hotspot Navigator", IAction.AS_CHECK_BOX) {
+
+			@Override
+			public void run() {
+				hotspotViewerFilter.setEnabled(isChecked());
+			}
+
+		};
+
+		JitUIPlugin jitUIPlugin = JitUIPlugin.getInstance();
+		JitUIImages jitUIImages = jitUIPlugin.getJitUIImages();
+		ImageDescriptor linkDescriptor = jitUIImages.getLinkDescriptor();
+		linkWithSelection.setImageDescriptor(linkDescriptor);
+	}
+
+	protected void doubleClicked(T element) {
+	}
+
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		if (!HotspotPerspective.isHotspotNavigator(part)) {
+			return;
+		}
+
+		selectionChanged(selection);
+	}
+
+	private void selectionChanged(ISelection selection) {
+		JitSelection oldSelection = this.jitSelection;
+		this.jitSelection = new JitSelection(selection);
+		JitSelectionChange selectionChange = new JitSelectionChange(oldSelection, jitSelection);
+		if (selectionChange.isNewSelectionDifferent()) {
+			onSelectionChanged(selectionChange);
+		}
+
+	}
+
+	protected void onSelectionChanged(JitSelectionChange jitSelectionChange) {
+		StructuredViewer viewer = getViewer();
+		if (viewer != null) {
+			jitSelectionChange.onHotspotLogChanged((hl, v) -> updateViewer(v, hl), viewer);
+		}
+	}
+
+	protected abstract void updateViewer(Viewer viewer, IHotspotLog hotspotLog);
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		getSite().getPage().removeSelectionListener(this);
+		hotspotViewerFilter.setViewSite(null);
+	}
+
+	private void hookDoubleClickAction() {
+		StructuredViewer viewer = getViewer();
+		viewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				doubleClickAction.run();
+			}
+		});
+	}
+
+	private void hookContextMenu() {
+		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				manager.removeAll();
+				AbstractHotspotView.this.fillContextMenu(manager);
+			}
+		});
+		StructuredViewer viewer = getViewer();
+		Menu menu = menuMgr.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, viewer);
+	}
+
+	protected void fillContextMenu(IContributionManager manager) {
+	}
+
+	private void contributeToActionBars() {
+		IActionBars bars = getViewSite().getActionBars();
+
+		IMenuManager menuManager = bars.getMenuManager();
+		menuManager.removeAll();
+		fillLocalPullDown(menuManager);
+
+		IToolBarManager toolBarManager = bars.getToolBarManager();
+		toolBarManager.removeAll();
+		fillLocalToolBar(toolBarManager);
+
+		bars.updateActionBars();
+	}
+
+	protected void fillLocalPullDown(IContributionManager manager) {
+	}
+
+	protected void fillLocalToolBar(IContributionManager manager) {
+		manager.add(linkWithSelection);
+	}
+
+	protected StructuredViewer getViewer() {
+		return structuredViewer;
+	}
+
+	@Override
+	public void setFocus() {
+		getViewer().getControl().setFocus();
+	}
+
+}
