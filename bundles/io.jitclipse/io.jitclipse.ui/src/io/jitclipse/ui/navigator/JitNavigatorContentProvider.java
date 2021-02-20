@@ -12,7 +12,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 
-import com.link_intersystems.eclipse.ui.jface.viewers.progress.ProgressIndicator;
+import com.link_intersystems.eclipse.core.runtime.IProgress;
+import com.link_intersystems.eclipse.core.runtime.ProgressIndicator;
 import com.link_intersystems.eclipse.ui.swt.widgets.Display2;
 
 import io.jitclipse.core.model.IClass;
@@ -72,17 +73,15 @@ public class JitNavigatorContentProvider extends WorkbenchContentProvider {
 		} else if (IFile.class.isInstance(parentElement)) {
 			IFile file = IFile.class.cast(parentElement);
 			IHotspotLogFile hotspotLogFile = file.getAdapter(IHotspotLogFile.class);
-
 			if (hotspotLogFile != null) {
-				IHotspotLog hotspotLog = hotspotLogFile.getHotspotLog();
 
-				if (hotspotLog == null) {
-					ProgressIndicator hotspotLogLoadingIndicator = new ProgressIndicator();
-					hotspotLogFile.open(Display2.syncAdapter((IHotspotLogFile hlf) -> {
-						viewer.refresh(hlf.getFile());
-					}), hotspotLogLoadingIndicator);
-					children.add(hotspotLogLoadingIndicator);
-				} else {
+				IProgress progress = hotspotLogFile.getProgress();
+				if (progress != null) {
+					children.add(progress);
+				}
+
+				IHotspotLog hotspotLog = hotspotLogFile.getHotspotLog();
+				if (hotspotLog != null) {
 					List<IPackage> rootPackages = hotspotLog.getRootPackages();
 					children.addAll(rootPackages);
 				}

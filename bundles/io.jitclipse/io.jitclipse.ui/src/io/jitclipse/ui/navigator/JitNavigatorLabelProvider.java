@@ -10,10 +10,10 @@ import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelP
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 
+import com.link_intersystems.eclipse.core.runtime.IProgress;
 import com.link_intersystems.eclipse.ui.jface.viewers.AbstractChangeSupportLabelProvider;
 import com.link_intersystems.eclipse.ui.jface.viewers.progress.AbstractProgressRenderer;
 import com.link_intersystems.eclipse.ui.jface.viewers.progress.IncreasingDotsProgressRenderer;
-import com.link_intersystems.eclipse.ui.jface.viewers.progress.ProgressIndicator;
 import com.link_intersystems.eclipse.ui.jface.viewers.progress.ProgressIndicatorLabelProvider;
 
 import io.jitclipse.core.resources.IHotspotLogFile;
@@ -37,14 +37,11 @@ public class JitNavigatorLabelProvider extends AbstractChangeSupportLabelProvide
 	public String getText(Object element) {
 		if (IHotspotLogFolder.class.isInstance(element)) {
 			return "Hotspot Log Files";
-		} else if (IHotspotLogFile.class.isInstance(element)) {
-			IHotspotLogFile hotspotLogFile = IHotspotLogFile.class.cast(element);
-			return hotspotLogFile.getFile().getName();
 		} else if (IFile.class.isInstance(element)) {
 			IFile hotspotLogFileModel = IFile.class.cast(element);
 			return hotspotLogFileModel.getName();
-		} else if (ProgressIndicator.class.isInstance(element)) {
-			ProgressIndicator progressIndicator = ProgressIndicator.class.cast(element);
+		} else if (IProgress.class.isInstance(element)) {
+			IProgress progressIndicator = IProgress.class.cast(element);
 			registerChangeSource(progressIndicator);
 			return progressIndicatorLabelProvider.getText(progressIndicator);
 		}
@@ -53,10 +50,10 @@ public class JitNavigatorLabelProvider extends AbstractChangeSupportLabelProvide
 
 	@Override
 	public StyledString getStyledText(Object element) {
-		if (ProgressIndicator.class.isInstance(element)) {
-			ProgressIndicator progressIndicator = ProgressIndicator.class.cast(element);
-			registerChangeSource(progressIndicator);
-			return progressIndicatorLabelProvider.getStyledText(progressIndicator);
+		if (IProgress.class.isInstance(element)) {
+			IProgress progress = IProgress.class.cast(element);
+			registerChangeSource(progress);
+			return progressIndicatorLabelProvider.getStyledText(progress);
 		}
 
 		String text = getText(element);
@@ -78,10 +75,13 @@ public class JitNavigatorLabelProvider extends AbstractChangeSupportLabelProvide
 			IAdaptable adaptable = (IAdaptable) element;
 			IHotspotLogFile hotspotLogFile = adaptable.getAdapter(IHotspotLogFile.class);
 			if (hotspotLogFile != null) {
-				Image folderImage = jitImages.getFileImage();
-				ImageDescriptor hotDescriptor = jitImages.getHotDescriptor();
-				DecorationOverlayIcon decoration = new DecorationOverlayIcon(folderImage, hotDescriptor, BOTTOM_RIGHT);
-				return decoration.createImage();
+				Image image = jitImages.getFileImage();
+				if (hotspotLogFile.isOpened()) {
+					ImageDescriptor hotDescriptor = jitImages.getHotDescriptor();
+					DecorationOverlayIcon decoration = new DecorationOverlayIcon(image, hotDescriptor, BOTTOM_RIGHT);
+					image = decoration.createImage();
+				}
+				return image;
 			}
 		}
 		return null;

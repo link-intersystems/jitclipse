@@ -50,10 +50,10 @@
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<repository location="https://p2.link-intersystems.com/open-source/eclipse-commons/latest"/>
-		<unit id="com.link_intersystems.eclipse.commons.feature.feature.group" version="1.0.19"/>
-		<unit id="com.link_intersystems.eclipse.lis-commons-beans" version="1.0.19"/>
-		<unit id="com.link_intersystems.eclipse.lis-commons-lang" version="1.0.19"/>
-		<unit id="com.link_intersystems.eclipse.lis-commons-math" version="1.0.19"/>
+		<unit id="com.link_intersystems.eclipse.commons.feature.feature.group" version="1.0.21"/>
+		<unit id="com.link_intersystems.eclipse.lis-commons-beans" version="1.0.21"/>
+		<unit id="com.link_intersystems.eclipse.lis-commons-lang" version="1.0.21"/>
+		<unit id="com.link_intersystems.eclipse.lis-commons-math" version="1.0.21"/>
 	</location>
 </locations>
 </target>

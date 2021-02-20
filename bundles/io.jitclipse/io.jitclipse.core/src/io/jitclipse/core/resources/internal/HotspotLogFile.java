@@ -8,7 +8,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 
+import com.link_intersystems.beans.AbstractPropertyChangeSource;
+import com.link_intersystems.eclipse.core.runtime.ETAProgressMonitor;
+import com.link_intersystems.eclipse.core.runtime.IProgress;
 import com.link_intersystems.eclipse.core.runtime.PluginLog;
+import com.link_intersystems.eclipse.core.runtime.ProgressIndicator;
 import com.link_intersystems.eclipse.core.runtime.jobs.FutureJob;
 
 import io.jitclipse.core.JitCorePlugin;
@@ -17,12 +21,16 @@ import io.jitclipse.core.parser.IJitLogParser;
 import io.jitclipse.core.resources.IHotspotLogFile;
 import io.jitclipse.core.resources.IJitProject;
 
-public class HotspotLogFile implements IHotspotLogFile {
+public class HotspotLogFile extends AbstractPropertyChangeSource implements IHotspotLogFile {
 
 	private static final QualifiedName HOTSPOT_LOG_FILE = new QualifiedName(JitCorePlugin.ID, "hotspotLogFile");
 
 	private IFile file;
 	private IHotspotLog hotspotLog;
+
+	private FutureJob<IHotspotLog> futureJob;
+
+	private ProgressIndicator progressIndicator;
 
 	public HotspotLogFile(IFile file) {
 		this.file = file;
@@ -38,23 +46,31 @@ public class HotspotLogFile implements IHotspotLogFile {
 	}
 
 	void setHotspotLog(IHotspotLog hotspotLog) {
-		this.hotspotLog = hotspotLog;
+		firePropertyChange(PROPERTY_HOTSPOT_LOG, this.hotspotLog, this.hotspotLog = hotspotLog);
 	}
 
 	@Override
-	public void open(Consumer<IHotspotLogFile> hotspotLogFileConsumer, IProgressMonitor monitor) {
-		if (hotspotLog == null) {
-			FutureJob<IHotspotLog> futureJob = createOpenJob("Open Hotspot Log");
-			futureJob.addProgressListener(monitor);
+	public IProgress open(Consumer<IHotspotLogFile> hotspotLogFileConsumer, IProgressMonitor monitor) {
+		if (futureJob == null) {
+			futureJob = createOpenJob("Open Hotspot Log");
+			progressIndicator = new ProgressIndicator();
+			ETAProgressMonitor etaProgressMonitor = new ETAProgressMonitor(progressIndicator);
+			etaProgressMonitor.setEtaPattern("{1} - {0}");
+			futureJob.addProgressListener(etaProgressMonitor);
+			if (monitor != null) {
+				futureJob.addProgressListener(monitor);
+			}
 			futureJob.whenDone(hl -> {
+				progressIndicator = null;
 				setHotspotLog(hl);
 				hotspotLogFileConsumer.accept(HotspotLogFile.this);
+				futureJob = null;
 			});
 
 			futureJob.schedule();
-		} else {
-			hotspotLogFileConsumer.accept(this);
 		}
+
+		return progressIndicator;
 	}
 
 	@Override
@@ -87,7 +103,7 @@ public class HotspotLogFile implements IHotspotLogFile {
 	public static IHotspotLogFile getForFile(IFile file) {
 		HotspotLogFile hotspotLogFile = null;
 		try {
-			if(file.exists()) {
+			if (file.exists()) {
 				hotspotLogFile = (HotspotLogFile) file.getSessionProperty(HOTSPOT_LOG_FILE);
 			}
 
@@ -112,6 +128,11 @@ public class HotspotLogFile implements IHotspotLogFile {
 			PluginLog pluginLog = jitCorePlugin.getPluginLog();
 			pluginLog.logError(e);
 		}
+	}
+
+	@Override
+	public IProgress getProgress() {
+		return progressIndicator;
 	}
 
 }
