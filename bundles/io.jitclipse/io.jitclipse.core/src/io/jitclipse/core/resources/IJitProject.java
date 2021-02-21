@@ -38,4 +38,6 @@ public interface IJitProject {
 		IHotspotLogFolder hotspotLogFolder = getHotspotLogFolder();
 		return hotspotLogFolder.getHotspotLogFile(aPackage);
 	}
+
+	IProject getProject();
 }

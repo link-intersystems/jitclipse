@@ -19,7 +19,7 @@ import io.jitclipse.core.JitCorePlugin;
 import io.jitclipse.core.resources.IHotspotLogFile;
 import io.jitclipse.core.resources.IHotspotLogFolder;
 
-public class ProjectHotspotLogFileManager implements IHotspotLogFolder {
+public class HotspotLogFolder implements IHotspotLogFolder {
 
 	private static final String PROJECT_HOTSPOT_LOCATION = ".hotspot";
 
@@ -28,11 +28,11 @@ public class ProjectHotspotLogFileManager implements IHotspotLogFolder {
 	private IProject project;
 	private IFolder hotspotLogFileFolder;
 
-	public ProjectHotspotLogFileManager(Clock clock, IProject project) {
+	public HotspotLogFolder(Clock clock, IProject project) {
 		this(JitCorePlugin.getInstance().getPluginLog(), clock, project);
 	}
 
-	public ProjectHotspotLogFileManager(IPluginLog pluginLog, Clock clock, IProject project) {
+	public HotspotLogFolder(IPluginLog pluginLog, Clock clock, IProject project) {
 		this.pluginLog = pluginLog;
 		this.clock = clock;
 		this.project = project;

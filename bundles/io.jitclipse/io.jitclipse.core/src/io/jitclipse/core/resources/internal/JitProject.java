@@ -13,8 +13,9 @@ import io.jitclipse.core.resources.IJitProject;
 
 public class JitProject implements IJitProject {
 
-	private ProjectHotspotLogFileManager hotspotLogFileManager;
+	private HotspotLogFolder hotspotLogFileManager;
 	private JitPluginContext jitPluginContext;
+	private IProject project;
 
 	public JitProject(IProject project) {
 		this(JitCorePlugin.getInstance(), Clock.systemDefaultZone(), project);
@@ -22,7 +23,8 @@ public class JitProject implements IJitProject {
 
 	public JitProject(JitPluginContext jitPluginContext, Clock clock, IProject project) {
 		this.jitPluginContext = jitPluginContext;
-		hotspotLogFileManager = new ProjectHotspotLogFileManager(clock, project);
+		this.project = project;
+		hotspotLogFileManager = new HotspotLogFolder(clock, project);
 	}
 
 	@Override
@@ -33,6 +35,11 @@ public class JitProject implements IJitProject {
 	@Override
 	public IJitLogParser getParser() throws CoreException {
 		return jitPluginContext.getJitLogParser();
+	}
+
+	@Override
+	public IProject getProject() {
+		return project;
 	}
 
 }
