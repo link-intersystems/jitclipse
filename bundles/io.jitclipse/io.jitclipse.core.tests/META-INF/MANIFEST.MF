@@ -5,13 +5,14 @@ Automatic-Module-Name: io.jitclipse.core.tests
 Bundle-SymbolicName: io.jitclipse.core.tests;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Vendor: %providerName
+Fragment-Host: io.jitclipse.core;bundle-version="1.0.0"
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,
- io.jitclipse.core;bundle-version="1.0.0",
- org.junit,
  org.mockito,
- org.objenesis
+ org.objenesis,
+ org.junit;bundle-version="4.12.0",
+ org.junit.jupiter.api;bundle-version="5.0.0"
