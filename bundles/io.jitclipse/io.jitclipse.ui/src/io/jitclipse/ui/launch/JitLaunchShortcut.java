@@ -1,7 +1,10 @@
 package io.jitclipse.ui.launch;
 
+import static io.jitclipse.core.JitCorePlugin.LAUNCH_MODE;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.ui.IDebugUIConstants;
@@ -13,7 +16,7 @@ import com.link_intersystems.eclipse.core.runtime.IPluginLog;
 
 import io.jitclipse.ui.JitUIPlugin;
 
-public class JitLaunchShortcut implements ILaunchShortcut {
+public class JitLaunchShortcut implements ILaunchShortcut, IExecutableExtension {
 
 	private String delegateId;
 	private ILaunchShortcut delegate;
@@ -51,15 +54,21 @@ public class JitLaunchShortcut implements ILaunchShortcut {
 	public void launch(ISelection selection, String mode) {
 		ILaunchShortcut delegate = getDelegate();
 		if (delegate != null) {
-			delegate.launch(selection, "jitwatch");
+			delegate.launch(selection, LAUNCH_MODE);
 		}
 	}
 
 	public void launch(IEditorPart editor, String mode) {
 		ILaunchShortcut delegate = getDelegate();
 		if (delegate != null) {
-			delegate.launch(editor, "jitwatch");
+			delegate.launch(editor, LAUNCH_MODE);
 		}
+	}
+
+	@Override
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+		delegateId = String.valueOf(data);
 	}
 
 }

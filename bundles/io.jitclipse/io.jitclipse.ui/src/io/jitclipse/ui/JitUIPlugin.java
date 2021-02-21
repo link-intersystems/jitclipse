@@ -13,6 +13,8 @@ public class JitUIPlugin extends AbstractJFacePlugin implements IJitUIPluginCont
 
 	public static final String ID = "io.jitclipse.ui";
 
+	public static final String ID_JITWATCH_LAUNCH_GROUP = "io.jitclipse.ui.launchGroup";
+
 	private static JitUIPlugin inst;
 
 	private BundleContext context;

@@ -1,5 +1,7 @@
 package io.jitclipse.core.launch.internal;
 
+import static io.jitclipse.core.JitCorePlugin.LAUNCH_MODE;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -22,7 +24,6 @@ import io.jitclipse.core.resources.IJitProject;
 
 public class JitLaunch extends Launch implements IJitLaunch {
 
-	private static final String LAUNCH_MODE = "run";
 	private static final String ATTR_HOTSPOT_LOG_FILE_LOCATION = IJitLaunch.class.getCanonicalName()
 			+ ".hotspotLogFileLocation";
 

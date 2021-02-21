@@ -13,6 +13,7 @@ import io.jitclipse.core.parser.internal.IJitParserExtension;
 
 public class JitCorePlugin extends DefaultPlugin implements JitPluginContext {
 
+	public static final String LAUNCH_MODE = "jit";
 	public static final String ID = "io.jitclipse.core";
 
 	private static JitCorePlugin inst;

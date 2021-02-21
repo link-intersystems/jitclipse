@@ -7,19 +7,14 @@
             id="io.jitclipse.ui.commands.category"
             name="Jit Category">
       </category>
-      <command
-            categoryId="io.jitclipse.ui.commands.category"
-            name="Jit Command"
-            id="io.jitclipse.ui.commands.sampleCommand">
-      </command>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchGroups">
       <launchGroup
-            bannerImage="$nl$/icons/full/wizban/run_coverage.png"
+            bannerImage="icons/full/wizban/runjit.png"
             id="io.jitclipse.ui.launchGroup"
-            image="$nl$/icons/full/elcl16/runcoverage.png"
-            label="Jit"
+            image="icons/full/elcl16/runjit.png"
+            label="JIT Watch"
             mode="jit">
       </launchGroup>
    </extension>
@@ -27,6 +22,9 @@
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <actionSet
+               id="io.jitclipse.ui.ActionSet">
+         </actionSet>
       </perspectiveExtension>
 
    </extension>
@@ -37,6 +35,71 @@
             id="io.jitclipse.ui.JavaApplicationTabGroup"
             type="org.eclipse.jdt.launching.localJavaApplication">
          <launchMode
+               description="JIT Watch of a Java application."
+               mode="jit"
+               perspective="io.jitclipse.ui.perspectives.HotspotPerspective">
+         </launchMode>
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="io.jitclipse.ui.launch.JitTabGroup"
+            id="io.jitclipse.ui.WorkbenchTabGroup"
+            type="org.eclipse.pde.ui.RuntimeWorkbench">
+         <launchMode
+               description="JIT Watch of a Eclipse application."
+               mode="jit">
+         </launchMode>
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="io.jitclipse.ui.launch.JitTabGroup"
+            id="io.jitclipse.ui.JUnitPluginTabGroup"
+            type="org.eclipse.pde.ui.JunitLaunchConfig">
+         <launchMode
+               description="JIT Watch of a JUnit plug-in test run."
+               mode="jit">
+         </launchMode>
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="io.jitclipse.ui.launch.JitTabGroup"
+            id="io.jitclipse.ui.EquinoxTabGroup"
+            type="org.eclipse.pde.ui.EquinoxLauncher">
+         <launchMode
+               description="JIT Watch of a Equinox OSGi framework launch."
+               mode="jit">
+         </launchMode>
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="io.jitclipse.ui.launch.JitTabGroup"
+            id="io.jitclipse.ui.TestNGTabGroup"
+            type="org.testng.eclipse.launchconfig">
+         <launchMode
+               description="JIT Watch of a TestNG test run."
+               mode="jit">
+         </launchMode>
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="io.jitclipse.ui.launch.JitTabGroup"
+            id="io.jitclipse.ui.JUnitRAPTabGroup"
+            type="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher">
+         <launchMode
+               description="JIT Watch of a RAP JUnit test run."
+               mode="jit">
+         </launchMode>
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="io.jitclipse.ui.launch.JitTabGroup"
+            id="io.jitclipse.ui.SWTBotJUnitTabGroup"
+            type="org.eclipse.swtbot.eclipse.ui.launcher.JunitLaunchConfig">
+         <launchMode
+               description="JIT Watch of a SWTBot test run."
+               mode="jit">
+         </launchMode>
+      </launchConfigurationTabGroup>
+      <launchConfigurationTabGroup
+            class="io.jitclipse.ui.launch.JitTabGroup"
+            id="io.jitclipse.ui.ScalaApplicationTabGroup"
+            type="scala.application">
+         <launchMode
+               description="JIT Watch of a Scala application."
                mode="jit">
          </launchMode>
       </launchConfigurationTabGroup>
@@ -314,5 +377,207 @@
             application="org.eclipse.ui.ide.workbench"
             name="JITclipse">
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="JIT Watch Java Application"
+            icon="$nl$/icons/full/etool16/java_launch.png"
+            modes="jit"
+            class="io.jitclipse.ui.launch.JitLaunchShortcut:org.eclipse.jdt.debug.ui.localJavaShortcut"
+            id="io.jitclipse.ui.localJavaShortcut">
+          <contextualLaunch>
+           <enablement>
+             <with variable="selection">
+               <test property="io.jitclipse.ui.launchable" args="org.eclipse.jdt.debug.ui.localJavaShortcut"/>
+             </with>
+           </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+            class="io.jitclipse.ui.launch.JitLaunchShortcut:org.eclipse.jdt.junit.junitShortcut"
+            icon="$nl$/icons/full/etool16/junit_launch.png"
+            id="io.jitclipse.ui.junitShortcut"
+            label="JUnit Test"
+            modes="jit">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.jdt.junit.junitShortcut"
+                        property="io.jitclipse.ui.launchable">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+            class="io.jitclipse.ui.launch.JitLaunchShortcut:org.testng.eclipse.shortcut"
+            icon="$nl$/icons/full/etool16/testng_launch.gif"
+            id="io.jitclipse.ui.testNgShortcut"
+            label="TestNG Test"
+            modes="jit">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.testng.eclipse.shortcut"
+                        property="io.jitclipse.ui.launchable">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+            class="io.jitclipse.ui.launch.JitLaunchShortcut:org.testng.eclipse.shortcut.testngSuite"
+            icon="$nl$/icons/full/etool16/testng_launch.gif"
+            id="io.jitclipse.ui.testNgSuiteShortcut"
+            label="TestNG Suite"
+            modes="jit">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.testng.eclipse.shortcut.testngSuite"
+                        property="io.jitclipse.ui.launchable">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+            class="io.jitclipse.ui.launch.JitLaunchShortcut:org.eclipse.pde.ui.runtimeWorkbenchShortcut"
+            icon="$nl$/icons/full/etool16/eclipse_launch.png"
+            id="io.jitclipse.ui.workbenchShortcut"
+            label="Eclipse Application"
+            modes="jit">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.pde.ui.runtimeWorkbenchShortcut"
+                        property="io.jitclipse.ui.launchable">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+            class="io.jitclipse.ui.launch.JitLaunchShortcut:org.eclipse.pde.ui.junitWorkbenchShortcut"
+            icon="$nl$/icons/full/etool16/junitplugin_launch.png"
+            id="io.jitclipse.ui.junitPluginShortcut"
+            label="JUnit Plug-in Test"
+            modes="jit">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.pde.ui.junitWorkbenchShortcut"
+                        property="io.jitclipse.ui.launchable">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+            class="io.jitclipse.ui.launch.JitLaunchShortcut:org.eclipse.shortcut.scala"
+            icon="$nl$/icons/full/etool16/scala_launch.png"
+            id="io.jitclipse.ui.scalaShortcut"
+            label="Scala Application"
+            modes="jit">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.shortcut.scala"
+                        property="io.jitclipse.ui.launchable">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+            class="io.jitclipse.ui.launch.JitLaunchShortcut:org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut"
+            icon="$nl$/icons/full/etool16/junitplugin_launch.png"
+            id="io.jitclipse.ui.RAPJUnitLaunchShortcut"
+            label="RAP JUnit Test"
+            modes="jit">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.rap.ui.launch.RAPJUnitLaunchShortcut"
+                        property="io.jitclipse.ui.launchable">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+            class="io.jitclipse.ui.launch.JitLaunchShortcut:org.eclipse.swtbot.eclipse.ui.junitShortcut"
+            icon="$nl$/icons/full/etool16/swtbot_launch.png"
+            id="io.jitclipse.ui.SWTBotJUnitShortcut"
+            label="SWTBot Test"
+            modes="jit">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <test
+                        args="org.eclipse.swtbot.eclipse.ui.junitShortcut"
+                        property="io.jitclipse.ui.launchable">
+                  </test>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="io.jitclipse.ui.launch.ContextualLaunchableTester"
+            id="io.jitclipse.ui.launch.propertyTester.contextualLaunchable"
+            namespace="io.jitclipse.ui"
+            properties="launchable"
+            type="java.lang.Object"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="io.jitclipse.ui.ActionSet"
+            label="JIT Watch Action Set"
+            visible="false">
+         <menu
+               id="org.eclipse.ui.run"
+               label="&amp;Run"
+               path="additions">
+            <separator name="relaunchGroup"/>
+            <separator name="emptyLaunchGroup"/>
+         </menu>
+         <action
+               class="io.jitclipse.ui.launch.JitWatchToolbarAction"
+               disabledIcon="$nl$/icons/full/elcl16/runjit.png"
+               hoverIcon="$nl$/icons/full/elcl16/runjit.png"
+               icon="$nl$/icons/full/elcl16/runjit.png"
+               id="io.jitclipse.ui.actions.JitWatchDropDownAction"
+               label="JIT Watch"
+               state="false"
+               style="pulldown"
+               toolbarPath="org.eclipse.debug.ui.launchActionSet/debug"/>
+         <action
+               class="io.jitclipse.ui.launch.JitWatchAsAction"
+               icon="$nl$/icons/full/elcl16/runjit.png"
+               id="io.jitclipse.ui.actions.JitWatchAsAction"
+               label="JIT Watch As"
+               menubarPath="org.eclipse.ui.run/emptyLaunchGroup"
+               style="pulldown"/>
+      </actionSet>
    </extension>
 </plugin>

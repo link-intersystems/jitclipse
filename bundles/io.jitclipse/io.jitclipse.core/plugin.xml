@@ -7,18 +7,75 @@
          point="org.eclipse.debug.core.launchDelegates">
       <launchDelegate
             delegate="io.jitclipse.core.launch.internal.JitLauncherDelegate"
-            id="io.jitclipse.core.core.launchDelegate"
-            modes="run,debug"
-            name="Jit Watch"
+            id="io.jitclipse.core.javaApplicationLauncher"
+            modes="jit"
+            name="JIT Watch Java"
             sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
             sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer"
             type="org.eclipse.jdt.launching.localJavaApplication">
+      </launchDelegate>
+      <launchDelegate
+            delegate="io.jitclipse.core.launch.internal.JitLauncherDelegate"
+            id="io.jitclipse.core.junitLauncher"
+            modes="jit"
+            name="JIT Watch JUnit Test"
+            type="org.eclipse.jdt.junit.launchconfig">
+      </launchDelegate>
+      <launchDelegate
+            delegate="io.jitclipse.core.launch.internal.EclipseLauncherDelegate"
+            id="io.jitclipse.core.workbenchLauncher"
+            modes="jit"
+            name="JIT Watch Eclipse Application"
+            type="org.eclipse.pde.ui.RuntimeWorkbench">
+      </launchDelegate>
+      <launchDelegate
+            delegate="io.jitclipse.core.launch.internal.EclipseLauncherDelegate"
+            id="io.jitclipse.core.equinoxLauncher"
+            modes="jit"
+            name="JIT Watch OSGI Framework"
+            type="org.eclipse.pde.ui.EquinoxLauncher">
+      </launchDelegate>
+      <launchDelegate
+            delegate="io.jitclipse.core.launch.internal.JitLauncherDelegate"
+            id="io.jitclipse.core.testNGLauncher"
+            modes="coverage"
+            name="JIT Watch TestNG"
+            type="org.testng.eclipse.launchconfig">
+      </launchDelegate>
+      <launchDelegate
+            delegate="io.jitclipse.core.launch.internal.EclipseLauncherDelegate"
+            id="io.jitclipse.core.RAPJUnitLauncher"
+            modes="coverage"
+            name="JIT Watch RAP JUnit Test"
+            type="org.eclipse.rap.ui.launch.RAPJUnitTestLauncher">
+      </launchDelegate>
+      <launchDelegate
+            delegate="io.jitclipse.core.launch.internal.EclipseLauncherDelegate"
+            id="io.jitclipse.core.SWTBotJUnitLauncher"
+            modes="jit"
+            name="JIT Watch SWTBot Test"
+            type="org.eclipse.swtbot.eclipse.ui.launcher.JunitLaunchConfig">
+      </launchDelegate>
+      <launchDelegate
+            delegate="io.jitclipse.core.launch.internal.JitLauncherDelegate"
+            id="io.jitclipse.core.scalaApplicationLauncher"
+            modes="jit"
+            name="JIT Watch Scala"
+            type="scala.application">
+      </launchDelegate>
+      <launchDelegate
+            delegate="io.jitclipse.core.launch.internal.EclipseLauncherDelegate"
+            id="io.jitclipse.core.junitPluginLauncher"
+            modes="jit"
+            name="JIT Watch JUnit Plug-in Test"
+            type="org.eclipse.pde.ui.JunitLaunchConfig">
       </launchDelegate>
    </extension>
    <extension
          point="org.eclipse.debug.core.launchModes">
       <launchMode
-            label="Jit Watch"
+            label="JIT Watch"
+            launchAsLabel="JIT Watch As"
             mode="jit">
       </launchMode>
    </extension>

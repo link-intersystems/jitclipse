@@ -17,7 +17,6 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchDelegate;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 import org.eclipse.debug.core.model.IProcess;
@@ -37,7 +36,7 @@ public class JitLauncherDelegate implements ILaunchConfigurationDelegate2, IDebu
 
 	private static final String LAUNCH_DELEGATE_TYPE = "org.eclipse.jdt.launching.localJavaApplication";
 
-	private static final String MODE = ILaunchManager.RUN_MODE;
+	private static final String MODE = "run";
 
 	private IPluginLog pluginLog;
 
