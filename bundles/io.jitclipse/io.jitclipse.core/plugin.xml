@@ -6,7 +6,7 @@
    <extension
          point="org.eclipse.debug.core.launchDelegates">
       <launchDelegate
-            delegate="io.jitclipse.core.launch.internal.JitLauncherDelegate"
+            delegate="io.jitclipse.core.launch.internal.JavaLauncherDelegate"
             id="io.jitclipse.core.javaApplicationLauncher"
             modes="jit"
             name="JIT Watch Java"
@@ -15,7 +15,7 @@
             type="org.eclipse.jdt.launching.localJavaApplication">
       </launchDelegate>
       <launchDelegate
-            delegate="io.jitclipse.core.launch.internal.JitLauncherDelegate"
+            delegate="io.jitclipse.core.launch.internal.JavaLauncherDelegate"
             id="io.jitclipse.core.junitLauncher"
             modes="jit"
             name="JIT Watch JUnit Test"
@@ -36,7 +36,7 @@
             type="org.eclipse.pde.ui.EquinoxLauncher">
       </launchDelegate>
       <launchDelegate
-            delegate="io.jitclipse.core.launch.internal.JitLauncherDelegate"
+            delegate="io.jitclipse.core.launch.internal.JavaLauncherDelegate"
             id="io.jitclipse.core.testNGLauncher"
             modes="coverage"
             name="JIT Watch TestNG"
@@ -57,7 +57,7 @@
             type="org.eclipse.swtbot.eclipse.ui.launcher.JunitLaunchConfig">
       </launchDelegate>
       <launchDelegate
-            delegate="io.jitclipse.core.launch.internal.JitLauncherDelegate"
+            delegate="io.jitclipse.core.launch.internal.JavaLauncherDelegate"
             id="io.jitclipse.core.scalaApplicationLauncher"
             modes="jit"
             name="JIT Watch Scala"

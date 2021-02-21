@@ -1,12 +1,14 @@
 package io.jitclipse.core.launch.internal;
 
+import static org.eclipse.core.resources.IResource.DEPTH_INFINITE;
 import static org.eclipse.debug.core.DebugEvent.TERMINATE;
 
 import java.util.Collections;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
@@ -16,11 +18,10 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchDelegate;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate;
 import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.jdt.launching.JavaLaunchDelegate;
 import org.eclipse.osgi.util.NLS;
 
 import com.link_intersystems.eclipse.core.runtime.IExtensionPointProxyFactory;
@@ -32,16 +33,34 @@ import io.jitclipse.core.JitStatus;
 import io.jitclipse.core.launch.IJitLaunch;
 import io.jitclipse.core.resources.IHotspotLogFile;
 
-public class JitLauncherDelegate implements ILaunchConfigurationDelegate2, IDebugEventSetListener {
+public class JitLauncherDelegate
+		implements ILaunchConfigurationDelegate2, IDebugEventSetListener, IExecutableExtension {
 
-	private static final String LAUNCH_DELEGATE_TYPE = "org.eclipse.jdt.launching.localJavaApplication";
+	public static final String DELEGATELAUNCHMODE = ILaunchManager.RUN_MODE;
 
-	private static final String MODE = "run";
+	protected ILaunchConfigurationDelegate launchdelegate;
+
+	protected ILaunchConfigurationDelegate2 launchdelegate2;
 
 	private IPluginLog pluginLog;
 
 	public JitLauncherDelegate() {
 		this(JitCorePlugin.getInstance().getPluginLog());
+	}
+
+	public JitLauncherDelegate(IPluginLog pluginLog) {
+		this.pluginLog = pluginLog;
+		DebugPlugin debugPlugin = DebugPlugin.getDefault();
+		debugPlugin.addDebugEventListener(this);
+	}
+
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+		final String launchtype = config.getAttribute("type"); //$NON-NLS-1$
+		launchdelegate = getLaunchDelegate(launchtype);
+		if (launchdelegate instanceof ILaunchConfigurationDelegate2) {
+			launchdelegate2 = (ILaunchConfigurationDelegate2) launchdelegate;
+		}
 	}
 
 	@Override
@@ -56,10 +75,19 @@ public class JitLauncherDelegate implements ILaunchConfigurationDelegate2, IDebu
 			ILaunchConfiguration effectiveConfiguration = jitLaunch.getEffectiveLaunchConfiguration();
 
 			ILaunchConfigurationDelegate launchDelegate = getLaunchDelegate();
-			return launchDelegate.showCommandLine(effectiveConfiguration, MODE, jitLaunch, monitor);
+			return launchDelegate.showCommandLine(effectiveConfiguration, DELEGATELAUNCHMODE, jitLaunch, monitor);
 		} finally {
 			monitor.done();
 		}
+	}
+
+	private ILaunchConfigurationDelegate getLaunchDelegate(String launchtype) throws CoreException {
+		ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
+				.getLaunchConfigurationType(launchtype);
+		if (type == null) {
+			throw new CoreException(JitStatus.UNKOWN_LAUNCH_TYPE_ERROR.getStatus(launchtype));
+		}
+		return type.getDelegates(Collections.singleton(DELEGATELAUNCHMODE))[0].getDelegate();
 	}
 
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
@@ -78,37 +106,13 @@ public class JitLauncherDelegate implements ILaunchConfigurationDelegate2, IDebu
 		ILaunchConfiguration effectiveConfiguration = jitLaunch.getEffectiveLaunchConfiguration();
 
 		ILaunchConfigurationDelegate launchDelegate = getLaunchDelegate();
-		launchDelegate.launch(effectiveConfiguration, MODE, jitLaunch, SubMonitor.convert(monitor, 1));
+		launchDelegate.launch(effectiveConfiguration, DELEGATELAUNCHMODE, jitLaunch, SubMonitor.convert(monitor, 1));
 
 		monitor.done();
 	}
 
-	public JitLauncherDelegate(IPluginLog pluginLog) {
-		this.pluginLog = pluginLog;
-		DebugPlugin debugPlugin = DebugPlugin.getDefault();
-		debugPlugin.addDebugEventListener(this);
-	}
-
-	private ILaunchConfigurationDelegate getLaunchDelegate(String launchtype) throws CoreException {
-		ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
-				.getLaunchConfigurationType(launchtype);
-		if (type == null) {
-			throw new CoreException(JitStatus.UNKOWN_LAUNCH_TYPE_ERROR.getStatus(launchtype));
-		}
-
-		ILaunchDelegate[] delegates = type.getDelegates(Collections.singleton(MODE));
-		for (ILaunchDelegate delegate : delegates) {
-			ILaunchConfigurationDelegate configurationDelegate = delegate.getDelegate();
-			if (configurationDelegate instanceof JavaLaunchDelegate) {
-				return configurationDelegate;
-			}
-		}
-
-		throw new CoreException(JitStatus.UNKOWN_LAUNCH_TYPE_ERROR.getStatus(launchtype));
-	}
-
 	private ILaunchConfigurationDelegate getLaunchDelegate() throws CoreException {
-		return getLaunchDelegate(LAUNCH_DELEGATE_TYPE);
+		return launchdelegate;
 	}
 
 	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) throws CoreException {
@@ -117,31 +121,28 @@ public class JitLauncherDelegate implements ILaunchConfigurationDelegate2, IDebu
 
 	public boolean buildForLaunch(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor)
 			throws CoreException {
-		ILaunchConfigurationDelegate launchDelegate = getLaunchDelegate();
-		if (launchDelegate instanceof ILaunchConfigurationDelegate2) {
-			return ((ILaunchConfigurationDelegate2) launchDelegate).buildForLaunch(configuration, MODE, monitor);
-		} else {
+		if (launchdelegate2 == null) {
 			return true;
+		} else {
+			return launchdelegate2.buildForLaunch(configuration, DELEGATELAUNCHMODE, monitor);
 		}
 	}
 
 	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor)
 			throws CoreException {
-		ILaunchConfigurationDelegate launchDelegate = getLaunchDelegate();
-		if (launchDelegate instanceof ILaunchConfigurationDelegate2) {
-			return ((ILaunchConfigurationDelegate2) launchDelegate).preLaunchCheck(configuration, MODE, monitor);
-		} else {
+		if (launchdelegate2 == null) {
 			return true;
+		} else {
+			return launchdelegate2.preLaunchCheck(configuration, DELEGATELAUNCHMODE, monitor);
 		}
 	}
 
 	public boolean finalLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor)
 			throws CoreException {
-		ILaunchConfigurationDelegate launchDelegate = getLaunchDelegate();
-		if (launchDelegate instanceof ILaunchConfigurationDelegate2) {
-			return ((ILaunchConfigurationDelegate2) launchDelegate).finalLaunchCheck(configuration, MODE, monitor);
-		} else {
+		if (launchdelegate2 == null) {
 			return true;
+		} else {
+			return launchdelegate2.finalLaunchCheck(configuration, DELEGATELAUNCHMODE, monitor);
 		}
 	}
 
@@ -175,18 +176,18 @@ public class JitLauncherDelegate implements ILaunchConfigurationDelegate2, IDebu
 		}
 	}
 
-	private void refresh(IFile file) {
-		try {
-			file.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		} catch (CoreException e) {
-			pluginLog.logError(e);
-		}
-	}
-
 	protected JitLaunchListenerDelegate getLaunchResultListenerDelegate() {
 		IExtensionPointProxyFactory extensionsPointProxyFactory = JitCorePlugin.getInstance()
 				.getExtensionsPointProxyFactory();
 		return new JitLaunchListenerDelegate(extensionsPointProxyFactory);
+	}
+
+	private void refresh(IFile file) {
+		try {
+			file.getProject().refreshLocal(DEPTH_INFINITE, new NullProgressMonitor());
+		} catch (CoreException e) {
+			pluginLog.logError(e);
+		}
 	}
 
 }
