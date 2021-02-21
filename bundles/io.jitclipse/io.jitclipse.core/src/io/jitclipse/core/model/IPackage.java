@@ -40,4 +40,5 @@ public interface IPackage extends IAdaptable2 {
 
 		return false;
 	}
+
 }
