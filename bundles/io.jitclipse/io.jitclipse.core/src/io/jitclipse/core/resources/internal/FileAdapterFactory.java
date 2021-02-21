@@ -12,7 +12,7 @@ public class FileAdapterFactory implements IAdapterFactory {
 	private Predicate<IFile> logFileFilter;
 
 	public FileAdapterFactory() {
-		this(HotspotLogFile::isLogFilename);
+		this(IHotspotLogFile::isHotspotLogFile);
 	}
 
 	public FileAdapterFactory(Predicate<IFile> logFileFilter) {
@@ -30,7 +30,7 @@ public class FileAdapterFactory implements IAdapterFactory {
 
 	public <T> T getAdapter(IFile file, Class<T> adapterType) {
 		String filename = file.getName() + "." + file.getFileExtension();
-		if (IHotspotLogFile.isHotspotLogFile(filename) && IHotspotLogFile.class.isAssignableFrom(adapterType)) {
+		if (IHotspotLogFile.isHotspotLogFilename(filename) && IHotspotLogFile.class.isAssignableFrom(adapterType)) {
 			return adapterType.cast(getHotspotLogFileAdapter(file));
 		}
 		return null;

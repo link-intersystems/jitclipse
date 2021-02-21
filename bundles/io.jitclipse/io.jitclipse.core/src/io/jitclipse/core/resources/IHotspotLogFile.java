@@ -16,7 +16,11 @@ public interface IHotspotLogFile extends IAdaptable2, PropertyChangeSource {
 
 	public static final String PROPERTY_HOTSPOT_LOG = "hotspotLog";
 
-	public static boolean isHotspotLogFile(String name) {
+	public static boolean isHotspotLogFile(IFile file) {
+		return isHotspotLogFilename(file.getName());
+	}
+
+	public static boolean isHotspotLogFilename(String name) {
 		return name.startsWith("hotspot") && name.endsWith(".log");
 	}
 

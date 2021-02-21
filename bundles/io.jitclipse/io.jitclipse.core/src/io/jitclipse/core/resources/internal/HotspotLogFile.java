@@ -36,10 +36,6 @@ public class HotspotLogFile extends AbstractPropertyChangeSource implements IHot
 		this.file = file;
 	}
 
-	public static boolean isLogFilename(IFile file) {
-		return file.getName().startsWith("hotspot") && file.getFileExtension().equals("log");
-	}
-
 	@Override
 	public IHotspotLog getHotspotLog() {
 		return hotspotLog;
