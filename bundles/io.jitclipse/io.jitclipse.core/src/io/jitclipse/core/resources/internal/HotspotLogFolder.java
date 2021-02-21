@@ -1,9 +1,11 @@
 package io.jitclipse.core.resources.internal;
 
-import java.text.SimpleDateFormat;
 import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -73,9 +75,11 @@ public class HotspotLogFolder implements IHotspotLogFolder {
 	}
 
 	private String getHotspotLogFilename() {
-		Date now = new Date(clock.millis());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		String timestamp = dateFormat.format(now);
+		ZoneId zone = clock.getZone();
+		Instant instant = clock.instant();
+		ZonedDateTime atZone = instant.atZone(zone);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+		String timestamp = formatter.format(atZone);
 		String hotspotLogFilename = "hotspot-" + timestamp + ".log";
 		return hotspotLogFilename;
 	}
