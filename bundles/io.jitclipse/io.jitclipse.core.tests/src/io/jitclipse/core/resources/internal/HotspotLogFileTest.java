@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.core.runtime.CoreException;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -72,7 +73,7 @@ class HotspotLogFileTest extends AbstractJitProjectTest {
 	}
 
 	@Test
-	void getHotspotLog() throws InterruptedException {
+	void getHotspotLog() throws InterruptedException, CoreException {
 		IHotspotLogFile hotspotLogFile = doOpenHotspotLogFile();
 		IHotspotLog hotspotLog = hotspotLogFile.getHotspotLog();
 		assertNotNull(hotspotLog);

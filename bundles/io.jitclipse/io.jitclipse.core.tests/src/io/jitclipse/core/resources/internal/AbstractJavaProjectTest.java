@@ -1,11 +1,14 @@
 package io.jitclipse.core.resources.internal;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -53,6 +56,8 @@ public class AbstractJavaProjectTest extends AbstractProjectTest {
 		IFolder sourceFolder = project.getFolder("src");
 		if (!sourceFolder.exists()) {
 			sourceFolder.create(false, true, null);
+			IFile mainJavaFile = sourceFolder.getFile("Main.java");
+			initializeMainClass(mainJavaFile);
 		}
 
 		IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder);
@@ -62,6 +67,34 @@ public class AbstractJavaProjectTest extends AbstractProjectTest {
 		newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
 		javaProject.setRawClasspath(newEntries, null);
 
+		project.build(IncrementalProjectBuilder.CLEAN_BUILD, null);
+
+	}
+
+
+	private void initializeMainClass(IFile mainJavaFile) throws CoreException {
+		if (mainJavaFile.exists()) {
+			return;
+		}
+
+		mainJavaFile.create(new ByteArrayInputStream(new String("public class Main {\r\n" //
+				+ "\r\n" //
+				+ "	public static void main(String[] args) {\r\n" //
+				+ "		for (int i = 0; i < 100000; i++) {\r\n" //
+				+ "			print(i);\r\n" //
+				+ "		}\r\n" //
+				+ "	}\r\n" //
+				+ "\r\n" //
+				+ "	public static synchronized void print(int i) {\r\n" //
+				+ "		StringBuffer sb = new StringBuffer();\r\n" //
+				+ "\r\n" //
+				+ "		sb.append(\"test\");\r\n" //
+				+ "		sb.append(\" \");\r\n" //
+				+ "		sb.append(i);\r\n" //
+				+ "\r\n" //
+				+ "		System.out.println(sb.toString());\r\n" //
+				+ "	}\r\n" //
+				+ "}").getBytes()), false, null);
 	}
 
 }
