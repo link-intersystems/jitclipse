@@ -1,8 +1,10 @@
 package io.jitclipse.core.resources;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 
 import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.model.IPackage;
@@ -31,5 +33,11 @@ public interface IHotspotLogFolder {
 	}
 
 	List<IFile> getFiles();
+
+	IFolder getFolder();
+
+	default Optional<IHotspotLogFile> getHotspotLogFile(String string) {
+		return getHotspotLogfiles().stream().filter(hlf -> hlf.getFile().getName().equals(string)).findFirst();
+	}
 
 }

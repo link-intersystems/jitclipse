@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 
 import io.jitclipse.core.JitPluginContext;
 
-class JitProjectTest extends AbstractJitProjectTest {
+class JitProjectTest extends AbstractProjectTest {
 
 	@Test
 	public void jitProjectCanBeCreated() {

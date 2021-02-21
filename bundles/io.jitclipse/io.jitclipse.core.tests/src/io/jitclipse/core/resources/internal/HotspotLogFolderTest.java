@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 
 import com.link_intersystems.eclipse.core.runtime.IPluginLog;
 
-class HotspotLogFolderTest extends AbstractJitProjectTest {
+class HotspotLogFolderTest extends AbstractProjectTest {
 
 	private IPluginLog pluginLog;
 	private HotspotLogFolder hotspotLogFolder;

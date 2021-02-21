@@ -118,4 +118,9 @@ public class HotspotLogFolder implements IHotspotLogFolder {
 		return files;
 	}
 
+	@Override
+	public IFolder getFolder() {
+		return hotspotLogFileFolder;
+	}
+
 }
