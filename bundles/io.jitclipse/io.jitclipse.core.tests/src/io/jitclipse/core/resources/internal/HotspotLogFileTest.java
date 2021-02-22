@@ -52,7 +52,7 @@ class HotspotLogFileTest extends AbstractJitProjectTest {
 			private IHotspotLogFile hotspotLog;
 
 			public IHotspotLogFile getHotspotLogFile() throws InterruptedException {
-				countDownLatch.await(2, TimeUnit.SECONDS);
+				countDownLatch.await(5, TimeUnit.SECONDS);
 				return hotspotLog;
 			}
 
