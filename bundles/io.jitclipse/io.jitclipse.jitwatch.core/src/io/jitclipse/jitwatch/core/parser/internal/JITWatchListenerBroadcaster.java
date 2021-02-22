@@ -30,8 +30,11 @@ public class JITWatchListenerBroadcaster implements IJITListener {
 		targets.forEach(IJITListener::handleReadComplete);
 	}
 
-	public void addTarget(IJITListener delegate) {
-		this.targets.add(delegate);
+	public void addTarget(IJITListener target) {
+		if (target == this) {
+			throw new IllegalArgumentException("Can't add myself to the broadcast targets.");
+		}
+		this.targets.add(target);
 	}
 
 }
