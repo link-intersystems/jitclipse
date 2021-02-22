@@ -9,10 +9,10 @@
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>io.jitclipse.core.fragment.tests</artifactId>
-	<packaging>eclipse-test-plugin</packaging>
+	<artifactId>io.jitclipse.core.tests.commons</artifactId>
+	<packaging>eclipse-plugin</packaging>
 
-	<name>JITclipse Core Fragment Tests</name>
+	<name>JITclipse Core Tests</name>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>

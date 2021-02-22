@@ -1,4 +1,4 @@
-package io.jitclipse.core.tests;
+package io.jitclipse.core.tests.commons;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;

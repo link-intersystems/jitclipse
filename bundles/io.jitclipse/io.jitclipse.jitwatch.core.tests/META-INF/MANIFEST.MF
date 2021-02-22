@@ -10,5 +10,4 @@ Fragment-Host: io.jitclipse.jitwatch.core;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
-Require-Bundle: io.jitclipse.core.tests;bundle-version="1.0.0",
- io.jitclipse.jitwatch.core;bundle-version="1.0.0"
+Require-Bundle: io.jitclipse.core.tests.commons;bundle-version="1.0.0"

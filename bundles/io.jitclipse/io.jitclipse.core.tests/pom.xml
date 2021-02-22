@@ -12,8 +12,8 @@
 	<artifactId>io.jitclipse.core.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 
-	<name>JITclipse Core Tests</name>
-	
+	<name>JITclipse Core Fragment Tests</name>
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 	</build>

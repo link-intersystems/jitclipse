@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.eclipse.core.resources.IFile;
 import org.junit.jupiter.api.Test;
 
-import io.jitclipse.core.tests.AbstractJitProjectTest;
+import io.jitclipse.core.tests.commons.AbstractJitProjectTest;
 
 class AdapterTest extends AbstractJitProjectTest {
 

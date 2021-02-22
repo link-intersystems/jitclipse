@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import io.jitclipse.core.JitPluginContext;
-import io.jitclipse.core.tests.AbstractProjectTest;
+import io.jitclipse.core.tests.commons.AbstractProjectTest;
 
 class JitProjectTest extends AbstractProjectTest {
 

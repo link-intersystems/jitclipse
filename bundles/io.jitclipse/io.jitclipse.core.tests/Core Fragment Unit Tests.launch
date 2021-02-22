@@ -28,12 +28,12 @@
     <booleanAttribute key="includeOptional" value="true"/>
     <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/io.jitclipse.core.fragment.tests"/>
+        <listEntry value="/io.jitclipse.core.tests"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="4"/>
     </listAttribute>
-    <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=io.jitclipse.core.fragment.tests"/>
+    <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=io.jitclipse.core.tests"/>
     <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
     <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit5"/>
@@ -41,7 +41,7 @@
     <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="io.jitclipse.core.fragment.tests"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="io.jitclipse.core.tests"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea"/>
     <stringAttribute key="pde.version" value="3.3"/>
@@ -196,7 +196,7 @@
         <setEntry value="com.link_intersystems.eclipse.lis-commons-beans@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.lis-commons-lang@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.lis-commons-math@default:default"/>
-        <setEntry value="io.jitclipse.core.fragment.tests@default:false"/>
+        <setEntry value="io.jitclipse.core.tests@default:false"/>
         <setEntry value="io.jitclipse.core.tests@default:false"/>
         <setEntry value="io.jitclipse.core@default:default"/>
     </setAttribute>

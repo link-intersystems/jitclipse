@@ -20,7 +20,7 @@ import io.jitclipse.core.model.allocation.IEliminatedAllocationList;
 import io.jitclipse.core.model.lock.IOptimisedLockList;
 import io.jitclipse.core.model.suggestion.ISuggestionList;
 import io.jitclipse.core.resources.IHotspotLogFile;
-import io.jitclipse.core.tests.AbstractJitProjectTest;
+import io.jitclipse.core.tests.commons.AbstractJitProjectTest;
 
 @TestMethodOrder(OrderAnnotation.class)
 class HotspotLogFileTest extends AbstractJitProjectTest {
