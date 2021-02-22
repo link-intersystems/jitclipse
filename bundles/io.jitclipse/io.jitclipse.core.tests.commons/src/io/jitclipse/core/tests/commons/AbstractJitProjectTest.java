@@ -16,7 +16,7 @@ public class AbstractJitProjectTest extends AbstractJavaProjectTest {
 	protected IJitProject jitProject;
 
 	@BeforeEach
-	public void setupJitProject() throws CoreException {
+	public final void setupJitProject() throws CoreException {
 		jitProject = project.getAdapter(IJitProject.class);
 		hotspotLogFolder = jitProject.getHotspotLogFolder();
 		IFolder folder = hotspotLogFolder.getFolder();

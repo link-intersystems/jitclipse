@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<fragment
+>
+   <extension
+         point="io.jitclipse.jitwatch.core.listeners">
+      <parserLogParticipant
+            class="io.jitclipse.jitwatch.core.resources.TestParseLogParticipant">
+      </parserLogParticipant>
+   </extension>
+</fragment>

@@ -12,7 +12,7 @@ public class AbstractProjectTest {
 	protected IProject project;
 
 	@BeforeEach
-	public void setup() throws CoreException {
+	public final void setupTestProject() throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot wsRoot = workspace.getRoot();
 

@@ -22,7 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 public class AbstractJavaProjectTest extends AbstractProjectTest {
 
 	@BeforeEach
-	public void setupJavaProject() throws CoreException {
+	public final void setupJavaProject() throws CoreException {
 		IProjectDescription description = project.getDescription();
 		List<String> natures = Arrays.asList(description.getNatureIds());
 

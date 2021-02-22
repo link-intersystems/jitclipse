@@ -10,8 +10,6 @@ public class JitWatchCorePlugin extends DefaultPlugin {
 
 	private static JitWatchCorePlugin inst;
 
-	private BundleContext context;
-
 	public static JitWatchCorePlugin getInstance() {
 		return inst;
 	}
@@ -24,18 +22,12 @@ public class JitWatchCorePlugin extends DefaultPlugin {
 	public void start(BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);
 		inst = this;
-		context = bundleContext;
 	}
 
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
 		super.stop(bundleContext);
 		inst = null;
-		context = null;
-	}
-
-	public BundleContext getContext() {
-		return context;
 	}
 
 }

@@ -9,10 +9,14 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.Mockito;
 
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.IHotspotLog;
@@ -21,15 +25,36 @@ import io.jitclipse.core.model.lock.IOptimisedLockList;
 import io.jitclipse.core.model.suggestion.ISuggestionList;
 import io.jitclipse.core.resources.IHotspotLogFile;
 import io.jitclipse.core.tests.commons.AbstractJitProjectTest;
+import io.jitclipse.jitwatch.core.parser.IParseLogParticipant;
 
 @TestMethodOrder(OrderAnnotation.class)
 class HotspotLogFileTest extends AbstractJitProjectTest {
+
+	private IParseLogParticipant parseLogParticipant;
+
+	@BeforeEach
+	public void setupParseParticipant() {
+		parseLogParticipant = Mockito.mock(IParseLogParticipant.class);
+		TestParseLogParticipant.delegate = parseLogParticipant;
+	}
+
+	@AfterEach
+	public void tearDownParseParticipant() {
+		TestParseLogParticipant.delegate = null;
+		parseLogParticipant = null;
+	}
 
 	@Test
 	void isHotspotLogFilename() {
 		assertTrue(IHotspotLogFile.isHotspotLogFilename("hotspot.log"));
 		assertFalse(IHotspotLogFile.isHotspotLogFilename("hotspo.log"));
 		assertFalse(IHotspotLogFile.isHotspotLogFilename("hotspot.txt"));
+	}
+
+	@Test
+	void parseLogParticipant() throws InterruptedException {
+		doOpenHotspotLogFile();
+		Mockito.verify(parseLogParticipant).aboutToParse(Mockito.any(IFile.class));
 	}
 
 	@Test
