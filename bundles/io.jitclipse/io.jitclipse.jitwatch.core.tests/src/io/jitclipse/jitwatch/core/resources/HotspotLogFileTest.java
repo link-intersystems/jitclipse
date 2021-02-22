@@ -1,4 +1,4 @@
-package io.jitclipse.core.resources.internal;
+package io.jitclipse.jitwatch.core.resources;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
