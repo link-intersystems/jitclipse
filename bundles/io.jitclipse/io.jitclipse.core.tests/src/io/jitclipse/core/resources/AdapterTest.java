@@ -1,4 +1,4 @@
-package io.jitclipse.core.resources.internal;
+package io.jitclipse.core.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.eclipse.core.resources.IFile;
 import org.junit.jupiter.api.Test;
 
-import io.jitclipse.core.resources.IHotspotLogFile;
+import io.jitclipse.core.tests.AbstractJitProjectTest;
 
 class AdapterTest extends AbstractJitProjectTest {
 

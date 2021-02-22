@@ -1,4 +1,4 @@
-package io.jitclipse.core.resources.internal;
+package io.jitclipse.core.tests;
 
 import java.io.ByteArrayInputStream;
 
