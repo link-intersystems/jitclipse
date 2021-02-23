@@ -18,8 +18,6 @@ public class JitCorePlugin extends DefaultPlugin implements JitPluginContext {
 
 	private static JitCorePlugin inst;
 
-	private BundleContext context;
-
 	public static JitCorePlugin getInstance() {
 		return inst;
 	}
@@ -32,19 +30,14 @@ public class JitCorePlugin extends DefaultPlugin implements JitPluginContext {
 	public void start(BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);
 		inst = this;
-		context = bundleContext;
 	}
 
 	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
 		super.stop(bundleContext);
 		inst = null;
-		context = null;
 	}
 
-	public BundleContext getContext() {
-		return context;
-	}
 
 	@Override
 	public IJitLogParser getJitLogParser() throws CoreException {

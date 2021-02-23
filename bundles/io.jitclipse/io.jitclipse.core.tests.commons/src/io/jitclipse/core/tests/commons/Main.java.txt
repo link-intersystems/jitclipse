@@ -1,0 +1,18 @@
+public class Main {
+
+	public static void main(String[] args) {
+		for (int i = 0; i < 100000; i++) {
+			print(i);
+		}
+	}
+
+	public static synchronized void print(int i) {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("test");
+		sb.append(" ");
+		sb.append(i);
+
+		System.out.println(sb.toString());
+	}
+}

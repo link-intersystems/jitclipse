@@ -1,6 +1,5 @@
 package io.jitclipse.core.tests.commons;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,24 +76,7 @@ public class AbstractJavaProjectTest extends AbstractProjectTest {
 			return;
 		}
 
-		mainJavaFile.create(new ByteArrayInputStream(new String("public class Main {\r\n" //
-				+ "\r\n" //
-				+ "	public static void main(String[] args) {\r\n" //
-				+ "		for (int i = 0; i < 100000; i++) {\r\n" //
-				+ "			print(i);\r\n" //
-				+ "		}\r\n" //
-				+ "	}\r\n" //
-				+ "\r\n" //
-				+ "	public static synchronized void print(int i) {\r\n" //
-				+ "		StringBuffer sb = new StringBuffer();\r\n" //
-				+ "\r\n" //
-				+ "		sb.append(\"test\");\r\n" //
-				+ "		sb.append(\" \");\r\n" //
-				+ "		sb.append(i);\r\n" //
-				+ "\r\n" //
-				+ "		System.out.println(sb.toString());\r\n" //
-				+ "	}\r\n" //
-				+ "}").getBytes()), false, null);
+		mainJavaFile.create(getClass().getResourceAsStream("Main.java.txt"), false, null);
 	}
 
 }

@@ -196,7 +196,7 @@
         <setEntry value="com.link_intersystems.eclipse.lis-commons-beans@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.lis-commons-lang@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.lis-commons-math@default:default"/>
-        <setEntry value="io.jitclipse.core.tests@default:false"/>
+        <setEntry value="io.jitclipse.core.tests.commons@default:default"/>
         <setEntry value="io.jitclipse.core.tests@default:false"/>
         <setEntry value="io.jitclipse.core@default:default"/>
     </setAttribute>

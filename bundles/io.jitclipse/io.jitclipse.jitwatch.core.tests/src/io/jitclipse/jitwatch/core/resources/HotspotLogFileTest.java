@@ -1,5 +1,6 @@
 package io.jitclipse.jitwatch.core.resources;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -7,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.IHotspotLog;
+import io.jitclipse.core.model.IPackage;
 import io.jitclipse.core.model.allocation.IEliminatedAllocationList;
 import io.jitclipse.core.model.lock.IOptimisedLockList;
 import io.jitclipse.core.model.suggestion.ISuggestionList;
@@ -67,6 +68,42 @@ class HotspotLogFileTest extends AbstractJitProjectTest {
 		assertNotNull(hotspotLog);
 	}
 
+	@Test
+	void adapterTest() throws InterruptedException {
+		IHotspotLogFile hotspotLogFile = doOpenHotspotLogFile();
+
+		assertNotNull(hotspotLogFile);
+		assertTrue(hotspotLogFile.isOpened());
+
+		IHotspotLog hotspotLog = hotspotLogFile.getAdapter(IHotspotLog.class);
+		assertNotNull("adapt IHotspotLogFile to HotspotLog", hotspotLog);
+
+		List<IPackage> rootPackages = hotspotLog.getRootPackages();
+		for (IPackage rootPackage : rootPackages) {
+			adapterTest(rootPackage);
+		}
+	}
+
+	private void adapterTest(IPackage aPackage) {
+		IHotspotLog hotspotLog = aPackage.getAdapter(IHotspotLog.class);
+		assertNotNull("adapt " + aPackage.getName() + " to HotspotLog", hotspotLog);
+
+		List<IPackage> packages = aPackage.getPackages();
+		for (IPackage aSubPackage : packages) {
+			List<IClass> classes = aSubPackage.getClasses();
+			for (IClass aClass : classes) {
+				adapterTest(aClass);
+			}
+			adapterTest(aSubPackage);
+		}
+
+	}
+
+	private void adapterTest(IClass aClass) {
+		IHotspotLog hotspotLog = aClass.getAdapter(IHotspotLog.class);
+		assertNotNull("adapt " + aClass.getName() + " to HotspotLog", hotspotLog);
+	}
+
 	private IHotspotLogFile doOpenHotspotLogFile() throws InterruptedException {
 		Optional<IHotspotLogFile> hotspotLogFileOptional = hotspotLogFolder.getHotspotLogFile("hotspot.log");
 		assertTrue(hotspotLogFileOptional.isPresent());
@@ -78,7 +115,7 @@ class HotspotLogFileTest extends AbstractJitProjectTest {
 			private IHotspotLogFile hotspotLog;
 
 			public IHotspotLogFile getHotspotLogFile() throws InterruptedException {
-				countDownLatch.await(5, TimeUnit.SECONDS);
+				countDownLatch.await(5, SECONDS);
 				return hotspotLog;
 			}
 
