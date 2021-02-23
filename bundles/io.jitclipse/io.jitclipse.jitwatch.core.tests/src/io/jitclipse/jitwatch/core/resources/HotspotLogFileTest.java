@@ -41,8 +41,7 @@ class HotspotLogFileTest extends AbstractJitProjectTest {
 
 	@BeforeEach
 	public void setupParseParticipant() throws CoreException {
-		addHostspotLogFile(HotspotLogFileTest.class.getResourceAsStream("hotspot-HotspotLogFileTest.log"),
-				HOTSPOT_LOG_FILENAME);
+		addHostspotLogFile(HOTSPOT_LOG_FILENAME);
 
 		parseLogParticipant = Mockito.mock(IParseLogParticipant.class);
 		TestParseLogParticipant.delegate = parseLogParticipant;

@@ -28,6 +28,14 @@ public class AbstractJitProjectTest extends AbstractJavaProjectTest {
 		otherFile.create(new ByteArrayInputStream(new byte[0]), true, null);
 	}
 
+	protected void addHostspotLogFile(String testRelativeFileName) throws CoreException {
+		addHostspotLogFile(getClass().getResourceAsStream(testRelativeFileName), testRelativeFileName);
+	}
+
+	protected void addHostspotLogFile(String testRelativeFileName, String name) throws CoreException {
+		addHostspotLogFile(getClass().getResourceAsStream(testRelativeFileName), name);
+	}
+
 	protected void addHostspotLogFile(InputStream in, String name) throws CoreException {
 		if (!IHotspotLogFile.isHotspotLogFilename(name)) {
 			throw new IllegalArgumentException("Not a hotspot log filename: " + name);
