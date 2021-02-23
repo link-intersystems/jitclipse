@@ -10,14 +10,14 @@ import io.jitclipse.core.model.ICompilationList;
 
 public class CompilationList extends AbstractList<ICompilation> implements ICompilationList {
 
-	public static class NMethodEmittedTimeComparator implements Comparator<ICompilation> {
+	public static class IdComparator implements Comparator<ICompilation> {
 
 		@Override
 		public int compare(ICompilation o1, ICompilation o2) {
-			long nMethodEmittedTime1 = o1.getId();
-			long nMethodEmittedTime2 = o2.getId();
+			long id1 = o1.getId();
+			long id2 = o2.getId();
 
-			return Long.compare(nMethodEmittedTime1, nMethodEmittedTime2);
+			return Long.compare(id1, id2);
 		}
 
 	}
@@ -25,7 +25,7 @@ public class CompilationList extends AbstractList<ICompilation> implements IComp
 	private List<ICompilation> compilations;
 
 	public CompilationList(List<ICompilation> compilations) {
-		this(compilations, new NMethodEmittedTimeComparator());
+		this(compilations, new IdComparator());
 	}
 
 	public CompilationList(List<ICompilation> compilations, Comparator<ICompilation> comparator) {
