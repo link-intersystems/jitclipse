@@ -36,10 +36,14 @@ import io.jitclipse.jitwatch.core.parser.IParseLogParticipant;
 @TestMethodOrder(OrderAnnotation.class)
 class HotspotLogFileTest extends AbstractJitProjectTest {
 
+	private static final String HOTSPOT_LOG_FILENAME = "hotspot-HotspotLogFileTest.log";
 	private IParseLogParticipant parseLogParticipant;
 
 	@BeforeEach
-	public void setupParseParticipant() {
+	public void setupParseParticipant() throws CoreException {
+		addHostspotLogFile(HotspotLogFileTest.class.getResourceAsStream("hotspot-HotspotLogFileTest.log"),
+				HOTSPOT_LOG_FILENAME);
+
 		parseLogParticipant = Mockito.mock(IParseLogParticipant.class);
 		TestParseLogParticipant.delegate = parseLogParticipant;
 	}
@@ -107,10 +111,20 @@ class HotspotLogFileTest extends AbstractJitProjectTest {
 	private void adapterTest(IClass aClass) {
 		IHotspotLog hotspotLog = aClass.getAdapter(IHotspotLog.class);
 		assertNotNull("adapt " + aClass.getName() + " to HotspotLog", hotspotLog);
+
+		IMethodList methods = aClass.getMethods();
+		for (IMethod aMethod : methods) {
+			adapterTest(aMethod);
+		}
+	}
+
+	private void adapterTest(IMethod aMethod) {
+		IHotspotLog hotspotLog = aMethod.getAdapter(IHotspotLog.class);
+		assertNotNull("adapt " + aMethod.getName() + " to HotspotLog", hotspotLog);
 	}
 
 	private IHotspotLogFile doOpenHotspotLogFile() throws InterruptedException {
-		Optional<IHotspotLogFile> hotspotLogFileOptional = hotspotLogFolder.getHotspotLogFile("hotspot.log");
+		Optional<IHotspotLogFile> hotspotLogFileOptional = hotspotLogFolder.getHotspotLogFile(HOTSPOT_LOG_FILENAME);
 		assertTrue(hotspotLogFileOptional.isPresent());
 
 		class HotspotLogHolder {

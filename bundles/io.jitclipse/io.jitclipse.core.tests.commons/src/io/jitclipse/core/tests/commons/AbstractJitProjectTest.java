@@ -1,12 +1,14 @@
 package io.jitclipse.core.tests.commons;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.junit.jupiter.api.BeforeEach;
 
+import io.jitclipse.core.resources.IHotspotLogFile;
 import io.jitclipse.core.resources.IHotspotLogFolder;
 import io.jitclipse.core.resources.IJitProject;
 
@@ -20,11 +22,21 @@ public class AbstractJitProjectTest extends AbstractJavaProjectTest {
 		jitProject = project.getAdapter(IJitProject.class);
 		hotspotLogFolder = jitProject.getHotspotLogFolder();
 		IFolder folder = hotspotLogFolder.getFolder();
-		IFile hotspotLogFile = folder.getFile("hotspot.log");
-		hotspotLogFile.create(AbstractJitProjectTest.class.getResourceAsStream("hotspot-example.log"), true, null);
+		addHostspotLogFile(AbstractJitProjectTest.class.getResourceAsStream("hotspot-example.log"), "hotspot.log");
 
 		IFile otherFile = folder.getFile("other.log");
 		otherFile.create(new ByteArrayInputStream(new byte[0]), true, null);
+	}
+
+	protected void addHostspotLogFile(InputStream in, String name) throws CoreException {
+		if (!IHotspotLogFile.isHotspotLogFilename(name)) {
+			throw new IllegalArgumentException("Not a hotspot log filename: " + name);
+		}
+
+		hotspotLogFolder = jitProject.getHotspotLogFolder();
+		IFolder folder = hotspotLogFolder.getFolder();
+		IFile hotspotLogFile = folder.getFile(name);
+		hotspotLogFile.create(in, true, null);
 	}
 
 }
