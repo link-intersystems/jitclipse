@@ -57,9 +57,4 @@ public class Method implements IMethod {
 		return modelContext.getCompilations(compilations);
 	}
 
-	@Override
-	public boolean isHot() {
-		return !getCompilations().isEmpty();
-	}
-
 }

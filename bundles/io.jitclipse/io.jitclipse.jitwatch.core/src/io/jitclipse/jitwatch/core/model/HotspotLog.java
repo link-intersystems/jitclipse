@@ -12,10 +12,9 @@ import org.adoptopenjdk.jitwatch.model.PackageManager;
 import org.adoptopenjdk.jitwatch.report.Report;
 import org.eclipse.core.resources.IFile;
 
-import io.jitclipse.jitwatch.core.model.report.ReportEliminatedAllocation;
-import io.jitclipse.jitwatch.core.model.report.ReportOptimizedLock;
-import io.jitclipse.jitwatch.core.model.report.ReportSuggestion;
+import io.jitclipse.core.model.ClassList;
 import io.jitclipse.core.model.IClass;
+import io.jitclipse.core.model.IClassList;
 import io.jitclipse.core.model.ICompilation;
 import io.jitclipse.core.model.ICompilationList;
 import io.jitclipse.core.model.IHotspotLog;
@@ -30,6 +29,9 @@ import io.jitclipse.core.model.lock.OptimizedLockList;
 import io.jitclipse.core.model.suggestion.ISuggestion;
 import io.jitclipse.core.model.suggestion.ISuggestionList;
 import io.jitclipse.core.model.suggestion.SuggestionList;
+import io.jitclipse.jitwatch.core.model.report.ReportEliminatedAllocation;
+import io.jitclipse.jitwatch.core.model.report.ReportOptimizedLock;
+import io.jitclipse.jitwatch.core.model.report.ReportSuggestion;
 
 public class HotspotLog implements IHotspotLog {
 
@@ -141,12 +143,12 @@ public class HotspotLog implements IHotspotLog {
 	}
 
 	@Override
-	public List<IClass> getClasses() {
+	public IClassList getClasses() {
 		List<IPackage> rootPackages = getRootPackages();
 
 		List<IClass> classes = getClasses(rootPackages);
 
-		return classes;
+		return new ClassList(classes);
 	}
 
 	private List<IClass> getClasses(List<IPackage> packageObjs) {

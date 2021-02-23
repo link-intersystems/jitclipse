@@ -2,6 +2,7 @@ package io.jitclipse.jitwatch.core.resources;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,7 +20,11 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
 
 import io.jitclipse.core.model.IClass;
+import io.jitclipse.core.model.IClassList;
+import io.jitclipse.core.model.ICompilation;
 import io.jitclipse.core.model.IHotspotLog;
+import io.jitclipse.core.model.IMethod;
+import io.jitclipse.core.model.IMethodList;
 import io.jitclipse.core.model.IPackage;
 import io.jitclipse.core.model.allocation.IEliminatedAllocationList;
 import io.jitclipse.core.model.lock.IOptimisedLockList;
@@ -135,13 +140,28 @@ class HotspotLogFileTest extends AbstractJitProjectTest {
 	}
 
 	@Test
-	void getHotspotLog() throws InterruptedException, CoreException {
+	void hostspotLogElements() throws InterruptedException, CoreException {
 		IHotspotLogFile hotspotLogFile = doOpenHotspotLogFile();
 		IHotspotLog hotspotLog = hotspotLogFile.getHotspotLog();
 		assertNotNull(hotspotLog);
 
-		List<IClass> classes = hotspotLog.getClasses();
+		IClassList classes = hotspotLog.getClasses();
 		assertNotNull(classes);
+
+		Optional<IClass> mathClassOptional = classes.findClassByName("java.lang.Math");
+		assertTrue(mathClassOptional.isPresent());
+		IClass mathClass = mathClassOptional.get();
+
+		IMethodList methods = mathClass.getMethods();
+		assertNotNull(methods);
+
+		Optional<IMethod> floorMethodOptional = methods.findByName("floor");
+		assertTrue(floorMethodOptional.isPresent());
+		IMethod floorMethod = floorMethodOptional.get();
+		assertEquals("floor(double)", floorMethod.toSignatureString());
+
+		List<ICompilation> compilations = hotspotLog.getCompilationList();
+		assertNotNull(compilations);
 
 		ISuggestionList suggestionList = hotspotLog.getSuggestionList();
 		assertNotNull(suggestionList);

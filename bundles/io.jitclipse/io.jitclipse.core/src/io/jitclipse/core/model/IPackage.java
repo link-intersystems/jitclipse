@@ -27,7 +27,8 @@ public interface IPackage extends IAdaptable2 {
 
 	default public boolean containsHotspots() {
 		for (IClass aClass : getClasses()) {
-			if (aClass.containsHotspots()) {
+			IMethodList methods = aClass.getMethods();
+			if (methods.containsHotspots()) {
 				return true;
 			}
 		}

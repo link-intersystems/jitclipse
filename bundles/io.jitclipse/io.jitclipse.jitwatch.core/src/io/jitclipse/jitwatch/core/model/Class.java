@@ -7,7 +7,9 @@ import org.adoptopenjdk.jitwatch.model.MetaClass;
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.IClassByteCode;
 import io.jitclipse.core.model.IMethod;
+import io.jitclipse.core.model.IMethodList;
 import io.jitclipse.core.model.IPackage;
+import io.jitclipse.core.model.MethodList;
 
 public class Class implements IClass {
 
@@ -31,8 +33,9 @@ public class Class implements IClass {
 	}
 
 	@Override
-	public List<IMethod> getMethods() {
-		return modelContext.getMethods(metaClass.getMetaMembers());
+	public IMethodList getMethods() {
+		List<IMethod> methods = modelContext.getMethods(metaClass.getMetaMembers());
+		return new MethodList(methods);
 	}
 
 	@Override

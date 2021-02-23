@@ -3,8 +3,8 @@ package io.jitclipse.core.model;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,9 @@ class IPackageTest {
 		TestPackage subPackage2 = new TestPackage(rootPackage);
 
 		IClass aClass = mock(IClass.class);
-		when(aClass.containsHotspots()).thenReturn(true);
+		IMethodList methodList = mock(IMethodList.class);
+		doReturn(methodList).when(aClass).getMethods();
+		doReturn(true).when(methodList).containsHotspots();
 
 		subPackage1.addClass(aClass);
 

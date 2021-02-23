@@ -18,7 +18,7 @@ public interface IHotspotLog extends IAdaptable2 {
 
 	public boolean contains(IPackage packageObj);
 
-	public List<IClass> getClasses();
+	public IClassList getClasses();
 
 	public ISuggestionList getSuggestionList();
 

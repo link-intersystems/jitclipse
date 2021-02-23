@@ -13,16 +13,39 @@ public class AbstractProjectTest {
 
 	@BeforeEach
 	public final void setupTestProject() throws CoreException {
+		cleanWorkspace();
+
+		String projectName = getProjectName();
+		project = createProject(projectName);
+
+	}
+
+	private void cleanWorkspace() throws CoreException {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot wsRoot = workspace.getRoot();
+		IProject[] projects = wsRoot.getProjects();
+		for (IProject project : projects) {
+			project.delete(true, null);
+		}
+	}
+
+	private IProject createProject(String projectName) throws CoreException {
+
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot wsRoot = workspace.getRoot();
 
-		project = wsRoot.getProject("test-project-" + Integer.toHexString(System.identityHashCode(this)));
+		IProject project = wsRoot.getProject(projectName);
 
 		if (!project.exists()) {
 			project.create(null);
 			project.open(null);
 		}
 
+		return project;
+	}
+
+	protected String getProjectName() {
+		return "test-project-" + Integer.toHexString(System.identityHashCode(this));
 	}
 
 }

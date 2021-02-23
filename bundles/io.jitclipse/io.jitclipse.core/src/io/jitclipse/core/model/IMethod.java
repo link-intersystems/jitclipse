@@ -18,6 +18,8 @@ public interface IMethod extends IAdaptable2 {
 
 	public List<ICompilation> getCompilations();
 
-	boolean isHot();
+	default boolean isHot() {
+		return !getCompilations().isEmpty();
+	}
 
 }
