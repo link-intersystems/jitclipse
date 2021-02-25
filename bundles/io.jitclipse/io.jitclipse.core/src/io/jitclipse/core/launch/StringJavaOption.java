@@ -1,5 +1,5 @@
 
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.launch;
 
 public class StringJavaOption extends JavaOption {
 

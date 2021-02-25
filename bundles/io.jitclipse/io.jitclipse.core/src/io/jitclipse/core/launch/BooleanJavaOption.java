@@ -1,4 +1,4 @@
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.launch;
 
 public class BooleanJavaOption extends JavaOption {
 
