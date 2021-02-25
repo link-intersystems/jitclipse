@@ -4,9 +4,14 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            id="io.jitclipse.ui.commands.category"
+            id="io.jitclipse.ui.category"
             name="Jit Category">
       </category>
+      <command
+            categoryId="io.jitclipse.ui.category"
+            id="io.jitclipse.ui.openWith.bytecodeEditor"
+            name="Bytecode Editor">
+      </command>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchGroups">
@@ -131,6 +136,12 @@
          <contentTypeBinding
                contentTypeId="io.jitclipse.core.hotspot.xml">
          </contentTypeBinding>
+      </editor>
+      <editor
+            class="io.jitclipse.ui.bytecode.editor.ByteCodeEditor"
+            default="false"
+            id="io.jitclipse.ui.bytecode.editor"
+            name="JIT Bytecode">
       </editor>
    </extension>
    <extension
@@ -579,5 +590,24 @@
                menubarPath="org.eclipse.ui.run/emptyLaunchGroup"
                style="pulldown"/>
       </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="io.jitclipse.ui.bytecode.editor.OpenWithByteCodeEditorHandler"
+            commandId="io.jitclipse.ui.openWith.bytecodeEditor">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:io.jitclipse.ui.hotspotNavigator?after=group.openWith">
+         <command
+               commandId="io.jitclipse.ui.openWith.bytecodeEditor"
+               label="Open With ByteCode Editor"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
 </plugin>

@@ -1,7 +1,11 @@
 package io.jitclipse.core.model;
 
-public interface IClassByteCode {
+import java.util.List;
+
+public interface IClassByteCode extends List<IMemberByteCode> {
 
 	IMemberByteCode getMemberBytecode(IMethod method);
+
+	IClass getType();
 
 }

@@ -1,8 +1,16 @@
 package io.jitclipse.core.model;
 
-public interface IMemberByteCode {
+import java.util.List;
+
+public interface IMemberByteCode extends List<IByteCodeInstruction> {
 
 	public int getSourceLineNr();
 
-	public int getByteCodeInstruction();
+	default public IByteCodeInstruction getFirstByteCodeInstruction() {
+		if (isEmpty()) {
+			return null;
+		}
+		return get(0);
+	}
+
 }

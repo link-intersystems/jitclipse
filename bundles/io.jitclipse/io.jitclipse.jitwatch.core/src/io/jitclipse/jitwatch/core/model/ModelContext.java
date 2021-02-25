@@ -11,9 +11,11 @@ import org.adoptopenjdk.jitwatch.model.IMetaMember;
 import org.adoptopenjdk.jitwatch.model.JITDataModel;
 import org.adoptopenjdk.jitwatch.model.MetaClass;
 import org.adoptopenjdk.jitwatch.model.MetaPackage;
+import org.adoptopenjdk.jitwatch.model.bytecode.BytecodeInstruction;
 import org.adoptopenjdk.jitwatch.model.bytecode.ClassBC;
 import org.adoptopenjdk.jitwatch.model.bytecode.MemberBytecode;
 
+import io.jitclipse.core.model.IByteCodeInstruction;
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.IClassByteCode;
 import io.jitclipse.core.model.ICompilation;
@@ -97,8 +99,8 @@ public class ModelContext {
 		return new Method(this, metaMethod);
 	}
 
-	private IClassByteCode createClassByteCode(ClassBC classBC) {
-		return new ClassByteCode(this, classBC);
+	private IClassByteCode createClassByteCode(ClassBC classBC, IClass aClass) {
+		return new ClassByteCode(this, classBC, aClass);
 	}
 
 	private ICompilation createCompilation(org.adoptopenjdk.jitwatch.model.Compilation compilation) {
@@ -107,7 +109,8 @@ public class ModelContext {
 
 	public IClassByteCode getClassByteCode(MetaClass metaClass) {
 		ClassBC classBytecode = metaClass.getClassBytecode(jitDataModel, getClassLocations());
-		return getElement(classBytecode, this::createClassByteCode);
+		IClass aClass = getClass(metaClass);
+		return getElement(classBytecode, cbc -> createClassByteCode(cbc, aClass));
 	}
 
 	private List<String> getClassLocations() {
@@ -123,8 +126,21 @@ public class ModelContext {
 		return getElement(memberBytecode, this::createMemberByteCode);
 	}
 
+	public List<IMemberByteCode> getMemberByteCodes(List<MemberBytecode> memberBytecodeList) {
+		return getList(memberBytecodeList, this::createMemberByteCode);
+	}
+
 	private IMemberByteCode createMemberByteCode(MemberBytecode memberBytecode) {
 		return new MemberByteCode(this, memberBytecode);
+	}
+
+	public List<IByteCodeInstruction> getByteCodeInstructions(MemberBytecode memberBytecode) {
+		List<BytecodeInstruction> instructions = memberBytecode.getInstructions();
+		return getList(instructions, i -> createByteCodeInstructions(i, memberBytecode));
+	}
+
+	private IByteCodeInstruction createByteCodeInstructions(BytecodeInstruction bytecodeInstruction, MemberBytecode memberBytecode) {
+		return new ByteCodeInstruction(this, bytecodeInstruction, memberBytecode);
 	}
 
 }

@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import com.link_intersystems.eclipse.ui.jface.viewers.MultilineCellLabelProvider;
 
+import io.jitclipse.core.model.IByteCodeInstruction;
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.IMemberByteCode;
 import io.jitclipse.core.model.IMethod;
@@ -63,7 +64,11 @@ public class OptimizedLockViewer extends TableViewer {
 				break;
 			case 3:
 				IMemberByteCode memberByteCode = method.getMemberByteCode();
-				text = Integer.toString(memberByteCode.getByteCodeInstruction());
+				IByteCodeInstruction byteCodeInstruction = memberByteCode.getFirstByteCodeInstruction();
+				if (byteCodeInstruction != null) {
+					int offset = byteCodeInstruction.getOffset();
+					text = Integer.toString(offset);
+				}
 				break;
 			case 4:
 				text = optimisedLock.getHow();

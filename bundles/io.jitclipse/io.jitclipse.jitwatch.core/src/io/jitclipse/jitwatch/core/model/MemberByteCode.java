@@ -1,15 +1,21 @@
 package io.jitclipse.jitwatch.core.model;
 
+import java.util.AbstractList;
+import java.util.List;
+
 import org.adoptopenjdk.jitwatch.model.bytecode.LineTable;
 import org.adoptopenjdk.jitwatch.model.bytecode.MemberBytecode;
 
+import io.jitclipse.core.model.IByteCodeInstruction;
 import io.jitclipse.core.model.IMemberByteCode;
 
-public class MemberByteCode implements IMemberByteCode {
+public class MemberByteCode extends AbstractList<IByteCodeInstruction> implements IMemberByteCode {
 
 	private MemberBytecode memberBytecode;
+	private ModelContext modelContext;
 
 	public MemberByteCode(ModelContext modelContext, MemberBytecode memberBytecode) {
+		this.modelContext = modelContext;
 		this.memberBytecode = memberBytecode;
 	}
 
@@ -23,8 +29,17 @@ public class MemberByteCode implements IMemberByteCode {
 		}
 	}
 
+	private List<IByteCodeInstruction> getByteCodeInstructions() {
+		return modelContext.getByteCodeInstructions(memberBytecode);
+	}
+
 	@Override
-	public int getByteCodeInstruction() {
-		return 0;
+	public IByteCodeInstruction get(int index) {
+		return getByteCodeInstructions().get(index);
+	}
+
+	@Override
+	public int size() {
+		return getByteCodeInstructions().size();
 	}
 }
