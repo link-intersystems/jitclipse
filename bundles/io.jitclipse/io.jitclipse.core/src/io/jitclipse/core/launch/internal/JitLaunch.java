@@ -17,6 +17,8 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 
 import com.link_intersystems.eclipse.core.runtime.IPluginLog;
 
+import io.jitclipse.core.launch.IJitArgs;
+import io.jitclipse.core.launch.IJitArgsProvider;
 import io.jitclipse.core.launch.IJitLaunch;
 import io.jitclipse.core.resources.IHotspotLogFile;
 import io.jitclipse.core.resources.IHotspotLogFolder;
@@ -30,8 +32,11 @@ public class JitLaunch extends Launch implements IJitLaunch {
 	private IFile hotspotLogFile;
 	private IProject project;
 
-	public JitLaunch(IPluginLog pluginLog, ILaunchConfiguration launchConfiguration) {
+	private IJitArgsProvider argsProvider;
+
+	public JitLaunch(ILaunchConfiguration launchConfiguration, IJitArgsProvider argsProvider,IPluginLog pluginLog) {
 		super(launchConfiguration, LAUNCH_MODE, null);
+		this.argsProvider = argsProvider;
 
 		String projectName;
 		try {
@@ -68,8 +73,9 @@ public class JitLaunch extends Launch implements IJitLaunch {
 
 		ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
 
+
 		if (hotspotLogFile != null) {
-			JitArgs jitArgs = new OpenJDKJitArgs();
+			IJitArgs jitArgs = argsProvider.createJitArgs();
 
 			jitArgs.setHotspotLogEnabled(true);
 			IPath location = hotspotLogFile.getLocation();

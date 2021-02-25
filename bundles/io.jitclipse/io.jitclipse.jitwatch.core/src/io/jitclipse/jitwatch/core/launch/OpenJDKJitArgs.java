@@ -1,6 +1,8 @@
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.jitwatch.core.launch;
 
 import java.io.File;
+
+import io.jitclipse.core.launch.AbstractJitArgs;
 
 public class OpenJDKJitArgs extends AbstractJitArgs {
 

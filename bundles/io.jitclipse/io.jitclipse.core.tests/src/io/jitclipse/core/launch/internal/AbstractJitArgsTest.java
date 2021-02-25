@@ -7,6 +7,8 @@ import java.io.File;
 
 import org.junit.Test;
 
+import io.jitclipse.core.launch.AbstractJitArgs;
+
 public class AbstractJitArgsTest extends AbstractJitArgs {
 
 	@Test

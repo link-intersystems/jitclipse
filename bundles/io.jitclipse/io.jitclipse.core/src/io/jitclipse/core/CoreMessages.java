@@ -13,5 +13,6 @@ public class CoreMessages extends NLS {
 	public static String Launching_task;
 	public static String UNKOWN_LAUNCH_TYPE_ERROR;
 	public static String NO_JIT_LOG_PARSER_AVAILABLE;
+	public static String NO_JIT_ARGS_PROVIDER_AVAILABLE;
 
 }

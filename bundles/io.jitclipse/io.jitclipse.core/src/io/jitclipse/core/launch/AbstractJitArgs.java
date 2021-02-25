@@ -1,9 +1,13 @@
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.launch;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-public abstract class AbstractJitArgs implements JitArgs {
+import io.jitclipse.core.launch.internal.BooleanJavaOption;
+import io.jitclipse.core.launch.internal.JavaOption;
+import io.jitclipse.core.launch.internal.StringJavaOption;
+
+public abstract class AbstractJitArgs implements IJitArgs {
 
 	private LinkedHashMap<String, JavaOption> javaOptions = new LinkedHashMap<>();
 

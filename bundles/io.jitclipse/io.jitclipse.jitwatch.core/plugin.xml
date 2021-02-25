@@ -8,4 +8,10 @@
             class="io.jitclipse.jitwatch.core.parser.internal.JitWatchLogParser">
       </parser>
    </extension>
+   <extension
+         point="io.jitclipse.core.launch">
+      <argsProvider
+            class="io.jitclipse.jitwatch.core.launch.JitWatchArgProvider">
+      </argsProvider>
+   </extension>
 </plugin>

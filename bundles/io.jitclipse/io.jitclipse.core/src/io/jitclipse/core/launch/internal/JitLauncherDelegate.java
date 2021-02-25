@@ -30,6 +30,7 @@ import com.link_intersystems.eclipse.core.runtime.IPluginLog;
 import io.jitclipse.core.CoreMessages;
 import io.jitclipse.core.JitCorePlugin;
 import io.jitclipse.core.JitStatus;
+import io.jitclipse.core.launch.IJitArgsProvider;
 import io.jitclipse.core.launch.IJitLaunch;
 import io.jitclipse.core.resources.IHotspotLogFile;
 
@@ -116,7 +117,12 @@ public class JitLauncherDelegate
 	}
 
 	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) throws CoreException {
-		return new JitLaunch(pluginLog, configuration);
+		IJitArgsProvider argsProvider = getArgsProvider();
+		return new JitLaunch(configuration, argsProvider, pluginLog);
+	}
+
+	private IJitArgsProvider getArgsProvider() throws CoreException {
+		return JitCorePlugin.getInstance().getJitArgsProvider();
 	}
 
 	public boolean buildForLaunch(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor)

@@ -8,6 +8,7 @@ import org.osgi.framework.BundleContext;
 import com.link_intersystems.eclipse.core.runtime.DefaultPlugin;
 import com.link_intersystems.eclipse.core.runtime.IExtensionPointProxyFactory;
 
+import io.jitclipse.core.launch.IJitArgsProvider;
 import io.jitclipse.core.parser.IJitLogParser;
 import io.jitclipse.core.parser.internal.IJitParserExtension;
 
@@ -38,7 +39,6 @@ public class JitCorePlugin extends DefaultPlugin implements JitPluginContext {
 		inst = null;
 	}
 
-
 	@Override
 	public IJitLogParser getJitLogParser() throws CoreException {
 		IExtensionPointProxyFactory extensionsPointProxyFactory = getExtensionsPointProxyFactory();
@@ -48,6 +48,19 @@ public class JitCorePlugin extends DefaultPlugin implements JitPluginContext {
 			return parserExtensions.get(0).createParser();
 		}
 		throw new CoreException(JitStatus.NO_JIT_LOG_PARSER_AVAILABLE.getStatus());
+	}
+
+	public IJitArgsProvider getJitArgsProvider() throws CoreException {
+		IExtensionPointProxyFactory extensionsPointProxyFactory = getExtensionsPointProxyFactory();
+		List<IJitArgsProviderExtension> jitArgsProviderExtensions = extensionsPointProxyFactory
+				.createProxies(IJitArgsProviderExtension.class);
+
+		if (jitArgsProviderExtensions.size() > 0) {
+			return jitArgsProviderExtensions.get(0).createArgsProvider();
+		}
+
+		throw new CoreException(JitStatus.NO_JIT_ARGS_PROVIDER_AVAILABLE.getStatus());
+
 	}
 
 }

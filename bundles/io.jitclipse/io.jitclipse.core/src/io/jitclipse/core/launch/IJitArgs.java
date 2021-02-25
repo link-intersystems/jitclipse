@@ -1,8 +1,8 @@
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.launch;
 
 import java.io.File;
 
-public interface JitArgs {
+public interface IJitArgs {
 
 	public void setHotspotLogEnabled(boolean enableHostspotLog);
 

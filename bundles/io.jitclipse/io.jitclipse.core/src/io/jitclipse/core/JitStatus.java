@@ -49,4 +49,7 @@ public final class JitStatus {
 	public static final JitStatus NO_JIT_LOG_PARSER_AVAILABLE = new JitStatus(1000, IStatus.ERROR,
 			CoreMessages.NO_JIT_LOG_PARSER_AVAILABLE);
 
+	public static final JitStatus NO_JIT_ARGS_PROVIDER_AVAILABLE = new JitStatus(1001, IStatus.ERROR,
+			CoreMessages.NO_JIT_ARGS_PROVIDER_AVAILABLE);
+
 }
