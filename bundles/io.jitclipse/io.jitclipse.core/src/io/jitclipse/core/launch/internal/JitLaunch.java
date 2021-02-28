@@ -79,7 +79,6 @@ public class JitLaunch extends Launch implements IJitLaunch {
 			IJitExecutionEnvironment jitExecutionEnvironment = new JdtJitExecutionEnvironment(configuration);
 			IJitArgs jitArgs = argsProvider.createJitArgs(jitExecutionEnvironment);
 
-			jitArgs.setHotspotLogEnabled(true);
 			IPath location = hotspotLogFile.getLocation();
 			jitArgs.setHotspotLogFile(location.toFile());
 			jitArgs.setDisassembledCodeEnabled(true);

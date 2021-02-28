@@ -7,15 +7,15 @@ import io.jitclipse.core.launch.AbstractJitArgs;
 public class OpenJDKJitArgs extends AbstractJitArgs {
 
 	@Override
-	public void setHotspotLogEnabled(boolean enableHostspotLog) {
-		setBooleanOption("UnlockDiagnosticVMOptions", enableHostspotLog);
-		setBooleanOption("TraceClassLoading", enableHostspotLog);
-		setBooleanOption("LogCompilation", enableHostspotLog);
-	}
-
-	@Override
 	public void setHotspotLogFile(File hotspotLogFile) {
 		setStringOption("LogFile", hotspotLogFile.toString());
+		setHotspotLogEnabled();
+	}
+
+	private void setHotspotLogEnabled() {
+		setBooleanOption("UnlockDiagnosticVMOptions", true);
+		setBooleanOption("TraceClassLoading", true);
+		setBooleanOption("LogCompilation", true);
 	}
 
 	@Override

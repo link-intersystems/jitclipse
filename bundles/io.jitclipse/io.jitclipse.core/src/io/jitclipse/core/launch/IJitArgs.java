@@ -4,8 +4,6 @@ import java.io.File;
 
 public interface IJitArgs {
 
-	public void setHotspotLogEnabled(boolean enableHostspotLog);
-
 	public void setHotspotLogFile(File hotspotLogFile);
 
 	public void setDisassembledCodeEnabled(boolean disassembledCode);

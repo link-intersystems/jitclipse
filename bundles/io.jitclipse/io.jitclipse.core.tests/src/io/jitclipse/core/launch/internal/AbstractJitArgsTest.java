@@ -44,10 +44,6 @@ public class AbstractJitArgsTest extends AbstractJitArgs {
 	}
 
 	@Override
-	public void setHotspotLogEnabled(boolean enableHostspotLog) {
-	}
-
-	@Override
 	public void setHotspotLogFile(File hotspotLogFile) {
 	}
 
