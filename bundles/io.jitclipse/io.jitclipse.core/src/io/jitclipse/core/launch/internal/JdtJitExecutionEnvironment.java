@@ -18,6 +18,8 @@ import io.jitclipse.core.launch.VMVendor;
 public class JdtJitExecutionEnvironment implements IJitExecutionEnvironment {
 
 	private IVMInstall vmInstall;
+	private IVMVendorDiscoverer vendorDiscoverer = new DefaultShowSettingsVMVendorDiscoverer();
+	private VMVendor vendor;
 
 	public JdtJitExecutionEnvironment(ILaunchConfiguration configuration) throws CoreException {
 		vmInstall = JavaRuntime.computeVMInstall(configuration);
@@ -54,11 +56,11 @@ public class JdtJitExecutionEnvironment implements IJitExecutionEnvironment {
 
 	@Override
 	public VMVendor getVMVendor() {
-		/*
-		 * How to detect the vendor? Maybe I have to start a java process and read the
-		 * system properties.
-		 */
-		return VMVendor.OPEN_JDK;
+		if (vendor == null) {
+			vendor = vendorDiscoverer.discover(vmInstall);
+		}
+		return vendor;
+
 	}
 
 	@Override

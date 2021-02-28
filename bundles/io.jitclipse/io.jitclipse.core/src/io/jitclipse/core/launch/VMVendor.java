@@ -2,5 +2,5 @@ package io.jitclipse.core.launch;
 
 public enum VMVendor {
 
-	OPEN_JDK
+	UNKNOWN, OPEN_JDK, ORACLE
 }

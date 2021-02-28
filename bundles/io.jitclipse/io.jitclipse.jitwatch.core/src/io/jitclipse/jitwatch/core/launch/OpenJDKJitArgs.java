@@ -8,8 +8,8 @@ public class OpenJDKJitArgs extends AbstractJitArgs {
 
 	@Override
 	public void setHotspotLogFile(File hotspotLogFile) {
-		setStringOption("LogFile", hotspotLogFile.toString());
 		setHotspotLogEnabled();
+		setStringOption("LogFile", hotspotLogFile.toString());
 	}
 
 	private void setHotspotLogEnabled() {
