@@ -3,7 +3,6 @@ package io.jitclipse.core.launch.internal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -44,22 +43,7 @@ public class JdtJitExecutionEnvironment implements IJitExecutionEnvironment {
 			}
 		}
 
-		Collections.sort(possibleEnvironments, new Comparator<IExecutionEnvironment>() {
-
-			@Override
-			public int compare(IExecutionEnvironment o1, IExecutionEnvironment o2) {
-				String id1 = o1.getId();
-				String id2 = o2.getId();
-
-				String version1 = id1.substring(id1.indexOf('-') + 1);
-				String version2 = id2.substring(id2.indexOf('-') + 1);
-
-				double parseDouble1 = Double.parseDouble(version1);
-				double parseDouble2 = Double.parseDouble(version2);
-
-				return Double.compare(parseDouble1, parseDouble2);
-			}
-		}.reversed());
+		Collections.sort(possibleEnvironments, new ExecutionEnvironmentVersionComparator().reversed());
 
 		if (!possibleEnvironments.isEmpty()) {
 			vmInstallEnvironment = possibleEnvironments.get(0);
