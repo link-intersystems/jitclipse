@@ -2,6 +2,8 @@ package io.jitclipse.jitwatch.ui.console;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.adoptopenjdk.jitwatch.core.IJITListener;
 import org.adoptopenjdk.jitwatch.model.JITEvent;
@@ -17,6 +19,21 @@ import io.jitclipse.jitwatch.ui.JitWatchUIPlugin;
 
 public class JitWatchMessageConsole extends MessageConsole implements IJITListener {
 
+	public static void removeAll() {
+		IConsoleManager consoleManager = ConsolePlugin.getDefault().getConsoleManager();
+
+		List<IConsole> removeConsoles = new ArrayList<>();
+
+		IConsole[] consoles = consoleManager.getConsoles();
+		for (IConsole console : consoles) {
+			if (console instanceof JitWatchMessageConsole) {
+				removeConsoles.add(console);
+			}
+		}
+
+		consoleManager.removeConsoles(removeConsoles.toArray(new IConsole[0]));
+	}
+
 	private MessageConsoleStream newMessageStream;
 
 	public JitWatchMessageConsole(IFile hotspotLogFile) {
@@ -29,7 +46,7 @@ public class JitWatchMessageConsole extends MessageConsole implements IJITListen
 
 	public void remove() {
 		IConsoleManager consoleManager = ConsolePlugin.getDefault().getConsoleManager();
-		consoleManager.removeConsoles(new IConsole[] {this});
+		consoleManager.removeConsoles(new IConsole[] { this });
 	}
 
 	@Override

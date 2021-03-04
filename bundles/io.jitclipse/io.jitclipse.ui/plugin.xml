@@ -2,6 +2,88 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="io.jitclipse.ui.perspectives.HotspotPerspective"
+            icon="icons/releng_gears.gif"
+            id="io.jitclipse.ui.perspective"
+            name="Hotspot Perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="io.jitclipse.ui.perspective">
+         <actionSet
+               id="io.jitclipse.ui.launchActionSet">
+         </actionSet>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <actionSet
+               id="io.jitclipse.ui.launchActionSet">
+         </actionSet>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.debug.ui.DebugPerspective">
+         <actionSet
+               id="io.jitclipse.ui.launchActionSet">
+         </actionSet>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.pde.ui.PDEPerspective">
+         <actionSet
+               id="io.jitclipse.ui.launchActionSet">
+         </actionSet>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jst.j2ee.J2EEPerspective">
+         <actionSet
+               id="io.jitclipse.ui.launchActionSet">
+         </actionSet>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.scala-ide.sdt.core.perspective">
+         <actionSet
+               id="io.jitclipse.ui.launchActionSet">
+         </actionSet>
+      </perspectiveExtension>
+
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="io.jitclipse.ui.launchActionSet"
+            label="JIT Watch Launch Actions"
+            visible="false">
+         <menu
+               id="org.eclipse.ui.run"
+               label="&amp;Run"
+               path="additions">
+            <separator name="relaunchGroup"/>
+            <separator name="emptyLaunchGroup"/>
+         </menu>
+         <action
+               allowLabelUpdate="true"
+               class="io.jitclipse.ui.launch.JitWatchToolbarAction"
+               disabledIcon="$nl$/icons/full/elcl16/runjit.png"
+               hoverIcon="$nl$/icons/full/elcl16/runjit.png"
+               icon="$nl$/icons/full/elcl16/runjit.png"
+               id="io.jitclipse.ui.actions.JitWatchDropDownAction"
+               label="JIT Watch"
+               state="false"
+               style="pulldown"
+               toolbarPath="org.eclipse.debug.ui.launchActionSet/debug"/>
+         <action
+               class="io.jitclipse.ui.launch.JitWatchAsAction"
+               icon="$nl$/icons/full/elcl16/runjit.png"
+               id="io.jitclipse.ui.actions.JitWatchAsAction"
+               label="JIT Watch As"
+               menubarPath="org.eclipse.ui.run/emptyLaunchGroup"
+               style="pulldown"/>
+      </actionSet>
+   </extension>
+   <extension
          point="org.eclipse.ui.commands">
       <category
             id="io.jitclipse.ui.commands.category"
@@ -19,16 +101,6 @@
       </launchGroup>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
-         <actionSet
-               id="io.jitclipse.ui.ActionSet">
-         </actionSet>
-      </perspectiveExtension>
-
-   </extension>
-   <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
             class="io.jitclipse.ui.launch.JitTabGroup"
@@ -37,7 +109,7 @@
          <launchMode
                description="JIT Watch of a Java application."
                mode="jit"
-               perspective="io.jitclipse.ui.perspectives.HotspotPerspective">
+               perspective="io.jitclipse.ui.perspective">
          </launchMode>
       </launchConfigurationTabGroup>
       <launchConfigurationTabGroup
@@ -257,15 +329,6 @@
             </contentExtension>
          </includes>
       </viewerContentBinding>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            class="io.jitclipse.ui.perspectives.HotspotPerspective"
-            icon="icons/releng_gears.gif"
-            id="io.jitclipse.ui.perspectives.HotspotPerspective"
-            name="Hotspot Perspective">
-      </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -547,37 +610,5 @@
             namespace="io.jitclipse.ui"
             properties="launchable"
             type="java.lang.Object"/>
-   </extension>
-   <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            id="io.jitclipse.ui.ActionSet"
-            label="JIT Watch Action Set"
-            visible="false">
-         <menu
-               id="org.eclipse.ui.run"
-               label="&amp;Run"
-               path="additions">
-            <separator name="relaunchGroup"/>
-            <separator name="emptyLaunchGroup"/>
-         </menu>
-         <action
-               class="io.jitclipse.ui.launch.JitWatchToolbarAction"
-               disabledIcon="$nl$/icons/full/elcl16/runjit.png"
-               hoverIcon="$nl$/icons/full/elcl16/runjit.png"
-               icon="$nl$/icons/full/elcl16/runjit.png"
-               id="io.jitclipse.ui.actions.JitWatchDropDownAction"
-               label="JIT Watch"
-               state="false"
-               style="pulldown"
-               toolbarPath="org.eclipse.debug.ui.launchActionSet/debug"/>
-         <action
-               class="io.jitclipse.ui.launch.JitWatchAsAction"
-               icon="$nl$/icons/full/elcl16/runjit.png"
-               id="io.jitclipse.ui.actions.JitWatchAsAction"
-               label="JIT Watch As"
-               menubarPath="org.eclipse.ui.run/emptyLaunchGroup"
-               style="pulldown"/>
-      </actionSet>
    </extension>
 </plugin>

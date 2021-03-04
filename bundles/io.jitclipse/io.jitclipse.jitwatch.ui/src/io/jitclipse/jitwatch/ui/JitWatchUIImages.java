@@ -11,5 +11,8 @@ public interface JitWatchUIImages {
 	public ImageDescriptor getConsoleImageDescriptor();
 
 	@ImageRef("platform:/plugin/org.eclipse.ui/icons/full/elcl16/remove.png")
-	public ImageDescriptor getDeleteConsoleImageDescriptor();
+	public ImageDescriptor getRemoveConsoleImageDescriptor();
+
+	@ImageRef("platform:/plugin/org.eclipse.ui/icons/full/elcl16/removeall.png")
+	public ImageDescriptor getRemoveAllConsoleImageDescriptor();
 }

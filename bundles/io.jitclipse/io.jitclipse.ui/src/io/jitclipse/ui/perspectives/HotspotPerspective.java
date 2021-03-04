@@ -1,5 +1,9 @@
 package io.jitclipse.ui.perspectives;
 
+import static org.eclipse.ui.IPageLayout.BOTTOM;
+import static org.eclipse.ui.IPageLayout.LEFT;
+import static org.eclipse.ui.IPageLayout.RIGHT;
+
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -14,7 +18,7 @@ import io.jitclipse.ui.views.TimelineView;
 
 public class HotspotPerspective implements IPerspectiveFactory {
 
-	public static final String ID = "io.jitclipse.ui.perspectives.HotspotPerspective";
+	public static final String ID = "io.jitclipse.ui.perspective";
 	private static final String ID_HOTSPOT_NAVIGATOR = "io.jitclipse.ui.hotspotNavigator";
 
 	public static boolean isHotspotNavigator(IWorkbenchPart part) {
@@ -41,24 +45,24 @@ public class HotspotPerspective implements IPerspectiveFactory {
 	}
 
 	private void addViews() {
-		// Creates the overall folder layout.
-		// Note that each new Folder uses a percentage of the remaining EditorArea.
 		IFolderLayout topLeft = factory.createFolder("topLeft", // NON-NLS-1
-				IPageLayout.LEFT, 0.25f, factory.getEditorArea());
+				LEFT, 0.25f, factory.getEditorArea());
 		topLeft.addView(ID_HOTSPOT_NAVIGATOR);
 
 		IFolderLayout bottomLeft = factory.createFolder("bottomLeft", // NON-NLS-1
-				IPageLayout.BOTTOM, 0.65f, "topLeft");
+				BOTTOM, 0.65f, "topLeft"); // NON-NLS-1
 		bottomLeft.addView(TimelineView.ID); // NON-NLS-1
 		bottomLeft.addView(IPageLayout.ID_PROGRESS_VIEW); // NON-NLS-1
 
-		IFolderLayout bottom = factory.createFolder("bottomRight", // NON-NLS-1
-				IPageLayout.BOTTOM, 0.65f, factory.getEditorArea());
+		IFolderLayout bottom = factory.createFolder("bottom", // NON-NLS-1
+				BOTTOM, 0.55f, factory.getEditorArea());
+
 		bottom.addView(SuggestionsView.ID);
 		bottom.addView(EliminatedAllocationView.ID);
 		bottom.addView(OptimizedLockView.ID);
-//		bottom.addView("org.eclipse.team.ui.GenericHistoryView"); //NON-NLS-1
-//		bottom.addPlaceholder(IConsoleConstants.ID_CONSOLE_VIEW);
+
+		IFolderLayout other = factory.createFolder("other", RIGHT, 0.65f, "bottom"); // NON-NLS-1
+		other.addPlaceholder(IConsoleConstants.ID_CONSOLE_VIEW);
 	}
 
 	private void addActionSets() {
