@@ -11,7 +11,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Require-Bundle: io.jitclipse.core;bundle-version="1.0.0",
- com.link_intersystems.eclipse.ui.jface;bundle-version="1.0.21",
+ com.link_intersystems.eclipse.ui.jface;bundle-version="1.0.22",
  org.eclipse.debug.ui,
  org.eclipse.ui.navigator,
  org.eclipse.ui.navigator.resources,
