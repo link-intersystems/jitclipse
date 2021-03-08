@@ -1,4 +1,4 @@
-package io.jitclipse.ui.hotspot;
+package io.jitclipse.ui.editors.hotspot;
 
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;

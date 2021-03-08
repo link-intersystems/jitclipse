@@ -7,8 +7,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.link_intersystems.beans.PropertyChangeSource;
 import com.link_intersystems.eclipse.core.runtime.IAdaptable2;
-import com.link_intersystems.eclipse.core.runtime.IProgress;
 import com.link_intersystems.eclipse.core.runtime.jobs.FutureJob;
+import com.link_intersystems.eclipse.core.runtime.progress.IProgress;
 
 import io.jitclipse.core.model.IHotspotLog;
 

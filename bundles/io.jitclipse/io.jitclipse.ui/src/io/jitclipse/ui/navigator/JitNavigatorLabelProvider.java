@@ -10,7 +10,7 @@ import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelP
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 
-import com.link_intersystems.eclipse.core.runtime.IProgress;
+import com.link_intersystems.eclipse.core.runtime.progress.IProgress;
 import com.link_intersystems.eclipse.ui.jface.viewers.AbstractChangeSupportLabelProvider;
 import com.link_intersystems.eclipse.ui.jface.viewers.progress.AbstractProgressRenderer;
 import com.link_intersystems.eclipse.ui.jface.viewers.progress.IncreasingDotsProgressRenderer;

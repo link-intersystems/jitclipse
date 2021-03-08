@@ -1,4 +1,4 @@
-package io.jitclipse.ui.hotspot;
+package io.jitclipse.ui.editors;
 
 import java.util.LinkedList;
 import java.util.Queue;

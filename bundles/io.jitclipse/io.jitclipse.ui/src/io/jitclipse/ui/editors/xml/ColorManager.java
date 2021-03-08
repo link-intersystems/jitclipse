@@ -1,4 +1,4 @@
-package io.jitclipse.ui.hotspot.xml;
+package io.jitclipse.ui.editors.xml;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -185,8 +185,8 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="io.jitclipse.ui.hotspot.HotspotLogEditor"
-            contributorClass="io.jitclipse.ui.hotspot.HotspotLogEditorContributor"
+            class="io.jitclipse.ui.editors.hotspot.HotspotLogEditor"
+            contributorClass="io.jitclipse.ui.editors.hotspot.HotspotLogEditorContributor"
             icon="icons/full/obj16/hotspot-log.png"
             id="io.jitclipse.ui.hotspot.HotspotLogEditor"
             name="Hotspot Log Editor">
@@ -195,7 +195,7 @@
          </contentTypeBinding>
       </editor>
       <editor
-            class="io.jitclipse.ui.hotspot.xml.HotspotXMLEditor"
+            class="io.jitclipse.ui.editors.xml.HotspotXMLEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             icon="icons/full/obj16/hotspot-xml.png"
             id="io.jitclipse.ui.hotspot.xml.HotspotXMLEditor"

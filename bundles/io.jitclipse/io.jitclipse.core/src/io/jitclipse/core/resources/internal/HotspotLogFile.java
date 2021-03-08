@@ -9,11 +9,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
 
 import com.link_intersystems.beans.AbstractPropertyChangeSource;
-import com.link_intersystems.eclipse.core.runtime.ETAProgressMonitor;
-import com.link_intersystems.eclipse.core.runtime.IProgress;
 import com.link_intersystems.eclipse.core.runtime.PluginLog;
-import com.link_intersystems.eclipse.core.runtime.ProgressIndicator;
 import com.link_intersystems.eclipse.core.runtime.jobs.FutureJob;
+import com.link_intersystems.eclipse.core.runtime.progress.ETAProgressMonitor;
+import com.link_intersystems.eclipse.core.runtime.progress.IProgress;
+import com.link_intersystems.eclipse.core.runtime.progress.ProgressIndicator;
 
 import io.jitclipse.core.JitCorePlugin;
 import io.jitclipse.core.model.IHotspotLog;

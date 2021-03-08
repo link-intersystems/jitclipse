@@ -1,4 +1,4 @@
-package io.jitclipse.ui.hotspot.xml;
+package io.jitclipse.ui.editors.xml;
 
 import org.eclipse.jface.text.*;
 
