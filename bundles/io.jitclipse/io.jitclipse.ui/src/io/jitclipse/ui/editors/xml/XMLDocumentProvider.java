@@ -13,7 +13,7 @@ public class XMLDocumentProvider extends FileDocumentProvider {
 		IDocument document = super.createDocument(element);
 		if (document != null) {
 			IDocumentPartitioner partitioner = new FastPartitioner(new XMLPartitionScanner(),
-					new String[] { XMLPartitionScanner.XML_TAG, XMLPartitionScanner.XML_COMMENT });
+					new String[] { TagRule.XML_TAG, CommentRule.XML_COMMENT });
 			partitioner.connect(document);
 			document.setDocumentPartitioner(partitioner);
 		}

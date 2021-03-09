@@ -4,12 +4,12 @@ import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.Token;
 
-public class TagRule extends MultiLineRule {
+public class CommentRule extends MultiLineRule {
 
-	public final static String XML_TAG = "__xml_tag";
+	public final static String XML_COMMENT = "__xml_comment";
 
-	public TagRule() {
-		super("<", ">", new Token(XML_TAG));
+	public CommentRule() {
+		super("<!--", "-->", new Token(XML_COMMENT));
 	}
 
 	@Override
