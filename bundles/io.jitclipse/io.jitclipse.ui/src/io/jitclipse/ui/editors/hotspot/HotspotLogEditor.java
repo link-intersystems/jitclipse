@@ -47,7 +47,7 @@ import io.jitclipse.core.model.suggestion.ISuggestionList;
 import io.jitclipse.core.resources.IHotspotLogFile;
 import io.jitclipse.ui.editors.DeferredConsumer;
 import io.jitclipse.ui.editors.xml.HotspotXMLEditor;
-import io.jitclipse.ui.views.SuggestionsViewer;
+import io.jitclipse.ui.views.suggestions.SuggestionsViewer;
 
 public class HotspotLogEditor extends MultiPageEditorPart implements IResourceChangeListener {
 

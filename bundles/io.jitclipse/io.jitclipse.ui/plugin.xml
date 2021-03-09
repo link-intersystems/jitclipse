@@ -343,7 +343,7 @@
       </category>
       <view
             category="io.jitclipse.ui"
-            class="io.jitclipse.ui.views.SuggestionsView"
+            class="io.jitclipse.ui.views.suggestions.SuggestionsView"
             icon="icons/full/obj16/quick_assist.png"
             id="io.jitclipse.ui.views.SuggestionsView"
             inject="true"

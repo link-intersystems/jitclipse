@@ -1,4 +1,4 @@
-package io.jitclipse.ui.views;
+package io.jitclipse.ui.views.suggestions;
 
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.model.suggestion.ISuggestion;
 import io.jitclipse.core.model.suggestion.ISuggestionList;
+import io.jitclipse.ui.views.AbstractHotspotView;
 
 public class SuggestionsView extends AbstractHotspotView<ISuggestion> {
 

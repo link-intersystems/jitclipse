@@ -1,4 +1,4 @@
-package io.jitclipse.ui.views;
+package io.jitclipse.ui.views.suggestions;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
