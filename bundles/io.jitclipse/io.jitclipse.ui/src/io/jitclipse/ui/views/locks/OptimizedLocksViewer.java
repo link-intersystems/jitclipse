@@ -1,4 +1,4 @@
-package io.jitclipse.ui.views;
+package io.jitclipse.ui.views.locks;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
@@ -22,7 +22,7 @@ import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.allocation.IEliminatedAllocation;
 import io.jitclipse.core.model.lock.IOptimisedLock;
 
-public class OptimizedLockViewer extends TableViewer {
+public class OptimizedLocksViewer extends TableViewer {
 
 	public class ViewerCellLabelProvider extends CellLabelProvider implements ITableLabelProvider {
 
@@ -81,7 +81,7 @@ public class OptimizedLockViewer extends TableViewer {
 
 	private ViewerCellLabelProvider cellLabelProvider = new ViewerCellLabelProvider();
 
-	public OptimizedLockViewer(Composite parent, int style) {
+	public OptimizedLocksViewer(Composite parent, int style) {
 		super(parent, SWT.BORDER | SWT.FULL_SELECTION);
 
 		createColumns();

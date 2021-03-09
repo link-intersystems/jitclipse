@@ -1,4 +1,4 @@
-package io.jitclipse.ui.views;
+package io.jitclipse.ui.views.locks;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -9,14 +9,15 @@ import org.eclipse.swt.widgets.Composite;
 import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.model.lock.IOptimisedLock;
 import io.jitclipse.core.model.lock.IOptimisedLockList;
+import io.jitclipse.ui.views.AbstractHotspotView;
 
-public class OptimizedLockView extends AbstractHotspotView<IOptimisedLock> {
+public class OptimizedLocksView extends AbstractHotspotView<IOptimisedLock> {
 
 	public static final String ID = "io.jitclipse.ui.views.OptimizedLockView";
 
 	@Override
 	protected StructuredViewer createViewer(Composite parent) {
-		return new OptimizedLockViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		return new OptimizedLocksViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 	}
 
 	@Override

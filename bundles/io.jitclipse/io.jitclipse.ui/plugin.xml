@@ -359,7 +359,7 @@
       </view>
       <view
             category="io.jitclipse.ui"
-            class="io.jitclipse.ui.views.OptimizedLockView"
+            class="io.jitclipse.ui.views.locks.OptimizedLocksView"
             icon="icons/full/obj16/locked.png"
             id="io.jitclipse.ui.views.OptimizedLockView"
             inject="true"
