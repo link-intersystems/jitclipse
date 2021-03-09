@@ -1,4 +1,4 @@
-package io.jitclipse.ui.views;
+package io.jitclipse.ui.views.allocations;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -10,14 +10,15 @@ import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.model.allocation.IEliminatedAllocation;
 import io.jitclipse.core.model.allocation.IEliminatedAllocationList;
 import io.jitclipse.core.model.suggestion.ISuggestion;
+import io.jitclipse.ui.views.AbstractHotspotView;
 
-public class EliminatedAllocationView extends AbstractHotspotView<IEliminatedAllocation> {
+public class EliminatedAllocationsView extends AbstractHotspotView<IEliminatedAllocation> {
 
 	public static final String ID = "io.jitclipse.ui.views.EliminatedAllocationView";
 
 	@Override
 	protected StructuredViewer createViewer(Composite parent) {
-		return new EliminatedAllocationViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		return new EliminatedAllocationsViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package io.jitclipse.ui.views;
+package io.jitclipse.ui.views.allocations;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
@@ -23,7 +23,7 @@ import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.JitCompiler;
 import io.jitclipse.core.model.allocation.IEliminatedAllocation;
 
-public class EliminatedAllocationViewer extends TableViewer {
+public class EliminatedAllocationsViewer extends TableViewer {
 
 	public class EliminatedAllocationCellLabelProvider extends CellLabelProvider implements ITableLabelProvider {
 
@@ -86,7 +86,7 @@ public class EliminatedAllocationViewer extends TableViewer {
 
 	private EliminatedAllocationCellLabelProvider cellLabelProvider = new EliminatedAllocationCellLabelProvider();
 
-	public EliminatedAllocationViewer(Composite parent, int style) {
+	public EliminatedAllocationsViewer(Composite parent, int style) {
 		super(parent, SWT.BORDER | SWT.FULL_SELECTION);
 
 		createColumns();

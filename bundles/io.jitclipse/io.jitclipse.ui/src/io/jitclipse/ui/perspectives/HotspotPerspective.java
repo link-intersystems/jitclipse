@@ -11,8 +11,8 @@ import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.console.IConsoleConstants;
 
-import io.jitclipse.ui.views.EliminatedAllocationView;
 import io.jitclipse.ui.views.TimelineView;
+import io.jitclipse.ui.views.allocations.EliminatedAllocationsView;
 import io.jitclipse.ui.views.locks.OptimizedLocksView;
 import io.jitclipse.ui.views.suggestions.SuggestionsView;
 
@@ -58,7 +58,7 @@ public class HotspotPerspective implements IPerspectiveFactory {
 				BOTTOM, 0.55f, factory.getEditorArea());
 
 		bottom.addView(SuggestionsView.ID);
-		bottom.addView(EliminatedAllocationView.ID);
+		bottom.addView(EliminatedAllocationsView.ID);
 		bottom.addView(OptimizedLocksView.ID);
 
 		IFolderLayout other = factory.createFolder("other", RIGHT, 0.65f, "bottom"); // NON-NLS-1

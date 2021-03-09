@@ -351,7 +351,7 @@
       </view>
       <view
             category="io.jitclipse.ui"
-            class="io.jitclipse.ui.views.EliminatedAllocationView"
+            class="io.jitclipse.ui.views.allocations.EliminatedAllocationsView"
             icon="icons/full/obj16/eliminated_allocation.png"
             id="io.jitclipse.ui.views.EliminatedAllocationView"
             inject="true"
