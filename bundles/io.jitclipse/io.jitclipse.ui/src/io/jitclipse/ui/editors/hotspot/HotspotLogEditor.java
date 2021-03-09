@@ -1,13 +1,7 @@
 package io.jitclipse.ui.editors.hotspot;
 
 import java.io.File;
-import java.io.StringWriter;
 import java.net.URI;
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -43,10 +37,14 @@ import com.link_intersystems.eclipse.ui.swt.widgets.Display2;
 import com.link_intersystems.eclipse.ui.swt.widgets.SWTThreadProxyFactory;
 
 import io.jitclipse.core.model.IHotspotLog;
+import io.jitclipse.core.model.allocation.IEliminatedAllocationList;
+import io.jitclipse.core.model.lock.IOptimisedLockList;
 import io.jitclipse.core.model.suggestion.ISuggestionList;
 import io.jitclipse.core.resources.IHotspotLogFile;
 import io.jitclipse.ui.editors.DeferredConsumer;
 import io.jitclipse.ui.editors.xml.HotspotXMLEditor;
+import io.jitclipse.ui.views.allocations.EliminatedAllocationsViewer;
+import io.jitclipse.ui.views.locks.OptimizedLocksViewer;
 import io.jitclipse.ui.views.suggestions.SuggestionsViewer;
 
 public class HotspotLogEditor extends MultiPageEditorPart implements IResourceChangeListener {
@@ -59,9 +57,14 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 
 	private StyledText text;
 
-	private SuggestionsViewer suggestionsComposite;
-
+	private SuggestionsViewer suggestionsViewer;
 	private DeferredConsumer<ISuggestionList> suggestionsReportModelConsumer = new DeferredConsumer<>();
+
+	private OptimizedLocksViewer optimizedLocksViewer;
+	private DeferredConsumer<IOptimisedLockList> optimizedLockReportModelConsumer = new DeferredConsumer<>();
+
+	private EliminatedAllocationsViewer eliminatedAllocationsViewer;
+	private DeferredConsumer<IEliminatedAllocationList> eliminatedAllocationsReportModelConsumer = new DeferredConsumer<>();
 
 	private LazyProgressMonitorDelegate lazyProgressMonitorDelegate = new LazyProgressMonitorDelegate();
 
@@ -85,11 +88,27 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 	}
 
 	void createSuggestionsPage() {
-		suggestionsComposite = new SuggestionsViewer(getContainer(), SWT.NONE);
-		int index = addPage(suggestionsComposite.getControl());
+		suggestionsViewer = new SuggestionsViewer(getContainer(), SWT.NONE);
+		int index = addPage(suggestionsViewer.getControl());
 		setPageText(index, "Suggestions");
 
-		suggestionsReportModelConsumer.setTargetConsumer(suggestionsComposite::setInput);
+		suggestionsReportModelConsumer.setTargetConsumer(suggestionsViewer::setInput);
+	}
+
+	void createOptimizedLocksPage() {
+		optimizedLocksViewer = new OptimizedLocksViewer(getContainer(), SWT.NONE);
+		int index = addPage(optimizedLocksViewer.getControl());
+		setPageText(index, "Optimized Locks");
+
+		optimizedLockReportModelConsumer.setTargetConsumer(optimizedLocksViewer::setInput);
+	}
+
+	void createEliminatedAllocationsPage() {
+		eliminatedAllocationsViewer = new EliminatedAllocationsViewer(getContainer(), SWT.NONE);
+		int index = addPage(eliminatedAllocationsViewer.getControl());
+		setPageText(index, "Eliminated Allocations");
+
+		eliminatedAllocationsReportModelConsumer.setTargetConsumer(eliminatedAllocationsViewer::setInput);
 	}
 
 	protected void createPages() {
@@ -104,6 +123,8 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 			createProgressPage();
 		} else {
 			createSuggestionsPage();
+			createEliminatedAllocationsPage();
+			createOptimizedLocksPage();
 			createSourcePage();
 		}
 	}
@@ -216,17 +237,12 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 
 	private void setHotspotLog(IHotspotLog hotspotLog) {
 		suggestionsReportModelConsumer.accept(hotspotLog.getSuggestionList());
+		eliminatedAllocationsReportModelConsumer.accept(hotspotLog.getEliminatedAllocationList());
+		optimizedLockReportModelConsumer.accept(hotspotLog.getOptimizedLockList());
 	}
 
 	public boolean isSaveAsAllowed() {
 		return true;
-	}
-
-	protected void pageChange(int newPageIndex) {
-		super.pageChange(newPageIndex);
-		if (newPageIndex == 2) {
-			sortWords();
-		}
 	}
 
 	public void resourceChanged(final IResourceChangeEvent event) {
@@ -256,22 +272,4 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 		}
 	}
 
-	void sortWords() {
-
-		String editorText = editor.getDocumentProvider().getDocument(editor.getEditorInput()).get();
-
-		StringTokenizer tokenizer = new StringTokenizer(editorText, " \t\n\r\f!@#\u0024%^&*()-_=+`~[]{};:'\",.<>/?|\\");
-		List<String> editorWords = new ArrayList<>();
-		while (tokenizer.hasMoreTokens()) {
-			editorWords.add(tokenizer.nextToken());
-		}
-
-		Collections.sort(editorWords, Collator.getInstance());
-		StringWriter displayText = new StringWriter();
-		for (int i = 0; i < editorWords.size(); i++) {
-			displayText.write(((String) editorWords.get(i)));
-			displayText.write(System.lineSeparator());
-		}
-		text.setText(displayText.toString());
-	}
 }
