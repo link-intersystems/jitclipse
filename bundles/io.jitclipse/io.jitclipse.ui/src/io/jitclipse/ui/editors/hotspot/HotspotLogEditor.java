@@ -126,9 +126,11 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 		while (getPageCount() > 0) {
 			removePage(0);
 		}
+
 		lazyProgressMonitorDelegate.setDelegate(null);
 
 		createPages();
+		getContainer().layout(true);
 	}
 
 	public void dispose() {
