@@ -367,7 +367,7 @@
       </view>
       <view
             category="io.jitclipse.ui"
-            class="io.jitclipse.ui.views.TimelineView"
+            class="io.jitclipse.ui.views.timeline.TimelineView"
             icon="icons/full/obj16/time.png"
             id="io.jitclipse.ui.views.TimelineView"
             inject="true"

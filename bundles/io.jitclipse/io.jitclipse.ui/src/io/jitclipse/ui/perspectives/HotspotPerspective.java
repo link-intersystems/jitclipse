@@ -11,10 +11,10 @@ import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.console.IConsoleConstants;
 
-import io.jitclipse.ui.views.TimelineView;
 import io.jitclipse.ui.views.allocations.EliminatedAllocationsView;
 import io.jitclipse.ui.views.locks.OptimizedLocksView;
 import io.jitclipse.ui.views.suggestions.SuggestionsView;
+import io.jitclipse.ui.views.timeline.TimelineView;
 
 public class HotspotPerspective implements IPerspectiveFactory {
 

@@ -1,4 +1,4 @@
-package io.jitclipse.ui.views;
+package io.jitclipse.ui.views.timeline;
 
 import org.eclipse.jface.action.IContributionManager;
 import org.eclipse.jface.action.Separator;
@@ -17,6 +17,8 @@ import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.JitCompiler;
 import io.jitclipse.core.model.lock.IOptimisedLock;
+import io.jitclipse.ui.views.AbstractHotspotView;
+import io.jitclipse.ui.views.JitSelectionChange;
 
 public class TimelineView extends AbstractHotspotView<IOptimisedLock> {
 

@@ -1,4 +1,4 @@
-package io.jitclipse.ui.views;
+package io.jitclipse.ui.views.timeline;
 
 import org.eclipse.nebula.visualization.xygraph.dataprovider.ISample;
 

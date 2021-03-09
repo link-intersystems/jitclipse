@@ -1,4 +1,4 @@
-package io.jitclipse.ui.views;
+package io.jitclipse.ui.views.timeline;
 
 import java.util.Comparator;
 import java.util.TreeSet;
