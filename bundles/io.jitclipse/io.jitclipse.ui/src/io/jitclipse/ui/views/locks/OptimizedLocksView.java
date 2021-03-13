@@ -1,9 +1,14 @@
 package io.jitclipse.ui.views.locks;
 
+import java.util.List;
+
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+
+import com.link_intersystems.eclipse.ui.jface.viewers.AdaptableSelectionList;
 
 import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.model.IMethod;
@@ -29,6 +34,22 @@ public class OptimizedLocksView extends AbstractHotspotView<IOptimisedLock> {
 	@Override
 	protected String getHelpId() {
 		return "io.jitclipse.ui.help.optimizedLock.viewer";
+	}
+
+	@Override
+	protected String selectionToString(ISelection selection) {
+		List<IOptimisedLock> optimisedLocks = new AdaptableSelectionList<>(IOptimisedLock.class, selection);
+		return toString(optimisedLocks);
+	}
+
+	private String toString(List<IOptimisedLock> optimisedLocks) {
+		if (optimisedLocks.isEmpty()) {
+			return "";
+		}
+
+		IOptimisedLock optimisedLock = optimisedLocks.get(0);
+
+		return optimisedLock.getMethod().getType().getName();
 	}
 
 	@Override
