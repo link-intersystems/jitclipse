@@ -7,14 +7,14 @@ import org.adoptopenjdk.jitwatch.model.MetaClass;
 import org.adoptopenjdk.jitwatch.report.Report;
 import org.adoptopenjdk.jitwatch.report.ReportType;
 
-import io.jitclipse.jitwatch.core.model.ModelContext;
-import io.jitclipse.jitwatch.core.model.Optimization;
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.ICompilation;
 import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.IOptimization;
 import io.jitclipse.core.model.JitOptimizationStrategy;
 import io.jitclipse.core.model.allocation.IEliminatedAllocation;
+import io.jitclipse.jitwatch.core.model.ModelContext;
+import io.jitclipse.jitwatch.core.model.Optimization;
 
 public class ReportEliminatedAllocation implements IEliminatedAllocation {
 

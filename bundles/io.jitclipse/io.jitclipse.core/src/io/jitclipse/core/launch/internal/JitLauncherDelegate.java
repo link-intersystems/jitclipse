@@ -24,8 +24,8 @@ import org.eclipse.debug.core.model.ILaunchConfigurationDelegate2;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.osgi.util.NLS;
 
-import com.link_intersystems.eclipse.core.runtime.IExtensionPointProxyFactory;
-import com.link_intersystems.eclipse.core.runtime.IPluginLog;
+import com.link_intersystems.eclipse.core.runtime.runtime.IExtensionPointProxyFactory;
+import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 
 import io.jitclipse.core.CoreMessages;
 import io.jitclipse.core.JitCorePlugin;

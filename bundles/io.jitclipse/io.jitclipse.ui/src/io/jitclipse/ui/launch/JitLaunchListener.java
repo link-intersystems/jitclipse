@@ -6,7 +6,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import com.link_intersystems.eclipse.core.runtime.jobs.FutureJob;
+import com.link_intersystems.eclipse.core.runtime.runtime.jobs.FutureJob;
 import com.link_intersystems.eclipse.ui.jface.controller.PerspectiveOpenerController;
 import com.link_intersystems.eclipse.ui.swt.widgets.Display2;
 

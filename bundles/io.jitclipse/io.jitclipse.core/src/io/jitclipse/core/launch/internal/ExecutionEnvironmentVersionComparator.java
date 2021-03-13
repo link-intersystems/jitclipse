@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 
-import com.link_intersystems.eclipse.core.runtime.IPluginLog;
+import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 
 import io.jitclipse.core.JitCorePlugin;
 

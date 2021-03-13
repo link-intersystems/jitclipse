@@ -2,9 +2,9 @@ package io.jitclipse.jitwatch.core.model.report;
 
 import org.adoptopenjdk.jitwatch.report.Report;
 
-import io.jitclipse.jitwatch.core.model.ModelContext;
 import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.suggestion.ISuggestion;
+import io.jitclipse.jitwatch.core.model.ModelContext;
 
 public class ReportSuggestion implements ISuggestion {
 

@@ -6,7 +6,7 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.JavaCore;
 
-import com.link_intersystems.eclipse.core.runtime.PluginLog;
+import com.link_intersystems.eclipse.core.runtime.runtime.PluginLog;
 
 import io.jitclipse.core.JitCorePlugin;
 import io.jitclipse.core.resources.IJitProject;

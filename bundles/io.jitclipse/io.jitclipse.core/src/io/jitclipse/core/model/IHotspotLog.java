@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 
-import com.link_intersystems.eclipse.core.runtime.IAdaptable2;
+import com.link_intersystems.eclipse.core.runtime.runtime.IAdaptable2;
 
 import io.jitclipse.core.model.allocation.IEliminatedAllocationList;
 import io.jitclipse.core.model.lock.IOptimisedLockList;

@@ -12,8 +12,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 
-import com.link_intersystems.eclipse.core.runtime.progress.IProgress;
-import com.link_intersystems.eclipse.core.runtime.progress.ProgressIndicator;
+import com.link_intersystems.eclipse.core.runtime.runtime.progress.IProgress;
+import com.link_intersystems.eclipse.core.runtime.runtime.progress.ProgressIndicator;
 import com.link_intersystems.eclipse.ui.swt.widgets.Display2;
 
 import io.jitclipse.core.model.IClass;

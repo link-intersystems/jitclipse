@@ -2,7 +2,7 @@ package io.jitclipse.jitwatch.core;
 
 import org.osgi.framework.BundleContext;
 
-import com.link_intersystems.eclipse.core.runtime.DefaultPlugin;
+import com.link_intersystems.eclipse.core.runtime.runtime.DefaultPlugin;
 
 public class JitWatchCorePlugin extends DefaultPlugin {
 

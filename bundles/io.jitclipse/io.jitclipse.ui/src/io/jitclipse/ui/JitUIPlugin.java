@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
-import com.link_intersystems.eclipse.core.preferences.IPreferenceProxyFactory;
+import com.link_intersystems.eclipse.core.runtime.preferences.IPreferenceProxyFactory;
 import com.link_intersystems.eclipse.ui.jface.plugin.AbstractJFacePlugin;
 
 import io.jitclipse.ui.preferences.IJitPreferences;

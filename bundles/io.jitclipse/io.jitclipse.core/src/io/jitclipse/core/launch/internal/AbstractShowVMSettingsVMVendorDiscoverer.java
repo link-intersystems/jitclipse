@@ -7,7 +7,7 @@ import java.time.Duration;
 
 import org.eclipse.jdt.launching.IVMInstall;
 
-import com.link_intersystems.eclipse.core.runtime.IPluginLog;
+import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 
 import io.jitclipse.core.launch.VMVendor;
 

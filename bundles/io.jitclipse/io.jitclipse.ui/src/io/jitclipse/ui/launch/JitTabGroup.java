@@ -22,8 +22,7 @@ public class JitTabGroup implements ILaunchConfigurationTabGroup, IExecutableExt
 	private static final String CONFIGATTR_TYPE = "type"; //$NON-NLS-1$
 
 	private ILaunchConfigurationTabGroup tabGroupDelegate;
-	private ILaunchConfigurationTab coverageTab;
-
+	private ILaunchConfigurationTab jitTab;
 
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
 			throws CoreException {
@@ -58,44 +57,44 @@ public class JitTabGroup implements ILaunchConfigurationTabGroup, IExecutableExt
 
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		tabGroupDelegate.createTabs(dialog, mode);
-		coverageTab = createCoverageTab(dialog, mode);
+		jitTab = createJitTab(dialog, mode);
 	}
 
-	protected ILaunchConfigurationTab createCoverageTab(ILaunchConfigurationDialog dialog, String mode) {
+	protected ILaunchConfigurationTab createJitTab(ILaunchConfigurationDialog dialog, String mode) {
 		return new JitTab();
 	}
 
 	public ILaunchConfigurationTab[] getTabs() {
-		return insertCoverageTab(tabGroupDelegate.getTabs(), coverageTab);
+		return insertJitTab(tabGroupDelegate.getTabs(), jitTab);
 	}
 
-	protected ILaunchConfigurationTab[] insertCoverageTab(ILaunchConfigurationTab[] delegateTabs,
-			ILaunchConfigurationTab coverageTab) {
+	protected ILaunchConfigurationTab[] insertJitTab(ILaunchConfigurationTab[] delegateTabs,
+			ILaunchConfigurationTab jitTab) {
 		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[delegateTabs.length + 1];
 		tabs[0] = delegateTabs[0];
-		tabs[1] = coverageTab;
+		tabs[1] = jitTab;
 		System.arraycopy(delegateTabs, 1, tabs, 2, delegateTabs.length - 1);
 		return tabs;
 	}
 
 	public void dispose() {
 		tabGroupDelegate.dispose();
-		coverageTab.dispose();
+		jitTab.dispose();
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		tabGroupDelegate.setDefaults(configuration);
-		coverageTab.setDefaults(configuration);
+		jitTab.setDefaults(configuration);
 	}
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		tabGroupDelegate.initializeFrom(configuration);
-		coverageTab.initializeFrom(configuration);
+		jitTab.initializeFrom(configuration);
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		tabGroupDelegate.performApply(configuration);
-		coverageTab.performApply(configuration);
+		jitTab.performApply(configuration);
 	}
 
 	public void launched(ILaunch launch) {

@@ -2,6 +2,7 @@ package io.jitclipse.core.launch.internal;
 
 import java.io.File;
 
+import org.eclipse.jdt.internal.launching.StandardVM;
 import org.eclipse.jdt.launching.IVMInstall;
 
 public class DefaultJavaExecutableLocator implements IJavaExecutableLocator {

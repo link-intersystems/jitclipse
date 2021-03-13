@@ -2,7 +2,7 @@ package io.jitclipse.core.model;
 
 import java.util.List;
 
-import com.link_intersystems.eclipse.core.runtime.IAdaptable2;
+import com.link_intersystems.eclipse.core.runtime.runtime.IAdaptable2;
 
 public interface IMethod extends IAdaptable2 {
 

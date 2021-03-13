@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchManager;
 
-import com.link_intersystems.eclipse.core.runtime.IPluginLog;
+import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 
 import io.jitclipse.ui.JitUIPlugin;
 

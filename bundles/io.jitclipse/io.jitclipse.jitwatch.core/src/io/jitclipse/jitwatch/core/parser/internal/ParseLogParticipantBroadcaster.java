@@ -8,7 +8,7 @@ import org.adoptopenjdk.jitwatch.core.IJITListener;
 import org.adoptopenjdk.jitwatch.model.JITEvent;
 import org.eclipse.core.resources.IFile;
 
-import com.link_intersystems.eclipse.core.runtime.IExtensionPointProxyFactory;
+import com.link_intersystems.eclipse.core.runtime.runtime.IExtensionPointProxyFactory;
 
 import io.jitclipse.jitwatch.core.JitWatchCorePlugin;
 import io.jitclipse.jitwatch.core.parser.IParseLogParticipant;

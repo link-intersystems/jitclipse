@@ -5,8 +5,8 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.osgi.framework.BundleContext;
 
-import com.link_intersystems.eclipse.core.runtime.DefaultPlugin;
-import com.link_intersystems.eclipse.core.runtime.IExtensionPointProxyFactory;
+import com.link_intersystems.eclipse.core.runtime.runtime.DefaultPlugin;
+import com.link_intersystems.eclipse.core.runtime.runtime.IExtensionPointProxyFactory;
 
 import io.jitclipse.core.launch.IJitArgsProvider;
 import io.jitclipse.core.parser.IJitLogParser;

@@ -3,7 +3,7 @@ package io.jitclipse.core.launch.internal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.link_intersystems.eclipse.core.runtime.IExtensionPointProxyFactory;
+import com.link_intersystems.eclipse.core.runtime.runtime.IExtensionPointProxyFactory;
 
 import io.jitclipse.core.launch.IJitLaunch;
 import io.jitclipse.core.launch.IJitLaunchListener;

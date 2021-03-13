@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
-import com.link_intersystems.eclipse.core.runtime.IAdaptable2;
+import com.link_intersystems.eclipse.core.runtime.runtime.IAdaptable2;
 import com.link_intersystems.math.LinearEquation;
 import com.link_intersystems.math.TwoPointLinearEquation;
 

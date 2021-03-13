@@ -31,8 +31,8 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
-import com.link_intersystems.eclipse.core.runtime.progress.IProgress;
-import com.link_intersystems.eclipse.core.runtime.progress.LazyProgressMonitorDelegate;
+import com.link_intersystems.eclipse.core.runtime.runtime.progress.IProgress;
+import com.link_intersystems.eclipse.core.runtime.runtime.progress.LazyProgressMonitorDelegate;
 import com.link_intersystems.eclipse.ui.swt.widgets.Display2;
 import com.link_intersystems.eclipse.ui.swt.widgets.SWTThreadProxyFactory;
 

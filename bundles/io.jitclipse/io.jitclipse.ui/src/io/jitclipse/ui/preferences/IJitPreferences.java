@@ -1,7 +1,7 @@
 package io.jitclipse.ui.preferences;
 
-import com.link_intersystems.eclipse.core.preferences.IPreferences;
-import com.link_intersystems.eclipse.core.preferences.Preference;
+import com.link_intersystems.eclipse.core.runtime.preferences.IPreferences;
+import com.link_intersystems.eclipse.core.runtime.preferences.Preference;
 
 public interface IJitPreferences extends IPreferences {
 
