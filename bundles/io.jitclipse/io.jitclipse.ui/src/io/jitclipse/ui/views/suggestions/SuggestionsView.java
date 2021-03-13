@@ -1,11 +1,17 @@
 package io.jitclipse.ui.views.suggestions;
 
+import java.util.List;
+
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
+import com.link_intersystems.eclipse.ui.jface.viewers.AdaptableSelectionList;
+
 import io.jitclipse.core.model.IHotspotLog;
+import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.suggestion.ISuggestion;
 import io.jitclipse.core.model.suggestion.ISuggestionList;
 import io.jitclipse.ui.views.AbstractHotspotView;
@@ -23,6 +29,27 @@ public class SuggestionsView extends AbstractHotspotView<ISuggestion> {
 	protected Object toHotspotViewElement(Object viewerElement) {
 		ISuggestion suggestion = (ISuggestion) viewerElement;
 		return suggestion.getMethod();
+	}
+
+	@Override
+	protected String selectionToString(ISelection selection) {
+		List<ISuggestion> suggestions = new AdaptableSelectionList<>(ISuggestion.class, selection);
+		return toString(suggestions);
+	}
+
+	private String toString(List<ISuggestion> suggestions) {
+		if (suggestions.isEmpty()) {
+			return "";
+		}
+
+		ISuggestion suggestion = suggestions.get(0);
+
+		return suggestion.getMethod().getType().getName();
+	}
+
+	@Override
+	protected IMethod toMethod(ISuggestion element) {
+		return element.getMethod();
 	}
 
 	@Override

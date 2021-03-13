@@ -10,6 +10,8 @@ public interface IMethod extends IAdaptable2 {
 
 	public String toSignatureString();
 
+	public String[] toParameterSignatureStrings();
+
 	public IClass getType();
 
 	boolean matches(String fullyQualifiedName);

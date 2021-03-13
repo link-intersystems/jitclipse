@@ -1,8 +1,18 @@
 package io.jitclipse.ui.views;
 
 import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.ISourceRange;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionManager;
@@ -11,31 +21,47 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchCommandConstants;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.link_intersystems.eclipse.ui.jface.viewers.AdaptableSelectionList;
 import com.link_intersystems.eclipse.ui.jface.viewers.SelectionList;
 import com.link_intersystems.lang.reflect.Class2;
 
 import io.jitclipse.core.model.IHotspotLog;
+import io.jitclipse.core.model.IMemberByteCode;
+import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.IPackage;
 import io.jitclipse.ui.JitUIImages;
 import io.jitclipse.ui.JitUIPlugin;
+import io.jitclipse.ui.navigator.HotspotNavigator;
 import io.jitclipse.ui.navigator.JitNavigatorContentProvider;
 import io.jitclipse.ui.perspectives.HotspotPerspective;
 
@@ -43,15 +69,19 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 
 	private static TypeVariable<?> TYPE_VAR = Class2.get(AbstractHotspotView.class).getTypeVariable("T");
 
-	private Action doubleClickAction = new Action("") {
-	};
-
 	private StructuredViewer structuredViewer;
+
+	private List<IHandler> handlers = new ArrayList<IHandler>();
+
+	private Action doubleClickAction;
 	private Action linkWithSelection;
+	private Action copyAction;
 
 	private HotspotViewerFilter hotspotViewerFilter;
 
 	private JitSelection jitSelection = new JitSelection();
+
+	private IHotspotLog hotspotLog;
 
 	@Override
 	public final void createPartControl(Composite parent) {
@@ -59,7 +89,7 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 
 		hotspotViewerFilter = new HotspotViewerFilter(structuredViewer, this::toHotspotViewElement);
 		hotspotViewerFilter.setViewSite(getSite());
-		hotspotViewerFilter.setViewIdToLinkWith("io.jitclipse.ui.hotspotNavigator");
+		hotspotViewerFilter.setViewIdToLinkWith(HotspotNavigator.ID);
 		hotspotViewerFilter.setTreeContentProvider(new JitNavigatorContentProvider());
 		structuredViewer.setFilters(hotspotViewerFilter);
 
@@ -68,9 +98,18 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 
 		configureHelpSystem();
 
+		registerHandlers();
 		registerActions();
 
 		syncSelectionFromNavigator();
+	}
+
+	protected void copy(String text) {
+		Display display = getSite().getShell().getDisplay();
+		Clipboard cb = new Clipboard(display);
+		TextTransfer transfer = TextTransfer.getInstance();
+		cb.setContents(new Object[] { text }, new Transfer[] { transfer });
+		cb.dispose();
 	}
 
 	protected Object toHotspotViewElement(Object viewerElement) {
@@ -154,6 +193,62 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 	}
 
 	protected void doubleClicked(T element) {
+		IMethod method = toMethod(element);
+		if (method == null) {
+			return;
+		}
+
+		String name = method.getType().getName();
+
+		IFile logFileLocation = hotspotLog.getLogFileLocation();
+		IJavaProject project = (IJavaProject) JavaCore.create(logFileLocation.getProject());
+		try {
+			IType javaType = project.findType(name);
+			IEditorPart openInEditor = JavaUI.openInEditor(javaType);
+			IMemberByteCode memberByteCode = method.getMemberByteCode();
+			if (memberByteCode != null) {
+				int sourceLineNr = memberByteCode.getSourceLineNr();
+				gotoLine(openInEditor, sourceLineNr, javaType);
+			}
+		} catch (JavaModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PartInitException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	protected IMethod toMethod(T element) {
+		return null;
+	}
+
+	private static void gotoLine(IEditorPart editorPart, int line, IJavaElement element) throws JavaModelException {
+		if (line <= 0) {
+			return;
+		}
+		ITextEditor editor = (ITextEditor) editorPart;
+		IDocumentProvider provider = editor.getDocumentProvider();
+		IDocument document = provider.getDocument(editor.getEditorInput());
+		try {
+			if (element instanceof org.eclipse.jdt.core.IMethod) {
+				ISourceRange sourceRange = ((org.eclipse.jdt.core.IMethod) element).getSourceRange();
+				int start = sourceRange.getOffset();
+				int end = start + sourceRange.getLength();
+				start = document.getLineOfOffset(start);
+				end = document.getLineOfOffset(end);
+				if (start > line || end < line) {
+					return;
+				}
+			}
+			int start = document.getLineOffset(line - 1);
+			editor.selectAndReveal(start, 0);
+			IWorkbenchPage page = editor.getSite().getPage();
+			page.activate(editor);
+		} catch (BadLocationException e) {
+			// ignore
+		}
 	}
 
 	@Override
@@ -178,17 +273,26 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 	protected void onSelectionChanged(JitSelectionChange jitSelectionChange) {
 		StructuredViewer viewer = getViewer();
 		if (viewer != null) {
-			jitSelectionChange.onHotspotLogChanged((hl, v) -> updateViewer(v, hl), viewer);
+			jitSelectionChange.onHotspotLogChanged((hl, v) -> updateViewerInternal(v, hl), viewer);
 		}
+	}
+
+	private void updateViewerInternal(Viewer viewer, IHotspotLog hotspotLog) {
+		this.hotspotLog = hotspotLog;
+		updateViewer(viewer, hotspotLog);
 	}
 
 	protected abstract void updateViewer(Viewer viewer, IHotspotLog hotspotLog);
 
 	@Override
 	public void dispose() {
-		super.dispose();
+		handlers.forEach(IHandler::dispose);
+		handlers.clear();
+
 		getSite().getPage().removeSelectionListener(this);
 		hotspotViewerFilter.setViewSite(null);
+
+		super.dispose();
 	}
 
 	private void hookDoubleClickAction() {
@@ -216,6 +320,7 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 	}
 
 	protected void fillContextMenu(IContributionManager manager) {
+		manager.add(copyAction);
 	}
 
 	private void contributeToActionBars() {
@@ -237,6 +342,27 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 
 	protected void fillLocalToolBar(IContributionManager manager) {
 		manager.add(linkWithSelection);
+	}
+
+	private void registerHandlers() {
+		activateHandler(IWorkbenchCommandConstants.EDIT_COPY,
+				new CopyHandler(getSite().getShell().getDisplay(), getViewer(), new ISelectionToString() {
+
+					@Override
+					public String toString(ISelection selection) {
+						return selectionToString(selection);
+					}
+				}));
+	}
+
+	protected String selectionToString(ISelection selection) {
+		return null;
+	}
+
+	private void activateHandler(String id, IHandler handler) {
+		final IHandlerService hs = (IHandlerService) getSite().getService(IHandlerService.class);
+		hs.activateHandler(id, handler);
+		handlers.add(handler);
 	}
 
 	protected StructuredViewer getViewer() {

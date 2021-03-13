@@ -1,6 +1,8 @@
 package io.jitclipse.jitwatch.core.model;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.adoptopenjdk.jitwatch.model.Compilation;
 import org.adoptopenjdk.jitwatch.model.IMetaMember;
@@ -30,6 +32,24 @@ public class Method implements IMethod {
 	@Override
 	public String toSignatureString() {
 		return metaMethod.toStringUnqualifiedMethodName(false, true);
+	}
+
+	@Override
+	public String[] toParameterSignatureStrings() {
+		String signatureString = toSignatureString();
+		Pattern pattern = Pattern.compile("\\(([^\\)]*)\\)");
+		Matcher matcher = pattern.matcher(signatureString);
+		if (matcher.find()) {
+			String parameters = matcher.group(1);
+			String[] parameterStrings = parameters.split(Pattern.quote(","));
+
+			for (int i = 0; i < parameterStrings.length; i++) {
+
+			}
+
+			return parameterStrings;
+		}
+		return new String[0];
 	}
 
 	@Override

@@ -21,5 +21,6 @@ Require-Bundle: io.jitclipse.core;bundle-version="1.0.0",
  org.eclipse.draw2d,
  org.eclipse.jdt.debug.ui;bundle-version="3.12.100",
  org.eclipse.jdt.launching;bundle-version="3.19.0",
- org.eclipse.core.expressions;bundle-version="3.7.0"
+ org.eclipse.core.expressions;bundle-version="3.7.0",
+ org.eclipse.jdt.core;bundle-version="3.24.0"
 Import-Package: javax.inject
