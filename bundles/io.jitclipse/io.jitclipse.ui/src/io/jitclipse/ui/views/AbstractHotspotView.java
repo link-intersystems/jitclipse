@@ -75,7 +75,6 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 
 	private Action doubleClickAction;
 	private Action linkWithSelection;
-	private Action copyAction;
 
 	private HotspotViewerFilter hotspotViewerFilter;
 
@@ -320,7 +319,6 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 	}
 
 	protected void fillContextMenu(IContributionManager manager) {
-		manager.add(copyAction);
 	}
 
 	private void contributeToActionBars() {
