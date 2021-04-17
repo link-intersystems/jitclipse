@@ -75,4 +75,13 @@ public class ReportEliminatedAllocation implements IEliminatedAllocation {
 		return modelContext.getClass(eliminatedType);
 	}
 
+	@Override
+	public int getBCI() {
+		int compilationIndex = eliminatedAllocationReport.getCompilationIndex();
+		if(compilationIndex == -1) {
+			return eliminatedAllocationReport.getBytecodeOffset();
+		}
+		return compilationIndex;
+	}
+
 }

@@ -58,4 +58,13 @@ public class ReportOptimizedLock implements IOptimisedLock {
 		return compilation;
 	}
 
+	@Override
+	public int getBCI() {
+		int compilationIndex = optimizedLockReport.getCompilationIndex();
+		if (compilationIndex == -1) {
+			return optimizedLockReport.getBytecodeOffset();
+		}
+		return compilationIndex;
+	}
+
 }

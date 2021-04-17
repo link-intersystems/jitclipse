@@ -15,23 +15,22 @@ package io.jitclipse.ui.editors.hotspot;
 
 import java.io.File;
 import java.net.URI;
+import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -47,7 +46,6 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 import com.link_intersystems.eclipse.core.runtime.runtime.progress.IProgress;
 import com.link_intersystems.eclipse.core.runtime.runtime.progress.LazyProgressMonitorDelegate;
 import com.link_intersystems.eclipse.ui.swt.widgets.Display2;
-import com.link_intersystems.eclipse.ui.swt.widgets.SWTThreadProxyFactory;
 
 import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.model.allocation.IEliminatedAllocationList;
@@ -64,11 +62,10 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 
 	public static final String ID = "io.jitclipse.ui.hotspot.HotspotLogEditor";
 
-	private TextEditor editor;
+	private Supplier<IWorkspace> workspaceSupplier = ResourcesPlugin::getWorkspace;
+	private IWorkspace workspace;
 
-	private Font font;
-
-	private StyledText text;
+	private TextEditor sourceEditor;
 
 	private SuggestionsViewer suggestionsViewer;
 	private DeferredConsumer<ISuggestionList> suggestionsReportModelConsumer = new DeferredConsumer<>();
@@ -79,49 +76,12 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 	private EliminatedAllocationsViewer eliminatedAllocationsViewer;
 	private DeferredConsumer<IEliminatedAllocationList> eliminatedAllocationsReportModelConsumer = new DeferredConsumer<>();
 
-	private LazyProgressMonitorDelegate lazyProgressMonitorDelegate = new LazyProgressMonitorDelegate();
-
 	private DetailedProgressWidget progressWidget;
+	private LazyProgressMonitorDelegate lazyProgressMonitorDelegate = new LazyProgressMonitorDelegate();
 
 	private IHotspotLogFile hotspotLogFile;
 
 	public HotspotLogEditor() {
-		super();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
-	}
-
-	void createSourcePage() {
-		try {
-			editor = new HotspotXMLEditor();
-			int index = addPage(editor, getEditorInput());
-			setPageText(index, "Source");
-		} catch (PartInitException e) {
-			ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
-		}
-	}
-
-	void createSuggestionsPage() {
-		suggestionsViewer = new SuggestionsViewer(getContainer(), SWT.NONE);
-		int index = addPage(suggestionsViewer.getControl());
-		setPageText(index, "Suggestions");
-
-		suggestionsReportModelConsumer.setTargetConsumer(suggestionsViewer::setInput);
-	}
-
-	void createOptimizedLocksPage() {
-		optimizedLocksViewer = new OptimizedLocksViewer(getContainer(), SWT.NONE);
-		int index = addPage(optimizedLocksViewer.getControl());
-		setPageText(index, "Optimized Locks");
-
-		optimizedLockReportModelConsumer.setTargetConsumer(optimizedLocksViewer::setInput);
-	}
-
-	void createEliminatedAllocationsPage() {
-		eliminatedAllocationsViewer = new EliminatedAllocationsViewer(getContainer(), SWT.NONE);
-		int index = addPage(eliminatedAllocationsViewer.getControl());
-		setPageText(index, "Eliminated Allocations");
-
-		eliminatedAllocationsReportModelConsumer.setTargetConsumer(eliminatedAllocationsViewer::setInput);
 	}
 
 	protected void createPages() {
@@ -142,34 +102,99 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 		}
 	}
 
-	void createProgressPage() {
+	private void createProgressPage() {
 		Composite progressComposite = new Composite(getContainer(), SWT.BORDER);
 		progressComposite.setLayout(new GridLayout(1, false));
 		progressWidget = new DetailedProgressWidget(progressComposite);
 		progressWidget.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
 
-		SWTThreadProxyFactory<IProgressMonitor> swtThreadProxyFactory = new SWTThreadProxyFactory<>(
-				IProgressMonitor.class, progressWidget);
-		lazyProgressMonitorDelegate.setDelegate(swtThreadProxyFactory.createProxy());
+		IProgressMonitor eventQueueProxy = Display2.createEventQueueProxy(IProgressMonitor.class, progressWidget);
+		lazyProgressMonitorDelegate.setDelegate(eventQueueProxy);
 
-		int index = addPage(progressComposite);
-		setPageText(index, "Loading");
+		addPage(progressComposite, "Loading");
+	}
+
+	private void createSuggestionsPage() {
+		suggestionsViewer = new SuggestionsViewer(getContainer(), SWT.NONE);
+		addPage(suggestionsViewer.getControl(), "Suggestions");
+
+		suggestionsReportModelConsumer.setTargetConsumer(suggestionsViewer::setInput);
+	}
+
+	private void createOptimizedLocksPage() {
+		optimizedLocksViewer = new OptimizedLocksViewer(getContainer(), SWT.NONE);
+		addPage(optimizedLocksViewer.getControl(), "Optimized Locks");
+
+		optimizedLockReportModelConsumer.setTargetConsumer(optimizedLocksViewer::setInput);
+	}
+
+	private void createEliminatedAllocationsPage() {
+		eliminatedAllocationsViewer = new EliminatedAllocationsViewer(getContainer(), SWT.NONE);
+		addPage(eliminatedAllocationsViewer.getControl(), "Eliminated Allocations");
+
+		eliminatedAllocationsReportModelConsumer.setTargetConsumer(eliminatedAllocationsViewer::setInput);
+	}
+
+	private void createSourcePage() {
+		try {
+			sourceEditor = new HotspotXMLEditor();
+			addPage(sourceEditor, getEditorInput(), "Source");
+		} catch (PartInitException e) {
+			ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
+		}
+	}
+
+	private void addPage(Control control, String pageText) {
+		int index = addPage(control);
+		setPageText(index, pageText);
+	}
+
+	private void addPage(IEditorPart editor, IEditorInput input, String pageText) throws PartInitException {
+		int index = addPage(editor, input);
+		setPageText(index, pageText);
 	}
 
 	public void refresh() {
-		while (getPageCount() > 0) {
-			removePage(0);
-		}
-
+		removePages();
 		lazyProgressMonitorDelegate.setDelegate(null);
 
 		createPages();
+
 		getContainer().layout(true);
 	}
 
+	private void removePages() {
+		while (getPageCount() > 0) {
+			removePage(0);
+		}
+	}
+
+	public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException {
+		if (!(editorInput instanceof IFileEditorInput))
+			throw new PartInitException("Invalid Input: Must be IURIEditorInput");
+		super.init(site, editorInput);
+
+		workspace = workspaceSupplier.get();
+		workspace.addResourceChangeListener(this);
+	}
+
 	public void dispose() {
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+		workspace.removeResourceChangeListener(this);
+
 		super.dispose();
+
+		workspace = null;
+
+		sourceEditor = null;
+
+		suggestionsReportModelConsumer.setTargetConsumer(null);
+		suggestionsViewer = null;
+
+		eliminatedAllocationsReportModelConsumer.setTargetConsumer(null);
+		eliminatedAllocationsViewer = null;
+
+		optimizedLockReportModelConsumer.setTargetConsumer(null);
+		optimizedLocksViewer = null;
 	}
 
 	public void doSave(IProgressMonitor monitor) {
@@ -189,12 +214,6 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 	public void gotoMarker(IMarker marker) {
 		setActivePage(0);
 		IDE.gotoMarker(getEditor(0), marker);
-	}
-
-	public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException {
-		if (!(editorInput instanceof IFileEditorInput))
-			throw new PartInitException("Invalid Input: Must be IURIEditorInput");
-		super.init(site, editorInput);
 	}
 
 	@Override
@@ -263,25 +282,13 @@ public class HotspotLogEditor extends MultiPageEditorPart implements IResourceCh
 			Display.getDefault().asyncExec(() -> {
 				IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
 				for (int i = 0; i < pages.length; i++) {
-					if (((FileEditorInput) editor.getEditorInput()).getFile().getProject()
+					if (((FileEditorInput) sourceEditor.getEditorInput()).getFile().getProject()
 							.equals(event.getResource())) {
-						IEditorPart editorPart = pages[i].findEditor(editor.getEditorInput());
+						IEditorPart editorPart = pages[i].findEditor(sourceEditor.getEditorInput());
 						pages[i].closeEditor(editorPart, true);
 					}
 				}
 			});
-		}
-	}
-
-	void setFont() {
-		FontDialog fontDialog = new FontDialog(getSite().getShell());
-		fontDialog.setFontList(text.getFont().getFontData());
-		FontData fontData = fontDialog.open();
-		if (fontData != null) {
-			if (font != null)
-				font.dispose();
-			font = new Font(text.getDisplay(), fontData);
-			text.setFont(font);
 		}
 	}
 

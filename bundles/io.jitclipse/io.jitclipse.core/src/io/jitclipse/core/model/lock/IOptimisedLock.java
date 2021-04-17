@@ -26,4 +26,6 @@ public interface IOptimisedLock {
 
 	String getKind();
 
+	int getBCI();
+
 }

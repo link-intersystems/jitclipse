@@ -31,7 +31,6 @@ import com.link_intersystems.eclipse.ui.jface.viewers.MultilineCellLabelProvider
 
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.ICompilation;
-import io.jitclipse.core.model.IMemberByteCode;
 import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.JitCompiler;
 import io.jitclipse.core.model.allocation.IEliminatedAllocation;
@@ -77,8 +76,7 @@ public class EliminatedAllocationsViewer extends TableViewer {
 				text = compiler.name();
 				break;
 			case 3:
-				IMemberByteCode memberByteCode = method.getMemberByteCode();
-				text = Integer.toString(memberByteCode.getByteCodeInstruction());
+				text = Integer.toString(eliminatedAllocation.getBCI());
 				break;
 			case 4:
 				text = eliminatedAllocation.getOptimization().getStrategy().name();

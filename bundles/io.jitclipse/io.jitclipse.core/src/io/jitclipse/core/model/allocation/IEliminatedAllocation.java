@@ -26,5 +26,7 @@ public interface IEliminatedAllocation {
 
 	IOptimization getOptimization();
 
+	int getBCI();
+
 	IClass getEliminatedType();
 }

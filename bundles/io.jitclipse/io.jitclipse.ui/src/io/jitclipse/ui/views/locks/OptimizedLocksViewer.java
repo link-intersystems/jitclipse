@@ -75,8 +75,7 @@ public class OptimizedLocksViewer extends TableViewer {
 				text = optimisedLock.getCompilation().getCompiler().name();
 				break;
 			case 3:
-				IMemberByteCode memberByteCode = method.getMemberByteCode();
-				text = Integer.toString(memberByteCode.getByteCodeInstruction());
+				text = Integer.toString(optimisedLock.getBCI());
 				break;
 			case 4:
 				text = optimisedLock.getHow();
