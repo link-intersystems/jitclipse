@@ -444,7 +444,7 @@
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            label="JIT Watch Java Application"
+            label="Java Application"
             icon="$nl$/icons/full/etool16/java_launch.png"
             modes="jit"
             class="io.jitclipse.ui.launch.JitLaunchShortcut:org.eclipse.jdt.debug.ui.localJavaShortcut"
