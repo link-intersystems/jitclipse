@@ -28,6 +28,8 @@ public class AbstractJavaProjectTest extends AbstractProjectTest {
 		if (!natures.contains(JavaCore.NATURE_ID)) {
 			initializeJavaProject();
 		}
+
+		refresh();
 	}
 
 	private void initializeJavaProject() throws CoreException {
@@ -61,15 +63,25 @@ public class AbstractJavaProjectTest extends AbstractProjectTest {
 
 		IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder);
 		IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
-		IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
-		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-		newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
-		javaProject.setRawClasspath(newEntries, null);
+		List<IClasspathEntry> newEntries = new ArrayList<>(Arrays.asList(oldEntries));
+
+		newEntries.add(JavaCore.newSourceEntry(root.getPath()));
+
+		IFolder libsFolder = project.getFolder("libs");
+		if (!libsFolder.exists()) {
+			libsFolder.create(false, true, null);
+			IFile commonsLangLib = libsFolder.getFile("commons-lang.jar");
+			initializeCommonsLangLib(commonsLangLib);
+
+			IClasspathEntry libraryEntry = JavaCore.newLibraryEntry(commonsLangLib.getLocation(), null, null);
+			newEntries.add(libraryEntry);
+		}
+
+		javaProject.setRawClasspath(newEntries.toArray(new IClasspathEntry[newEntries.size()]), null);
 
 		project.build(IncrementalProjectBuilder.CLEAN_BUILD, null);
 
 	}
-
 
 	private void initializeMainClass(IFile mainJavaFile) throws CoreException {
 		if (mainJavaFile.exists()) {
@@ -77,6 +89,14 @@ public class AbstractJavaProjectTest extends AbstractProjectTest {
 		}
 
 		mainJavaFile.create(getClass().getResourceAsStream("Main.java.txt"), false, null);
+	}
+
+	private void initializeCommonsLangLib(IFile commonsLangFile) throws CoreException {
+		if (commonsLangFile.exists()) {
+			return;
+		}
+
+		commonsLangFile.create(getClass().getResourceAsStream("commons-lang-2.6.jar"), false, null);
 	}
 
 }

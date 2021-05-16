@@ -30,22 +30,16 @@ import org.adoptopenjdk.jitwatch.report.escapeanalysis.eliminatedallocation.Elim
 import org.adoptopenjdk.jitwatch.report.locks.OptimisedLocksWalker;
 import org.adoptopenjdk.jitwatch.report.suggestion.SuggestionWalker;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.parser.IJitLogParser;
+import io.jitclipse.core.resources.IJitProject;
 import io.jitclipse.jitwatch.core.model.HotspotLog;
 import io.jitclipse.jitwatch.core.parser.IParseLogParticipant;
 
@@ -72,6 +66,7 @@ public class JitWatchLogParser implements IJitLogParser {
 
 		JITWatchConfig config = logParser.getConfig();
 		addSourcFolders(hotspotLogFile, config);
+		addClassFolders(hotspotLogFile, config);
 		File javaFile = hotspotLogFile.getLocation().toFile();
 
 		IJITListener listener = parseLogParticipant.aboutToParse(hotspotLogFile);
@@ -119,21 +114,16 @@ public class JitWatchLogParser implements IJitLogParser {
 
 	private void addSourcFolders(IFile hotspotLogfile, JITWatchConfig config) throws JavaModelException {
 		IProject project = hotspotLogfile.getProject();
-		IJavaProject javaProject = JavaCore.create(project);
-		IClasspathEntry[] resolvedClasspath = javaProject.getResolvedClasspath(false);
-		for (IClasspathEntry classpathEntry : resolvedClasspath) {
-			int entryKind = classpathEntry.getEntryKind();
-			switch (entryKind) {
-			case IClasspathEntry.CPE_SOURCE:
-				IPath path = classpathEntry.getPath();
-				IWorkspace workspace = project.getWorkspace();
-				IWorkspaceRoot root = workspace.getRoot();
-				IFolder folder = root.getFolder(path);
-				File srcFolder = folder.getLocation().toFile();
-				config.addSourceFolder(srcFolder);
-				break;
-			}
-		}
+		IJitProject jitProject = project.getAdapter(IJitProject.class);
+		List<String> sourceLocations = jitProject.getSourceLocations();
+		config.setSourceLocations(sourceLocations);
+	}
+
+	private void addClassFolders(IFile hotspotLogfile, JITWatchConfig config) throws JavaModelException {
+		IProject project = hotspotLogfile.getProject();
+		IJitProject jitProject = project.getAdapter(IJitProject.class);
+		List<String> binaryResourceLocations = jitProject.getBinaryResourceLocations();
+		config.setClassLocations(binaryResourceLocations);
 	}
 
 	private List<Report> buildSuggestions(IProgressMonitor monitor, JITDataModel dataModel) {

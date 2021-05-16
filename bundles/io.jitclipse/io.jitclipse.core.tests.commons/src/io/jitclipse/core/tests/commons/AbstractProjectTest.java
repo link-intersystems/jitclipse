@@ -1,5 +1,7 @@
 package io.jitclipse.core.tests.commons;
 
+import static org.eclipse.core.resources.IResource.DEPTH_INFINITE;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -18,6 +20,15 @@ public class AbstractProjectTest {
 		String projectName = getProjectName();
 		project = createProject(projectName);
 
+		refresh();
+	}
+
+	protected void refresh() {
+		try {
+			ResourcesPlugin.getWorkspace().getRoot().refreshLocal(DEPTH_INFINITE, null);
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void cleanWorkspace() throws CoreException {
@@ -27,6 +38,8 @@ public class AbstractProjectTest {
 		for (IProject project : projects) {
 			project.delete(true, null);
 		}
+
+		refresh();
 	}
 
 	private IProject createProject(String projectName) throws CoreException {

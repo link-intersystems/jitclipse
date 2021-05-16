@@ -48,7 +48,7 @@ public class JitTab extends AbstractLaunchConfigurationTab {
 		manualOptionsButton = new Button(parent, SWT.RADIO);
 		manualOptionsButton
 				.addSelectionListener(SelectionMethods.ANY.listener(() -> setJreOption(JRE_OPTIONS_MANUAL)));
-		manualOptionsButton.setText("Manually set JRE options (use the arguments tab.)");
+		manualOptionsButton.setText("Manually set JRE options (use the Arguments tab.)");
 
 		setControl(parent);
 	}

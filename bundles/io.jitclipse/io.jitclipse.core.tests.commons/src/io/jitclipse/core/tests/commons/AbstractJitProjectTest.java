@@ -26,6 +26,8 @@ public class AbstractJitProjectTest extends AbstractJavaProjectTest {
 
 		IFile otherFile = folder.getFile("other.log");
 		otherFile.create(new ByteArrayInputStream(new byte[0]), true, null);
+
+		refresh();
 	}
 
 	protected void addHostspotLogFile(String testRelativeFileName) throws CoreException {

@@ -53,4 +53,8 @@ public interface IJitProject {
 	}
 
 	IProject getProject();
+
+	public List<String> getSourceLocations();
+
+	List<String> getBinaryResourceLocations();
 }

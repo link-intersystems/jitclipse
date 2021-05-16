@@ -13,10 +13,24 @@
  *******************************************************************************/
 package io.jitclipse.core.resources.internal;
 
-import java.time.Clock;
+import static org.eclipse.jdt.core.IClasspathEntry.CPE_LIBRARY;
 
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+
+import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 
 import io.jitclipse.core.JitCorePlugin;
 import io.jitclipse.core.JitPluginContext;
@@ -53,6 +67,72 @@ public class JitProject implements IJitProject {
 	@Override
 	public IProject getProject() {
 		return project;
+	}
+
+	@Override
+	public List<String> getSourceLocations() {
+		List<String> sourceLocations = new ArrayList<>();
+		IJavaProject javaProject = JavaCore.create(project);
+
+		try {
+			IClasspathEntry[] resolvedClasspath = javaProject.getResolvedClasspath(false);
+
+			IWorkspace workspace = project.getWorkspace();
+			IWorkspaceRoot root = workspace.getRoot();
+
+			for (IClasspathEntry classpathEntry : resolvedClasspath) {
+				IPath path = classpathEntry.getPath();
+
+				int entryKind = classpathEntry.getEntryKind();
+				switch (entryKind) {
+				case IClasspathEntry.CPE_SOURCE:
+					IFolder sourceFolder = root.getFolder(path);
+					IPath sourceLocation = sourceFolder.getLocation();
+					String sourceLocationOsString = sourceLocation.toOSString();
+					sourceLocations.add(sourceLocationOsString);
+					break;
+				}
+			}
+		} catch (JavaModelException e) {
+			IPluginLog pluginLog = jitPluginContext.getPluginLog();
+			pluginLog.logError("Unable to resolve source folders for " + project, e);
+		}
+
+		return sourceLocations;
+	}
+
+	@Override
+	public List<String> getBinaryResourceLocations() {
+		List<String> binaryResources = new ArrayList<>();
+		IJavaProject javaProject = JavaCore.create(project);
+
+		try {
+			IClasspathEntry[] resolvedClasspath = javaProject.getResolvedClasspath(false);
+			IPath outputLocation = javaProject.getOutputLocation();
+
+			IWorkspace workspace = project.getWorkspace();
+			IWorkspaceRoot root = workspace.getRoot();
+			IFolder folder = root.getFolder(outputLocation);
+			IPath fullPath = folder.getLocation();
+			binaryResources.add(fullPath.toOSString());
+
+			for (IClasspathEntry classpathEntry : resolvedClasspath) {
+				int entryKind = classpathEntry.getEntryKind();
+				switch (entryKind) {
+				case CPE_LIBRARY:
+					IPath libraryPath = classpathEntry.getPath();
+					String libraryOsString = libraryPath.toOSString();
+					binaryResources.add(libraryOsString);
+					break;
+				}
+
+			}
+		} catch (JavaModelException e) {
+			IPluginLog pluginLog = jitPluginContext.getPluginLog();
+			pluginLog.logError("Unable to resolve binary resources for " + project, e);
+		}
+
+		return binaryResources;
 	}
 
 }
