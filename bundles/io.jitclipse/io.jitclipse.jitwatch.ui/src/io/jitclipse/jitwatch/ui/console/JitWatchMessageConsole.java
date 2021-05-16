@@ -47,7 +47,7 @@ public class JitWatchMessageConsole extends MessageConsole implements IJITListen
 		consoleManager.removeConsoles(removeConsoles.toArray(new IConsole[0]));
 	}
 
-	private MessageConsoleStream newMessageStream;
+	private MessageConsoleStream messageStream;
 
 	public JitWatchMessageConsole(IFile hotspotLogFile) {
 		this(hotspotLogFile, JitWatchUIPlugin.getInstance().getJitUIImages());
@@ -64,25 +64,25 @@ public class JitWatchMessageConsole extends MessageConsole implements IJITListen
 
 	@Override
 	public void handleLogEntry(String entry) {
-		newMessageStream.println(entry);
+		getMessageStream().println(entry);
 	}
 
 	@Override
 	public void handleErrorEntry(String entry) {
-		newMessageStream.println("[ERROR] - " + entry);
+		getMessageStream().println("[ERROR] - " + entry);
 	}
 
 	@Override
 	public void handleJITEvent(JITEvent event) {
 		String formatted = MessageFormat.format("[{1}] - {0} - {2}", event.getStamp(), event.getEventType(),
 				event.getEventMember());
-		newMessageStream.println(formatted);
+		getMessageStream().println(formatted);
 	}
 
 	@Override
 	public void handleReadStart() {
 		clearConsole();
-		newMessageStream = newMessageStream();
+		messageStream = newMessageStream();
 	}
 
 	@Override
@@ -97,12 +97,20 @@ public class JitWatchMessageConsole extends MessageConsole implements IJITListen
 	}
 
 	private void closeMessageStream() {
-		if (newMessageStream != null) {
+		if (messageStream != null) {
 			try {
-				newMessageStream.close();
+				messageStream.close();
 			} catch (IOException e) {
 			}
+			messageStream = null;
 		}
+	}
+
+	private MessageConsoleStream getMessageStream() {
+		if (messageStream == null) {
+			messageStream = newMessageStream();
+		}
+		return messageStream;
 	}
 
 }
