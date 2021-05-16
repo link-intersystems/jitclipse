@@ -12,6 +12,10 @@
 	<packaging>eclipse-repository</packaging>
 	<name>JITclipse P2 Repository</name>
 
+	<properties>
+		<p2.repo.name>jitclipse</p2.repo.name>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -50,4 +54,83 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>p2</id>
+			<properties>
+				<maven.deploy.skip>true</maven.deploy.skip>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>wagon-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>deploy-p2-version</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<configuration>
+									<url>sftp://p2.link-intersystems.com:1022</url>
+									<serverId>p2</serverId>
+									<fromDir>${project.build.directory}/repository</fromDir>
+									<toDir>/upload/open-source/${p2.repo.name}/${project.version}</toDir>
+								</configuration>
+							</execution>
+							<execution>
+								<id>deploy-p2-version-index</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<configuration>
+									<url>sftp://p2.link-intersystems.com:1022</url>
+									<serverId>p2</serverId>
+									<fromDir>${project.basedir}/update-site</fromDir>
+									<toDir>/upload/open-source/${p2.repo.name}/${project.version}</toDir>
+								</configuration>
+							</execution>
+							<execution>
+								<id>deploy-p2-latest</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<configuration>
+									<url>sftp://p2.link-intersystems.com:1022</url>
+									<serverId>p2</serverId>
+									<fromDir>${project.build.directory}/repository</fromDir>
+									<toDir>/upload/open-source/${p2.repo.name}/latest</toDir>
+								</configuration>
+							</execution>
+							<execution>
+								<id>deploy-p2-latest-index</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<configuration>
+									<url>sftp://p2.link-intersystems.com:1022</url>
+									<serverId>p2</serverId>
+									<fromDir>${project.basedir}/update-site</fromDir>
+									<toDir>/upload/open-source/${p2.repo.name}/latest</toDir>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>wagon-maven-plugin</artifactId>
+							<version>2.0.0</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 </project>

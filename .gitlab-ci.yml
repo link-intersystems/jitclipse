@@ -9,6 +9,11 @@
 # * Verify but don't deploy merge requests.
 # * Deploy built artifacts from master branch only.
 
+stages:
+    - test
+    - deploy
+    - release
+
 variables:
   # This will suppress any download for dependencies and plugins or upload messages which would clutter the console log.
   # `showDateTime` will show the passed time in milliseconds. You need to specify `--batch-mode` to make this work.
@@ -59,3 +64,14 @@ deploy:jdk11:
 
   only:
     - master
+
+p2-deploy:jdk11:
+  stage: release
+  script:
+    - mvn -s ci_settings.xml -Pdist install
+    - mvn -s ci_settings.xml -Pp2,dist help:effective-pom help:effective-settings
+    - mvn -s ci_settings.xml -Pp2,dist -pl :repository deploy
+  when: manual
+  only:
+    refs:
+      - master 
