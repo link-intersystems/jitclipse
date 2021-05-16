@@ -11,6 +11,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Require-Bundle: io.jitclipse.jitwatch.core;bundle-version="1.0.0",
- com.link_intersystems.eclipse.ui.jface;bundle-version="1.0.23",
+ com.link_intersystems.eclipse.ui.jface;bundle-version="1.0.24",
  org.eclipse.ui.console
 Import-Package: javax.inject
