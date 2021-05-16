@@ -25,6 +25,10 @@
 					<includeAllDependencies>true</includeAllDependencies>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>p2-publisher-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 
