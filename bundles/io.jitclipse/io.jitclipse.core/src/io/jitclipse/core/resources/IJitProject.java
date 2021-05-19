@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 
+import io.jitclipse.core.jdt.JavaElementLocator;
 import io.jitclipse.core.model.IPackage;
 import io.jitclipse.core.parser.IJitLogParser;
 
@@ -57,4 +58,6 @@ public interface IJitProject {
 	public List<String> getSourceLocations();
 
 	List<String> getBinaryResourceLocations();
+
+	public JavaElementLocator getJavaElementLocator();
 }

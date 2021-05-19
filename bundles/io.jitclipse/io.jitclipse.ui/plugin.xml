@@ -103,6 +103,11 @@
             id="io.jitclipse.ui.commands.category"
             name="Jit Category">
       </category>
+      <command
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="io.jitclipse.ui.localJavaShortcut.jitwatch"
+            name="Java Application">
+      </command>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchGroups">
@@ -624,5 +629,28 @@
             namespace="io.jitclipse.ui"
             properties="launchable"
             type="java.lang.Object"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="io.jitclipse.contextualLaunch.jitwatch"
+            objectClass="java.lang.Object">
+         <action
+               class="io.jitclipse.ui.launch.JitWatchContextualLaunchAction"
+               enablesFor="+"
+               icon="icons/full/elcl16/runjit.png"
+               id="io.jitclipse.contextualLaunch.jitwatch.submenu"
+               label="JIT Watch As"
+               menubarPath="additions"
+               style="pulldown">
+         </action>
+         <enablement>
+            <test
+                  forcePluginActivation="true"
+                  property="org.eclipse.debug.ui.launchable"
+                  value="jit">
+            </test>
+         </enablement>
+      </objectContribution>
    </extension>
 </plugin>

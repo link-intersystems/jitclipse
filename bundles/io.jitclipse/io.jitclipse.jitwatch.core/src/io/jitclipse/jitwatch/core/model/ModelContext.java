@@ -14,12 +14,12 @@
 package io.jitclipse.jitwatch.core.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.adoptopenjdk.jitwatch.core.JITWatchConfig;
 import org.adoptopenjdk.jitwatch.model.IMetaMember;
 import org.adoptopenjdk.jitwatch.model.JITDataModel;
 import org.adoptopenjdk.jitwatch.model.MetaClass;
@@ -39,9 +39,11 @@ public class ModelContext {
 	private Map<Object, Object> jitWatchToCoreModel = new IdentityHashMap<>();
 	private Map<Object, Object> coreModelToJitWatch = new IdentityHashMap<>();
 	private JITDataModel jitDataModel;
+	private JITWatchConfig config;
 
-	public ModelContext(JITDataModel jitDataModel) {
+	public ModelContext(JITDataModel jitDataModel, JITWatchConfig config) {
 		this.jitDataModel = jitDataModel;
+		this.config = config;
 	}
 
 	public List<ICompilation> getCompilations(List<org.adoptopenjdk.jitwatch.model.Compilation> compilations) {
@@ -124,8 +126,7 @@ public class ModelContext {
 	}
 
 	private List<String> getClassLocations() {
-		// TODO get from jit config
-		return Arrays.asList();
+		return config.getAllClassLocations();
 	}
 
 	public IMetaMember getJitModelElement(IMethod method) {

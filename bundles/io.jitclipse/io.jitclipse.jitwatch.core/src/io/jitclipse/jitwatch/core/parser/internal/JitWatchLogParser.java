@@ -67,6 +67,9 @@ public class JitWatchLogParser implements IJitLogParser {
 		JITWatchConfig config = logParser.getConfig();
 		addSourcFolders(hotspotLogFile, config);
 		addClassFolders(hotspotLogFile, config);
+
+		logParser.setConfig(config);
+
 		File javaFile = hotspotLogFile.getLocation().toFile();
 
 		IJITListener listener = parseLogParticipant.aboutToParse(hotspotLogFile);

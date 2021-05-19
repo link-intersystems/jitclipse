@@ -20,6 +20,7 @@ import static org.mockito.Mockito.mock;
 import java.util.Arrays;
 import java.util.List;
 
+import org.adoptopenjdk.jitwatch.core.JITWatchConfig;
 import org.adoptopenjdk.jitwatch.model.JITDataModel;
 import org.adoptopenjdk.jitwatch.model.MetaClass;
 import org.adoptopenjdk.jitwatch.model.MetaMethod;
@@ -40,7 +41,8 @@ class ModelContextTest {
 	@BeforeEach
 	public void setup() {
 		jitDataModel = new JITDataModel();
-		modelContext = new ModelContext(jitDataModel);
+		JITWatchConfig config = mock(JITWatchConfig.class);
+		modelContext = new ModelContext(jitDataModel, config);
 	}
 
 	@Test

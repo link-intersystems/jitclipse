@@ -34,6 +34,8 @@ import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 
 import io.jitclipse.core.JitCorePlugin;
 import io.jitclipse.core.JitPluginContext;
+import io.jitclipse.core.jdt.JavaElementLocator;
+import io.jitclipse.core.jdt.internal.DefaultJavaElementLocator;
 import io.jitclipse.core.parser.IJitLogParser;
 import io.jitclipse.core.resources.IHotspotLogFolder;
 import io.jitclipse.core.resources.IJitProject;
@@ -43,6 +45,7 @@ public class JitProject implements IJitProject {
 	private HotspotLogFolder hotspotLogFileManager;
 	private JitPluginContext jitPluginContext;
 	private IProject project;
+	private JavaElementLocator javaElementLocator;
 
 	public JitProject(IProject project) {
 		this(JitCorePlugin.getInstance(), Clock.systemDefaultZone(), project);
@@ -52,6 +55,9 @@ public class JitProject implements IJitProject {
 		this.jitPluginContext = jitPluginContext;
 		this.project = project;
 		hotspotLogFileManager = new HotspotLogFolder(clock, project);
+
+		IJavaProject javaProject = (IJavaProject) JavaCore.create(project);
+		javaElementLocator = new DefaultJavaElementLocator(javaProject);
 	}
 
 	@Override
@@ -133,6 +139,11 @@ public class JitProject implements IJitProject {
 		}
 
 		return binaryResources;
+	}
+
+	@Override
+	public JavaElementLocator getJavaElementLocator() {
+		return javaElementLocator;
 	}
 
 }

@@ -80,7 +80,7 @@ public class HotspotLog implements IHotspotLog {
 	public HotspotLog(IFile hostspotLogFile, JITDataModel jitDataModel, JITWatchConfig config) {
 		this.hostspotLogFile = hostspotLogFile;
 		this.jitDataModel = jitDataModel;
-		modelContext = new ModelContext(jitDataModel);
+		modelContext = new ModelContext(jitDataModel, config);
 	}
 
 	@Override

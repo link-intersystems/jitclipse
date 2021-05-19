@@ -19,11 +19,10 @@ import java.util.List;
 
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.Action;
@@ -64,14 +63,17 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 import com.link_intersystems.eclipse.ui.jface.viewers.AdaptableSelectionList;
 import com.link_intersystems.eclipse.ui.jface.viewers.SelectionList;
 import com.link_intersystems.lang.reflect.Class2;
 
+import io.jitclipse.core.jdt.JavaElementLocator;
 import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.model.IMemberByteCode;
 import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.IPackage;
+import io.jitclipse.core.resources.IJitProject;
 import io.jitclipse.ui.JitUIImages;
 import io.jitclipse.ui.JitUIPlugin;
 import io.jitclipse.ui.navigator.HotspotNavigator;
@@ -82,10 +84,10 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 
 	private static TypeVariable<?> TYPE_VAR = Class2.get(AbstractHotspotView.class).getTypeVariable("T");
 
-	private StructuredViewer structuredViewer;
-
+	private IPluginLog pluginLog = JitUIPlugin.getInstance().getPluginLog();
 	private List<IHandler> handlers = new ArrayList<IHandler>();
 
+	private StructuredViewer structuredViewer;
 	private Action doubleClickAction;
 	private Action linkWithSelection;
 
@@ -210,26 +212,28 @@ public abstract class AbstractHotspotView<T> extends ViewPart implements ISelect
 			return;
 		}
 
-		String name = method.getType().getName();
+		String typeName = method.getType().getName();
 
 		IFile logFileLocation = hotspotLog.getLogFileLocation();
-		IJavaProject project = (IJavaProject) JavaCore.create(logFileLocation.getProject());
+		IProject actualProject = logFileLocation.getProject();
+		IJitProject jitProject = actualProject.getAdapter(IJitProject.class);
+
 		try {
-			IType javaType = project.findType(name);
-			IEditorPart openInEditor = JavaUI.openInEditor(javaType);
-			IMemberByteCode memberByteCode = method.getMemberByteCode();
-			if (memberByteCode != null) {
-				int sourceLineNr = memberByteCode.getSourceLineNr();
-				gotoLine(openInEditor, sourceLineNr, javaType);
+			JavaElementLocator javaElementLocator = jitProject.getJavaElementLocator();
+			IType javaType = javaElementLocator.findType(typeName);
+			if (javaType != null) {
+				IEditorPart javaEditor = JavaUI.openInEditor(javaType);
+				IMemberByteCode memberByteCode = method.getMemberByteCode();
+				if (memberByteCode != null) {
+					int sourceLineNr = memberByteCode.getSourceLineNr();
+					gotoLine(javaEditor, sourceLineNr, javaType);
+				}
 			}
 		} catch (JavaModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			pluginLog.logError(e);
 		} catch (PartInitException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			pluginLog.logError(e);
 		}
-
 	}
 
 	protected IMethod toMethod(T element) {

@@ -12,7 +12,7 @@
 	<artifactId>io.jitclipse.core.tests.commons</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
-	<name>JITclipse Core Tests</name>
+	<name>JITclipse Core Test Commons</name>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>

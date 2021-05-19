@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import com.link_intersystems.eclipse.ui.jface.viewers.MultilineCellLabelProvider;
 
 import io.jitclipse.core.model.IClass;
-import io.jitclipse.core.model.IMemberByteCode;
 import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.allocation.IEliminatedAllocation;
 import io.jitclipse.core.model.lock.IOptimisedLock;
