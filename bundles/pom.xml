@@ -22,6 +22,7 @@
 		<module>io.jitclipse/io.jitclipse.jitwatch.core.tests</module>
 		<module>io.jitclipse/io.jitclipse.ui</module>
 		<module>io.jitclipse/io.jitclipse.jitwatch.ui</module>
+		<module>io.jitclipse/io.jitclipse.triview.ui</module>
 	</modules>
 
 	<build>
