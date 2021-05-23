@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Automatic-Module-Name: io.jitclipse.core
 Bundle-SymbolicName: io.jitclipse.jitwatch.core;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-Activator: io.jitclipse.jitwatch.core.JitWatchCorePlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -20,5 +20,5 @@ Export-Package: io.jitclipse.jitwatch.core,
  io.jitclipse.jitwatch.core.parser,
  org.adoptopenjdk.jitwatch.core,
  org.adoptopenjdk.jitwatch.model
-Require-Bundle: io.jitclipse.core;bundle-version="1.0.0";visibility:=reexport,
+Require-Bundle: io.jitclipse.core;bundle-version="1.0.1";visibility:=reexport,
  org.eclipse.jdt.core;bundle-version="3.24.0"

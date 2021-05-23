@@ -2,35 +2,35 @@
 <feature
       id="io.jitclipse.feature"
       label="Jit"
-      version="1.0.0"
+      version="1.0.1"
       provider-name="${pluginVendor}">
 
    <plugin
          id="io.jitclipse.core"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin
          id="io.jitclipse.ui"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin
          id="io.jitclipse.jitwatch.core"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin
          id="io.jitclipse.jitwatch.ui"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.1"
          unpack="false"/>
 
 </feature>

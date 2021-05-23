@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/io.jitclipse.feature_1.0.0.jar" id="io.jitclipse.feature" version="1.0.0">
+   <feature url="features/io.jitclipse.feature_1.0.1.jar" id="io.jitclipse.feature" version="1.0.1">
       <category name="io.jitclipse"/>
    </feature>
    <category-def name="io.jitclipse" label="JITclipse">

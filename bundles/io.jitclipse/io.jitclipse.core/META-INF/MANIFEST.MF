@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Automatic-Module-Name: io.jitclipse.core
 Bundle-SymbolicName: io.jitclipse.core;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-Activator: io.jitclipse.core.JitCorePlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

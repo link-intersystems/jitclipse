@@ -3,11 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Automatic-Module-Name: io.jitclipse.jitwatch.core.tests
 Bundle-SymbolicName: io.jitclipse.jitwatch.core.tests;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Fragment-Host: io.jitclipse.jitwatch.core;bundle-version="1.0.0"
+Fragment-Host: io.jitclipse.jitwatch.core;bundle-version="1.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
-Require-Bundle: io.jitclipse.core.tests.commons;bundle-version="1.0.0"
+Require-Bundle: io.jitclipse.core.tests.commons;bundle-version="1.0.1"

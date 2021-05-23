@@ -3,14 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Automatic-Module-Name: io.jitclipse.ui
 Bundle-SymbolicName: io.jitclipse.ui;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-Activator: io.jitclipse.ui.JitUIPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
-Require-Bundle: io.jitclipse.core;bundle-version="1.0.0",
+Require-Bundle: io.jitclipse.core;bundle-version="1.0.1",
  com.link_intersystems.eclipse.ui.jface;bundle-version="1.0.24",
  org.eclipse.debug.ui,
  org.eclipse.ui.navigator,

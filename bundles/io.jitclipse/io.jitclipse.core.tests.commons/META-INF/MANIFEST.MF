@@ -3,13 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Automatic-Module-Name: io.jitclipse.core.tests.commons
 Bundle-SymbolicName: io.jitclipse.core.tests.commons;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
-Require-Bundle: io.jitclipse.core;bundle-version="1.0.0";visibility:=reexport,
+Require-Bundle: io.jitclipse.core;bundle-version="1.0.1";visibility:=reexport,
  org.mockito;visibility:=reexport,
  org.objenesis;visibility:=reexport,
  org.junit;bundle-version="4.12.0";visibility:=reexport,
