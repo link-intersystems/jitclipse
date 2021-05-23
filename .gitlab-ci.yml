@@ -37,7 +37,10 @@ cache:
 .verify: &verify
   stage: test
   script:
-    - 'mvn $MAVEN_CLI_OPTS verify'
+    - if [ ! -f ci_settings.xml ];
+        then echo "CI settings missing\!";
+      fi
+    - 'mvn $MAVEN_CLI_OPTS -Pdist -s ci_settings.xml verify'
   except:
     - master
 
@@ -49,6 +52,22 @@ verify:jdk11:
 # For deploying packages to GitLab's Maven Repository: See https://docs.gitlab.com/ee/user/project/packages/maven_repository.html#creating-maven-packages-with-gitlab-cicd for more details.
 # Please note: The GitLab Maven Repository is currently only available in GitLab Premium / Ultimate.
 # For `master` branch run `mvn deploy` automatically.
+test:jdk11:
+  stage: test
+  script:
+    - if [ ! -f ci_settings.xml ];
+        then echo "CI settings missing\! If deploying to GitLab Maven Repository, please see https://docs.gitlab.com/ee/user/project/packages/maven_repository.html#creating-maven-packages-with-gitlab-cicd for instructions.";
+      fi
+    - 'mvn $MAVEN_CLI_OPTS -Pdist package -s ci_settings.xml'
+  artifacts:
+    reports:
+      junit:
+        - bundles/**/target/surefire-reports/TEST-*.xml
+        - bundles/**/target/failsafe-reports/TEST-*.xml
+
+  except:
+    - master
+
 deploy:jdk11:
   stage: deploy
   script:
