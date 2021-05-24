@@ -120,7 +120,8 @@ public class JitLauncherDelegate
 		ILaunchConfiguration effectiveConfiguration = jitLaunch.getEffectiveLaunchConfiguration();
 
 		ILaunchConfigurationDelegate launchDelegate = getLaunchDelegate();
-		launchDelegate.launch(effectiveConfiguration, DELEGATELAUNCHMODE, jitLaunch, SubMonitor.convert(monitor, 1));
+		SubMonitor launchMonitor = SubMonitor.convert(monitor, 1);
+		launchDelegate.launch(effectiveConfiguration, DELEGATELAUNCHMODE, jitLaunch, launchMonitor);
 
 		monitor.done();
 	}

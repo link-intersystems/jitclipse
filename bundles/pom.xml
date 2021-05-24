@@ -18,6 +18,7 @@
 		<module>io.jitclipse/io.jitclipse.core</module>
 		<module>io.jitclipse/io.jitclipse.core.tests.commons</module>
 		<module>io.jitclipse/io.jitclipse.core.tests</module>
+		<module>io.jitclipse/io.jitclipse.core.hsdis</module>
 		<module>io.jitclipse/io.jitclipse.jitwatch.core</module>
 		<module>io.jitclipse/io.jitclipse.jitwatch.core.tests</module>
 		<module>io.jitclipse/io.jitclipse.ui</module>

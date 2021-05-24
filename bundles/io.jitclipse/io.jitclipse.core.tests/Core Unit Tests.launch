@@ -13,13 +13,9 @@
     <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/pde-junit"/>
     <booleanAttribute key="default" value="false"/>
     <setAttribute key="deselected_workspace_bundles">
-        <setEntry value="com.link_intersystems.eclipse.core.tests"/>
         <setEntry value="com.link_intersystems.eclipse.ui.jface"/>
         <setEntry value="com.link_intersystems.eclipse.ui.plugin"/>
         <setEntry value="com.link_intersystems.eclipse.ui.swt"/>
-        <setEntry value="com.link_intersystems.eclipse.ui.utils"/>
-        <setEntry value="io.jitclipse.jitwatch.core"/>
-        <setEntry value="io.jitclipse.jitwatch.core.tests"/>
         <setEntry value="io.jitclipse.jitwatch.ui"/>
         <setEntry value="io.jitclipse.ui"/>
         <setEntry value="org.eclipse.eclemma.core"/>
@@ -192,13 +188,19 @@
         <setEntry value="org.w3c.dom.svg@default:default"/>
     </setAttribute>
     <setAttribute key="selected_workspace_bundles">
-        <setEntry value="com.link_intersystems.eclipse.core@default:default"/>
+        <setEntry value="com.link_intersystems.eclipse.core.commands@default:default"/>
+        <setEntry value="com.link_intersystems.eclipse.core.resources@default:default"/>
+        <setEntry value="com.link_intersystems.eclipse.core.runtime.tests@default:default"/>
+        <setEntry value="com.link_intersystems.eclipse.core.runtime@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.lis-commons-beans@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.lis-commons-lang@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.lis-commons-math@default:default"/>
         <setEntry value="io.jitclipse.core.tests.commons@default:default"/>
         <setEntry value="io.jitclipse.core.tests@default:false"/>
         <setEntry value="io.jitclipse.core@default:default"/>
+        <setEntry value="io.jitclipse.jitwatch.core.hsdis.win32@default:default"/>
+        <setEntry value="io.jitclipse.jitwatch.core.tests@default:default"/>
+        <setEntry value="io.jitclipse.jitwatch.core@default:default"/>
     </setAttribute>
     <booleanAttribute key="show_selected_only" value="false"/>
     <booleanAttribute key="tracing" value="false"/>

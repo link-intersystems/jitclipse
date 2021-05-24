@@ -13,6 +13,8 @@
     <booleanAttribute key="default" value="false"/>
     <setAttribute key="deselected_workspace_bundles">
         <setEntry value="com.link_intersystems.eclipse.core.runtime.tests"/>
+        <setEntry value="io.jitclipse.core.tests"/>
+        <setEntry value="io.jitclipse.jitwatch.core.tests"/>
         <setEntry value="org.eclipse.eclemma.core"/>
         <setEntry value="org.eclipse.eclemma.ui"/>
     </setAttribute>
@@ -215,9 +217,8 @@
         <setEntry value="com.link_intersystems.eclipse.ui.plugin@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.ui.swt@default:default"/>
         <setEntry value="io.jitclipse.core.tests.commons@default:default"/>
-        <setEntry value="io.jitclipse.core.tests@default:false"/>
         <setEntry value="io.jitclipse.core@default:default"/>
-        <setEntry value="io.jitclipse.jitwatch.core.tests@default:false"/>
+        <setEntry value="io.jitclipse.jitwatch.core.hsdis.win32@default:false"/>
         <setEntry value="io.jitclipse.jitwatch.core@default:default"/>
         <setEntry value="io.jitclipse.jitwatch.ui@default:default"/>
         <setEntry value="io.jitclipse.ui@default:default"/>

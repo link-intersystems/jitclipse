@@ -1,4 +1,4 @@
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.launch;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +27,10 @@ public class EnvPath implements Iterable<String> {
 
 	public void add(String pathElement) {
 		pathElements.add(pathElement);
+	}
+
+	public int size() {
+		return pathElements.size();
 	}
 
 }

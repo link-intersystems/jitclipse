@@ -13,6 +13,7 @@
  *******************************************************************************/
 package io.jitclipse.core.launch.internal;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +33,12 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironmentsManager;
 
+import com.link_intersystems.eclipse.core.runtime.runtime.IExtensionPointProxyFactory;
+
+import io.jitclipse.core.JitCorePlugin;
+import io.jitclipse.core.launch.Env;
+import io.jitclipse.core.launch.EnvPath;
+import io.jitclipse.core.launch.HsdisProvider;
 import io.jitclipse.core.launch.IJitArgs;
 import io.jitclipse.core.launch.IJitExecutionEnvironment;
 import io.jitclipse.core.launch.VMVendor;
@@ -130,18 +137,33 @@ public class JdtJitExecutionEnvironment implements IJitExecutionEnvironment {
 				new HashedMap<>());
 		String path = envVariables.getOrDefault("PATH", "");
 		EnvPath envPath = env.parsePath(path);
-		boolean applyHsdis = applyHsdis(envPath);
+		boolean hsdisApplied = applyHsdis(env, envPath);
 
 		String effectivePath = env.formatPath(envPath);
 		envVariables.put("PATH", effectivePath);
 		workingCopy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, envVariables);
 		workingCopy.setAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
 
-		return applyHsdis;
+		return hsdisApplied;
 	}
 
-	private boolean applyHsdis(EnvPath envPath) {
-		return false;
+	private boolean applyHsdis(Env env, EnvPath envPath) {
+		int sizeBefore = envPath.size();
+
+		JitCorePlugin jitCorePlugin = JitCorePlugin.getInstance();
+		IExtensionPointProxyFactory extensionsPointProxyFactory = jitCorePlugin.getExtensionsPointProxyFactory();
+		List<HsdisProviderExtension> hsdisProviderExtensions = extensionsPointProxyFactory
+				.createProxies(HsdisProviderExtension.class);
+		for (HsdisProviderExtension hsdisProviderExtension : hsdisProviderExtensions) {
+			HsdisProvider provider = hsdisProviderExtension.getProvider();
+			File hsdisLibraryFolder = provider.getHsdisLibraryFolder(env);
+			if (hsdisLibraryFolder != null) {
+				String absoluteHsdisLibraryPath = hsdisLibraryFolder.getAbsolutePath();
+				envPath.add(absoluteHsdisLibraryPath);
+			}
+		}
+
+		return sizeBefore < envPath.size();
 	}
 
 }

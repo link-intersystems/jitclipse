@@ -1,70 +1,50 @@
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.launch;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class Env {
 
-	public static final Env WINDOWS = new Env('\"', ";");
-	public static final Env LINUX = new Env('\"', ":");
-	public static final Env MAC = new Env('\"', ":");
+	public static final Env WINDOWS = new Env(OperatingSystem.WINDOWS, '\"', ";");
+	public static final Env LINUX = new Env(OperatingSystem.LINUX, '\"', ":");
+	public static final Env MAC = new Env(OperatingSystem.MAC, '\"', ":");
 
-	private static String OS = System.getProperty("os.name").toLowerCase();
+	private static final Map<OperatingSystem, Env> envMapping;
+
+	static {
+		Map<OperatingSystem, Env> tempEnvMapping = new HashMap<>();
+
+		tempEnvMapping.put(OperatingSystem.WINDOWS, WINDOWS);
+		tempEnvMapping.put(OperatingSystem.LINUX, LINUX);
+		tempEnvMapping.put(OperatingSystem.MAC, MAC);
+
+		envMapping = Collections.unmodifiableMap(tempEnvMapping);
+	}
 
 	public static Optional<Env> getCurrent() {
-		Env env = null;
-
-		if (isWindows()) {
-			env = WINDOWS;
-		} else if (isMac()) {
-			env = MAC;
-		} else if (isUnix()) {
-			env = LINUX;
-		}
-		return Optional.ofNullable(env);
-
-	}
-
-	public static boolean isWindows() {
-		return OS.contains("win");
-	}
-
-	public static boolean isMac() {
-		return OS.contains("mac");
-	}
-
-	public static boolean isUnix() {
-		return (OS.contains("nix") || OS.contains("nux") || OS.contains("aix"));
-	}
-
-	public static boolean isSolaris() {
-		return OS.contains("sunos");
-	}
-
-	public static String getOS() {
-		if (isWindows()) {
-			return "win";
-		} else if (isMac()) {
-			return "osx";
-		} else if (isUnix()) {
-			return "uni";
-		} else if (isSolaris()) {
-			return "sol";
-		} else {
-			return "err";
-		}
+		Optional<OperatingSystem> currentOs = OperatingSystem.getCurrent();
+		Optional<Env> env = currentOs.map(envMapping::get);
+		return env;
 	}
 
 	private char enclosingChar = '\"';
 	private String pathSeparator = ";";
+	private OperatingSystem os;
 
-	Env(char enclosingChar, String pathSeparator) {
-		super();
+	private Env(OperatingSystem os, char enclosingChar, String pathSeparator) {
+		this.os = os;
 		this.enclosingChar = enclosingChar;
 		this.pathSeparator = pathSeparator;
+	}
+
+	public OperatingSystem getOperatinSystem() {
+		return os;
 	}
 
 	public EnvPath parsePath(String pathSpec) {

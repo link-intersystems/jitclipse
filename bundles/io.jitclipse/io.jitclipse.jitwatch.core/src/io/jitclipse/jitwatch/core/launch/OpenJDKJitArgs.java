@@ -23,6 +23,7 @@ public class OpenJDKJitArgs extends AbstractJitArgs {
 	public void setHotspotLogFile(File hotspotLogFile) {
 		setHotspotLogEnabled();
 		setStringOption("LogFile", hotspotLogFile.toString());
+		setDisassembledCodeEnabled(true);
 	}
 
 	private void setHotspotLogEnabled() {
