@@ -5,18 +5,12 @@
 
 	<parent>
 		<groupId>io.jitclipse</groupId>
-		<artifactId>jitclipse-eclipse-plugin</artifactId>
+		<artifactId>features</artifactId>
 		<version>1.0.1</version>
 	</parent>
 
-	<artifactId>features</artifactId>
-	<packaging>pom</packaging>
+	<artifactId>io.jitclipse.hsdis.feature</artifactId>
+	<packaging>eclipse-feature</packaging>
 
-	<name>JITclipse Features</name>
-
-	<modules>
-		<module>io.jitclipse</module>
-		<module>io.jitclipse.hsdis</module>
-	</modules>
-
+	<name>JITclipse Hsdis Feature</name>
 </project>

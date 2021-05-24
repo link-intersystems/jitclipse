@@ -1,13 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: JITclipse JITWatch hsdis win32
+Bundle-Name: JITclipse Hsdis
 Bundle-SymbolicName: io.jitclipse.core.hsdis;singleton:=true
 Bundle-Version: 1.0.1
 Bundle-ClassPath: .,
  libs/commons-io-2.8.0.jar
 Bundle-Vendor: Link Intersystems GmbH
 Export-Package: io.jitclipse.core.hsdis
-Eclipse-PlatformFilter: (& (osgi.ws=win32) (osgi.os=win32) (osgi.arch=x86_64))
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: io.jitclipse.core.hsdis
 Bundle-Activator: io.jitclipse.core.hsdis.JitCoreHsdisPlugin

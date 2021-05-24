@@ -17,7 +17,7 @@
 	<artifactId>io.jitclipse.core.hsdis</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
-	<name>JITclipse JITWatch Core</name>
+	<name>JITclipse Core Hsdis</name>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>

@@ -3,10 +3,16 @@
    <feature url="features/io.jitclipse.feature_1.0.1.jar" id="io.jitclipse.feature" version="1.0.1">
       <category name="io.jitclipse"/>
    </feature>
+   <feature url="features/io.jitclipse.hsdis.feature_1.0.1.jar" id="io.jitclipse.hsdis.feature" version="1.0.1">
+      <category name="io.jitclipse.optional"/>
+   </feature>
    <category-def name="io.jitclipse" label="JITclipse">
       <description>
-         An eclipse integration for JITWatch. 
+         An eclipse integration for JITWatch.
 See https://github.com/AdoptOpenJDK/jitwatch.
       </description>
+   </category-def>
+   <category-def name="io.jitclipse.optional" label="Optional Features">
+      <category name="io.jitclipse"/>
    </category-def>
 </site>
