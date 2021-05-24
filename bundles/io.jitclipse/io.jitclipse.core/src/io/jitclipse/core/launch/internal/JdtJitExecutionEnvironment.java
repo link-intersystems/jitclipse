@@ -17,14 +17,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironmentsManager;
 
+import io.jitclipse.core.launch.IJitArgs;
 import io.jitclipse.core.launch.IJitExecutionEnvironment;
 import io.jitclipse.core.launch.VMVendor;
 
@@ -33,8 +41,12 @@ public class JdtJitExecutionEnvironment implements IJitExecutionEnvironment {
 	private IVMInstall vmInstall;
 	private IVMVendorDiscoverer vendorDiscoverer = new DefaultShowSettingsVMVendorDiscoverer();
 	private VMVendor vendor;
+	private IFile hotspotLogFile;
+	private ILaunchConfiguration configuration;
 
-	public JdtJitExecutionEnvironment(ILaunchConfiguration configuration) throws CoreException {
+	public JdtJitExecutionEnvironment(ILaunchConfiguration configuration, IFile hotspotLogFile) throws CoreException {
+		this.configuration = configuration;
+		this.hotspotLogFile = hotspotLogFile;
 		vmInstall = JavaRuntime.computeVMInstall(configuration);
 	}
 
@@ -84,4 +96,52 @@ public class JdtJitExecutionEnvironment implements IJitExecutionEnvironment {
 		}
 		return null;
 	}
+
+	public void apply(IJitArgs jitArgs, ILaunchConfigurationWorkingCopy workingCopy) throws CoreException {
+
+		boolean hsdisLibraryApplied = applyHsdisLibrary(workingCopy);
+		applyJitArgs(jitArgs, workingCopy, hsdisLibraryApplied);
+	}
+
+	private void applyJitArgs(IJitArgs jitArgs, ILaunchConfigurationWorkingCopy workingCopy,
+			boolean hsdisLibraryApplied) throws CoreException {
+		String arguments = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, ""); //$NON-NLS-1$
+
+		StringBuilder sb = new StringBuilder(arguments);
+
+		IPath location = hotspotLogFile.getLocation();
+		jitArgs.setHotspotLogFile(location.toFile());
+		jitArgs.setDisassembledCodeEnabled(hsdisLibraryApplied);
+		jitArgs.setClassModelEnabled(true);
+
+		if (!jitArgs.isEmpty()) {
+			sb.append(' ');
+			sb.append(jitArgs);
+		}
+
+		String jitEnabledArguments = sb.toString();
+		workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, jitEnabledArguments);
+	}
+
+	private boolean applyHsdisLibrary(ILaunchConfigurationWorkingCopy workingCopy) throws CoreException {
+		Env env = Env.getCurrent().get();
+
+		Map<String, String> envVariables = configuration.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES,
+				new HashedMap<>());
+		String path = envVariables.getOrDefault("PATH", "");
+		EnvPath envPath = env.parsePath(path);
+		boolean applyHsdis = applyHsdis(envPath);
+
+		String effectivePath = env.formatPath(envPath);
+		envVariables.put("PATH", effectivePath);
+		workingCopy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, envVariables);
+		workingCopy.setAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
+
+		return applyHsdis;
+	}
+
+	private boolean applyHsdis(EnvPath envPath) {
+		return false;
+	}
+
 }

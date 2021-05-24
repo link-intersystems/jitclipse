@@ -22,17 +22,14 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.Launch;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 
 import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 
 import io.jitclipse.core.launch.IJitArgs;
 import io.jitclipse.core.launch.IJitArgsProvider;
-import io.jitclipse.core.launch.IJitExecutionEnvironment;
 import io.jitclipse.core.launch.IJitLaunch;
 import io.jitclipse.core.resources.IHotspotLogFile;
 import io.jitclipse.core.resources.IHotspotLogFolder;
@@ -81,31 +78,14 @@ public class JitLaunch extends Launch implements IJitLaunch {
 
 	public ILaunchConfiguration getEffectiveLaunchConfiguration() throws CoreException {
 		ILaunchConfiguration configuration = getLaunchConfiguration();
-		String arguments = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, ""); //$NON-NLS-1$
-
-		StringBuilder sb = new StringBuilder(arguments);
-
 		ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
 
 		if (hotspotLogFile != null) {
-
-			IJitExecutionEnvironment jitExecutionEnvironment = new JdtJitExecutionEnvironment(configuration);
+			JdtJitExecutionEnvironment jitExecutionEnvironment = new JdtJitExecutionEnvironment(configuration, hotspotLogFile);
 			IJitArgs jitArgs = argsProvider.createJitArgs(jitExecutionEnvironment);
 
-			IPath location = hotspotLogFile.getLocation();
-			jitArgs.setHotspotLogFile(location.toFile());
-			jitArgs.setDisassembledCodeEnabled(true);
-			jitArgs.setClassModelEnabled(true);
-
-			if (!jitArgs.isEmpty()) {
-				sb.append(' ');
-				sb.append(jitArgs);
-			}
+			jitExecutionEnvironment.apply(jitArgs, workingCopy);
 		}
-
-		String jitEnabledArguments = sb.toString();
-
-		workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, jitEnabledArguments);
 
 		return workingCopy;
 	}
