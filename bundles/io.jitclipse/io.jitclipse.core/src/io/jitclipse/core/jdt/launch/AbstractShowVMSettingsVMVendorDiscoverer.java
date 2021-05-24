@@ -11,7 +11,7 @@
  * Contributors:
  *     Link Intersystems GmbH - René Link - API and implementation
  *******************************************************************************/
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.jdt.launch;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,12 @@ import org.eclipse.jdt.launching.IVMInstall;
 
 import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 
+import io.jitclipse.core.jdt.launching.DefaultJavaExecutableLocator;
+import io.jitclipse.core.jdt.launching.IJavaExecutableLocator;
+import io.jitclipse.core.jdt.launching.IVMVendorDiscoverer;
 import io.jitclipse.core.launch.VMVendor;
+import io.jitclipse.core.launch.internal.IOutputGrabber;
+import io.jitclipse.core.launch.internal.ProcessOutputGrabber;
 
 public abstract class AbstractShowVMSettingsVMVendorDiscoverer extends ProcessOutputGrabber
 		implements IVMVendorDiscoverer {

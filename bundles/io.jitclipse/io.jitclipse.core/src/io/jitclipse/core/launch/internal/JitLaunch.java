@@ -28,6 +28,7 @@ import org.eclipse.debug.core.Launch;
 
 import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
 
+import io.jitclipse.core.jdt.launching.JdtJitExecutionEnvironment;
 import io.jitclipse.core.launch.IJitArgs;
 import io.jitclipse.core.launch.IJitArgsProvider;
 import io.jitclipse.core.launch.IJitLaunch;

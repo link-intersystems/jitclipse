@@ -11,7 +11,7 @@
  * Contributors:
  *     Link Intersystems GmbH - René Link - API and implementation
  *******************************************************************************/
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.jdt.launch;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

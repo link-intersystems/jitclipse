@@ -1,4 +1,4 @@
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.launch.hsdis;
 
 import com.link_intersystems.eclipse.core.runtime.runtime.ConfigurationElement;
 import com.link_intersystems.eclipse.core.runtime.runtime.ExecutableExtension;

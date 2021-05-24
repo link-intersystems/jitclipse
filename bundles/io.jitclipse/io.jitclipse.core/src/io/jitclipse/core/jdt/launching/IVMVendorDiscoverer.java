@@ -11,13 +11,13 @@
  * Contributors:
  *     Link Intersystems GmbH - René Link - API and implementation
  *******************************************************************************/
-package io.jitclipse.core.launch.internal;
-
-import java.io.File;
+package io.jitclipse.core.jdt.launching;
 
 import org.eclipse.jdt.launching.IVMInstall;
 
-public interface IJavaExecutableLocator {
+import io.jitclipse.core.launch.VMVendor;
 
-	public File locateExecutable(IVMInstall vmInstall);
+public interface IVMVendorDiscoverer {
+
+	public VMVendor discover(IVMInstall vmInstall);
 }

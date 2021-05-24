@@ -11,7 +11,7 @@
  * Contributors:
  *     Link Intersystems GmbH - René Link - API and implementation
  *******************************************************************************/
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.jdt.launching;
 
 import java.text.MessageFormat;
 import java.util.Comparator;

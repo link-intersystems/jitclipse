@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.link_intersystems.eclipse.core.runtime.runtime.IPluginContext;
 import com.link_intersystems.eclipse.core.runtime.runtime.IPluginLog;
@@ -40,7 +41,7 @@ public class DefaultHsdisProvider implements HsdisProvider {
 	}
 
 	@Override
-	public File getHsdisLibraryFolder(Env env) {
+	public Optional<File> getHsdisLibraryFolder(Env env) {
 		OperatingSystem os = env.getOperatinSystem();
 		String osName = os.name().toLowerCase();
 
@@ -64,7 +65,11 @@ public class DefaultHsdisProvider implements HsdisProvider {
 			}
 		}
 
-		return osLibraryFolder;
+		if(osLibraryFolder.list().length == 0) {
+			return Optional.empty();
+		}
+
+		return Optional.of(osLibraryFolder);
 	}
 
 }

@@ -11,7 +11,7 @@
  * Contributors:
  *     Link Intersystems GmbH - René Link - API and implementation
  *******************************************************************************/
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.jdt.launch;
 
 import static org.mockito.Mockito.when;
 
@@ -20,6 +20,8 @@ import java.io.IOException;
 
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+
+import io.jitclipse.core.launch.internal.IOutputGrabber;
 
 public class VMSettingsOutputFixture {
 	public void mockUnknownVMOutput(IOutputGrabber outputGrabber) throws IOException {

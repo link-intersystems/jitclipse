@@ -11,7 +11,7 @@
  * Contributors:
  *     Link Intersystems GmbH - René Link - API and implementation
  *******************************************************************************/
-package io.jitclipse.core.launch.internal;
+package io.jitclipse.core.jdt.launch;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -24,7 +24,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import io.jitclipse.core.jdt.launching.IJavaExecutableLocator;
 import io.jitclipse.core.launch.VMVendor;
+import io.jitclipse.core.launch.internal.IOutputGrabber;
 
 class DefaultShowSettingsVMVendorDiscovererTest  {
 

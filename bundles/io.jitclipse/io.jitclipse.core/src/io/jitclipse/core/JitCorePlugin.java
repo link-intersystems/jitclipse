@@ -13,7 +13,9 @@
  *******************************************************************************/
 package io.jitclipse.core;
 
+import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.core.runtime.CoreException;
 import org.osgi.framework.BundleContext;
@@ -21,7 +23,10 @@ import org.osgi.framework.BundleContext;
 import com.link_intersystems.eclipse.core.runtime.runtime.DefaultPlugin;
 import com.link_intersystems.eclipse.core.runtime.runtime.IExtensionPointProxyFactory;
 
+import io.jitclipse.core.launch.Env;
+import io.jitclipse.core.launch.HsdisProvider;
 import io.jitclipse.core.launch.IJitArgsProvider;
+import io.jitclipse.core.launch.hsdis.HsdisProviderExtension;
 import io.jitclipse.core.parser.IJitLogParser;
 import io.jitclipse.core.parser.internal.IJitParserExtension;
 
@@ -74,6 +79,32 @@ public class JitCorePlugin extends DefaultPlugin implements JitPluginContext {
 
 		throw new CoreException(JitStatus.NO_JIT_ARGS_PROVIDER_AVAILABLE.getStatus());
 
+	}
+
+	public HsdisProvider getHsdisProvider() {
+		IExtensionPointProxyFactory extensionsPointProxyFactory = getExtensionsPointProxyFactory();
+		List<HsdisProviderExtension> hsdisProviderExtensions = extensionsPointProxyFactory
+				.createProxies(HsdisProviderExtension.class);
+
+		return new HsdisProvider() {
+
+			@Override
+			public Optional<File> getHsdisLibraryFolder(Env env) {
+				Optional<File> hsdisLibraryFolder = Optional.empty();
+
+				for (HsdisProviderExtension hsdisProviderExtension : hsdisProviderExtensions) {
+					HsdisProvider provider = hsdisProviderExtension.getProvider();
+					Optional<File> providerLibFolder = provider.getHsdisLibraryFolder(env);
+
+					if (providerLibFolder.isPresent()) {
+						hsdisLibraryFolder = providerLibFolder;
+						break;
+					}
+				}
+
+				return hsdisLibraryFolder;
+			}
+		};
 	}
 
 }

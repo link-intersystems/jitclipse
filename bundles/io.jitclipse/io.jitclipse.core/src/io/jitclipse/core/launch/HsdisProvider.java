@@ -1,9 +1,10 @@
 package io.jitclipse.core.launch;
 
 import java.io.File;
+import java.util.Optional;
 
 public interface HsdisProvider {
 
 
-	public File getHsdisLibraryFolder(Env env);
+	public Optional<File> getHsdisLibraryFolder(Env env);
 }
