@@ -1,5 +1,8 @@
 package io.jitclipse.core.launch;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,6 +17,8 @@ public class Env {
 	public static final Env WINDOWS = new Env(OperatingSystem.WINDOWS, '\"', ";");
 	public static final Env LINUX = new Env(OperatingSystem.LINUX, '\"', ":");
 	public static final Env MAC = new Env(OperatingSystem.MAC, '\"', ":");
+
+	public static final List<Env> VALUES = unmodifiableList(asList(WINDOWS, LINUX, MAC));
 
 	private static final Map<OperatingSystem, Env> envMapping;
 

@@ -18,7 +18,7 @@
    <extension
          point="io.jitclipse.core.providers">
       <hsdisProvider
-            class="io.jitclipse.core.hsdis.internal.DefaultHsdisProvider">
+            class="io.jitclipse.core.hsdis.internal.HsdisProviderExtensionDelegate">
       </hsdisProvider>
    </extension>
 </plugin>
