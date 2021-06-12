@@ -36,7 +36,7 @@ public class HotspotNavigator extends CommonNavigator {
 
 	public void expandHotspotLogFile(IHotspotLogFile hotspotLogFile) {
 		CommonViewer commonViewer = getCommonViewer();
-		commonViewer.expandToLevel(hotspotLogFile.getFile(), CommonViewer.ALL_LEVELS);
+		commonViewer.expandToLevel(hotspotLogFile.getFile(), 1);
 	}
 
 	@Override

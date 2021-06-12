@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (c) 2021 Link Intersystems GmbH and others.
+
+    This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+        Link Intersystems GmbH - René Link - API and implementation
+ -->
+
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="io.jitclipse.assembly.ui"
+            name="Sample Category">
+      </category>
+      <view
+            category="io.jitclipse.assembly.ui"
+            class="io.jitclipse.assembly.ui.views.AssemblyView"
+            icon="icons/sample.png"
+            id="io.jitclipse.assembly.ui.views.AssemblyView"
+            inject="true"
+            name="Assembly">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="io.jitclipse.assembly.ui.views.AssemblyView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>>
+</plugin>

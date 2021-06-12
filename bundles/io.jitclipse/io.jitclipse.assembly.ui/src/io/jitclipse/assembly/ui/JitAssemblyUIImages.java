@@ -11,22 +11,9 @@
  * Contributors:
  *     Link Intersystems GmbH - René Link - API and implementation
  *******************************************************************************/
-package io.jitclipse.core.model;
+package io.jitclipse.assembly.ui;
 
-public interface ICompilation {
+public interface JitAssemblyUIImages {
 
-	long getNMethodEmittedTime();
-
-	long getId();
-
-	long getQueudTimestamp();
-
-	long getStartTimestamp();
-
-	JitCompiler getCompiler();
-
-	public IMethod getMethod();
-
-	public IAssembly getAssembly();
 
 }

@@ -216,9 +216,10 @@
         <setEntry value="com.link_intersystems.eclipse.ui.jface@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.ui.plugin@default:default"/>
         <setEntry value="com.link_intersystems.eclipse.ui.swt@default:default"/>
+        <setEntry value="io.jitclipse.assembly.ui@default:default"/>
+        <setEntry value="io.jitclipse.core.hsdis@default:default"/>
         <setEntry value="io.jitclipse.core.tests.commons@default:default"/>
         <setEntry value="io.jitclipse.core@default:default"/>
-        <setEntry value="io.jitclipse.jitwatch.core.hsdis.win32@default:false"/>
         <setEntry value="io.jitclipse.jitwatch.core@default:default"/>
         <setEntry value="io.jitclipse.jitwatch.ui@default:default"/>
         <setEntry value="io.jitclipse.ui@default:default"/>

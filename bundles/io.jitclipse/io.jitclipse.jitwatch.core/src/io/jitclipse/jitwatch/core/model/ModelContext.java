@@ -24,9 +24,11 @@ import org.adoptopenjdk.jitwatch.model.IMetaMember;
 import org.adoptopenjdk.jitwatch.model.JITDataModel;
 import org.adoptopenjdk.jitwatch.model.MetaClass;
 import org.adoptopenjdk.jitwatch.model.MetaPackage;
+import org.adoptopenjdk.jitwatch.model.assembly.AssemblyMethod;
 import org.adoptopenjdk.jitwatch.model.bytecode.ClassBC;
 import org.adoptopenjdk.jitwatch.model.bytecode.MemberBytecode;
 
+import io.jitclipse.core.model.IAssembly;
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.IClassByteCode;
 import io.jitclipse.core.model.ICompilation;
@@ -139,6 +141,14 @@ public class ModelContext {
 
 	private IMemberByteCode createMemberByteCode(MemberBytecode memberBytecode) {
 		return new MemberByteCode(this, memberBytecode);
+	}
+
+	public IAssembly getAssembly(AssemblyMethod assembly) {
+		return getElement(assembly, this::createAssembly);
+	}
+
+	private IAssembly createAssembly(AssemblyMethod assemblyMethod) {
+		return new Assembly(this, assemblyMethod);
 	}
 
 }

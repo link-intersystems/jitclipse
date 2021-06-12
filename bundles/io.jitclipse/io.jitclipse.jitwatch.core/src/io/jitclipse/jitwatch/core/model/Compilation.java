@@ -14,7 +14,9 @@
 package io.jitclipse.jitwatch.core.model;
 
 import org.adoptopenjdk.jitwatch.model.IMetaMember;
+import org.adoptopenjdk.jitwatch.model.assembly.AssemblyMethod;
 
+import io.jitclipse.core.model.IAssembly;
 import io.jitclipse.core.model.ICompilation;
 import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.JitCompiler;
@@ -64,4 +66,9 @@ public class Compilation implements ICompilation {
 		return modelContext.getMethod(member);
 	}
 
+	@Override
+	public IAssembly getAssembly() {
+		AssemblyMethod assembly = compilation.getAssembly();
+		return modelContext.getAssembly(assembly);
+	}
 }

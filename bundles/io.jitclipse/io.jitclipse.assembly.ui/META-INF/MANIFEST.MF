@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Automatic-Module-Name: io.jitclipse.assembly.ui
+Bundle-SymbolicName: io.jitclipse.assembly.ui;singleton:=true
+Bundle-Version: 1.0.1
+Bundle-Activator: io.jitclipse.assembly.ui.JitUIPlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Require-Bundle: io.jitclipse.ui;bundle-version="1.0.1",
+ org.eclipse.core.runtime,
+ org.eclipse.ui
+Import-Package: javax.inject
