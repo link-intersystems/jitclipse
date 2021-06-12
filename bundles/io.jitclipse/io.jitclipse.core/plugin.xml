@@ -110,6 +110,9 @@
          <adapter
                type="io.jitclipse.core.resources.IHotspotLogFile">
          </adapter>
+         <adapter
+               type="io.jitclipse.core.model.IHotspotLog">
+         </adapter>
       </factory>
       <factory
             adaptableType="io.jitclipse.core.model.IPackage"
@@ -137,6 +140,13 @@
             class="io.jitclipse.core.resources.internal.HotspotLogAdapterFactory">
          <adapter
                type="io.jitclipse.core.model.IHotspotLog">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="io.jitclipse.core.model.allocation.IEliminatedAllocation"
+            class="io.jitclipse.core.model.internal.EliminatedAllocationFactory">
+         <adapter
+               type="io.jitclipse.core.model.IMethod">
          </adapter>
       </factory>
    </extension>

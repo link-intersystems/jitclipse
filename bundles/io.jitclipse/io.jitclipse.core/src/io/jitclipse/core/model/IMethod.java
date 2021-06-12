@@ -14,6 +14,7 @@
 package io.jitclipse.core.model;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.link_intersystems.eclipse.core.runtime.runtime.IAdaptable2;
 
@@ -32,6 +33,10 @@ public interface IMethod extends IAdaptable2 {
 	public IMemberByteCode getMemberByteCode();
 
 	public List<ICompilation> getCompilations();
+
+	default public Optional<ICompilation> getLatestCompilation() {
+		return getCompilations().stream().reduce((first, second) -> second);
+	}
 
 	default boolean isHot() {
 		return !getCompilations().isEmpty();

@@ -29,6 +29,8 @@ import org.adoptopenjdk.jitwatch.model.bytecode.ClassBC;
 import org.adoptopenjdk.jitwatch.model.bytecode.MemberBytecode;
 
 import io.jitclipse.core.model.IAssembly;
+import io.jitclipse.core.model.IAssemblyBlock;
+import io.jitclipse.core.model.IAssemblyInstruction;
 import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.IClassByteCode;
 import io.jitclipse.core.model.ICompilation;
@@ -149,6 +151,22 @@ public class ModelContext {
 
 	private IAssembly createAssembly(AssemblyMethod assemblyMethod) {
 		return new Assembly(this, assemblyMethod);
+	}
+
+	public List<IAssemblyBlock> getAssemblyBlocks(List<org.adoptopenjdk.jitwatch.model.assembly.AssemblyBlock> blocks) {
+		return getList(blocks, this::createAssemblyBlock);
+	}
+
+	private IAssemblyBlock createAssemblyBlock(org.adoptopenjdk.jitwatch.model.assembly.AssemblyBlock assemblyBlock) {
+		return new AssemblyBlock(this, assemblyBlock);
+	}
+
+	public List<IAssemblyInstruction> getAssemblyInstructions(List<org.adoptopenjdk.jitwatch.model.assembly.AssemblyInstruction> instructions) {
+		return getList(instructions, this::createAssemblyInstruction);
+	}
+
+	private IAssemblyInstruction createAssemblyInstruction(org.adoptopenjdk.jitwatch.model.assembly.AssemblyInstruction assemblyInstruction) {
+		return new AssemblyInstruction(this, assemblyInstruction);
 	}
 
 }

@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
 
+import io.jitclipse.core.model.IHotspotLog;
 import io.jitclipse.core.resources.IHotspotLogFile;
 
 public class FileAdapterFactory implements IAdapterFactory {
@@ -45,6 +46,11 @@ public class FileAdapterFactory implements IAdapterFactory {
 		String filename = file.getName() + "." + file.getFileExtension();
 		if (IHotspotLogFile.isHotspotLogFilename(filename) && IHotspotLogFile.class.isAssignableFrom(adapterType)) {
 			return adapterType.cast(getHotspotLogFileAdapter(file));
+		} else if (IHotspotLog.class.equals(adapterType)) {
+			IHotspotLogFile hotspotLogFile = getHotspotLogFileAdapter(file);
+			if (hotspotLogFile != null) {
+				return adapterType.cast(hotspotLogFile.getHotspotLog());
+			}
 		}
 		return null;
 	}
@@ -59,7 +65,7 @@ public class FileAdapterFactory implements IAdapterFactory {
 
 	@Override
 	public Class<?>[] getAdapterList() {
-		return new Class<?>[] { IHotspotLogFile.class };
+		return new Class<?>[] { IHotspotLogFile.class, IHotspotLog.class };
 	}
 
 }

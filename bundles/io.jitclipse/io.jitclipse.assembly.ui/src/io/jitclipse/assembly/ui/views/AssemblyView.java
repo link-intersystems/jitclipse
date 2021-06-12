@@ -1,5 +1,7 @@
 package io.jitclipse.assembly.ui.views;
 
+import java.util.Optional;
+
 import javax.inject.Inject;
 
 import org.eclipse.jface.action.Action;
@@ -11,6 +13,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
@@ -19,17 +22,26 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import com.link_intersystems.eclipse.ui.jface.viewers.AdaptableSelectionList;
+import com.link_intersystems.eclipse.ui.jface.viewers.SelectionList;
+
+import io.jitclipse.core.model.IAssembly;
+import io.jitclipse.core.model.ICompilation;
+import io.jitclipse.core.model.IMethod;
 import io.jitclipse.ui.editors.hotspot.HotspotLogEditor;
 
-public class AssemblyView extends ViewPart {
+public class AssemblyView extends ViewPart implements ISelectionListener {
 
 	public static final String ID = "io.jitclipse.assembly.ui.views.AssemblyView";
 
@@ -49,6 +61,8 @@ public class AssemblyView extends ViewPart {
 	};
 
 	private Editors editors = new Editors();
+
+	private IMethod method;
 
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		@Override
@@ -74,6 +88,9 @@ public class AssemblyView extends ViewPart {
 		editors.init();
 
 		editors.addEditorListener(HotspotLogEditor.ID, editorListener);
+
+		IWorkbenchPage page = site.getPage();
+		page.addSelectionListener(this);
 	}
 
 	@Override
@@ -168,6 +185,25 @@ public class AssemblyView extends ViewPart {
 	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
+	}
+
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		SelectionList<IMethod> methodSelection = new AdaptableSelectionList<>(IMethod.class, selection);
+		Optional<IMethod> selectedMethod = methodSelection.getFirstElement();
+		setMethod(selectedMethod.orElse(null));
+
+	}
+
+	private void setMethod(IMethod method) {
+		this.method = method;
+
+		if (method != null) {
+			IAssembly assembly = method.getLatestCompilation().map(ICompilation::getAssembly).orElse(null);
+			if (assembly != null) {
+			}
+
+		}
 	}
 
 }

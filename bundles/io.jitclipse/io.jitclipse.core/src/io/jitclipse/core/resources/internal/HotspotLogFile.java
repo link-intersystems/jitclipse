@@ -106,6 +106,7 @@ public class HotspotLogFile extends AbstractPropertyChangeSource implements IHot
 		if (IFile.class.equals(adapter)) {
 			return adapter.cast(getFile());
 		}
+
 		return IHotspotLogFile.super.getAdapter(adapter);
 	}
 
