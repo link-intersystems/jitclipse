@@ -11,17 +11,22 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.FontDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.TextViewer;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewSite;
@@ -36,10 +41,11 @@ import org.eclipse.ui.part.ViewPart;
 import com.link_intersystems.eclipse.ui.jface.viewers.AdaptableSelectionList;
 import com.link_intersystems.eclipse.ui.jface.viewers.SelectionList;
 
+import io.jitclipse.assembly.ui.format.AssemblyFormat;
+import io.jitclipse.assembly.ui.text.rules.AssemblyScannerConfig;
 import io.jitclipse.core.model.IAssembly;
 import io.jitclipse.core.model.ICompilation;
 import io.jitclipse.core.model.IMethod;
-import io.jitclipse.ui.editors.hotspot.HotspotLogEditor;
 
 public class AssemblyView extends ViewPart implements ISelectionListener {
 
@@ -48,21 +54,13 @@ public class AssemblyView extends ViewPart implements ISelectionListener {
 	@Inject
 	IWorkbench workbench;
 
-	private TextViewer viewer;
+	private SourceViewer viewer;
 	private Action action1;
 	private Action action2;
 
-	private IEditorListener editorListener = new IEditorListener() {
-
-		@Override
-		public void editorChanged(IEditorReference editorReference) {
-			setActiveEditor(editorReference);
-		}
-	};
-
-	private Editors editors = new Editors();
-
 	private IMethod method;
+
+	private AssemblyScannerConfig assemblyScannerConfig;
 
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		@Override
@@ -85,32 +83,34 @@ public class AssemblyView extends ViewPart implements ISelectionListener {
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
 
-		editors.init();
-
-		editors.addEditorListener(HotspotLogEditor.ID, editorListener);
-
 		IWorkbenchPage page = site.getPage();
 		page.addSelectionListener(this);
 	}
 
 	@Override
 	public void dispose() {
+		assemblyScannerConfig.dispose();
+
+		IWorkbenchPage page = getSite().getPage();
+		page.removeSelectionListener(this);
+
 		super.dispose();
-
-		editors.removeEditorListener(HotspotLogEditor.ID, editorListener);
-		editors.dispose();
-	}
-
-	private void setActiveEditor(IEditorReference editorReference) {
-		System.out.println(editorReference);
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 
-		viewer = new TextViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		viewer = new SourceViewer(parent, null, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setEditable(false);
 		viewer.setInput(new Document(""));
+
+		assemblyScannerConfig = new AssemblyScannerConfig();
+		viewer.configure(assemblyScannerConfig);
+		StyledText textWidget = viewer.getTextWidget();
+
+		ResourceManager resManager = new LocalResourceManager(JFaceResources.getResources(), parent);
+		Font font = resManager.createFont(FontDescriptor.createFrom("Courier", 10, SWT.NONE));
+		textWidget.setFont(font);
 
 		// Create the help context id for the viewer's control
 		workbench.getHelpSystem().setHelp(viewer.getControl(), "io.jitclipse.assembly.ui.viewer");
@@ -201,6 +201,14 @@ public class AssemblyView extends ViewPart implements ISelectionListener {
 		if (method != null) {
 			IAssembly assembly = method.getLatestCompilation().map(ICompilation::getAssembly).orElse(null);
 			if (assembly != null) {
+				AssemblyFormat assemblyFormat = new AssemblyFormat();
+				CharSequence formattedAssembly = assemblyFormat.format(assembly);
+
+				Document document = new Document(formattedAssembly.toString());
+				assemblyScannerConfig.configure(document);
+				viewer.setInput(document);
+			} else {
+				viewer.setInput(new Document(""));
 			}
 
 		}

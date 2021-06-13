@@ -23,7 +23,7 @@ public class AssemblyBlock implements IAssemblyBlock {
 
 	@Override
 	public List<IAssemblyInstruction> getInstructions() {
-		return modelContext.getAssemblyInstructions(this.assemblyBlock.getInstructions());
+		return modelContext.getAssemblyInstructions(assemblyBlock);
 	}
 
 }

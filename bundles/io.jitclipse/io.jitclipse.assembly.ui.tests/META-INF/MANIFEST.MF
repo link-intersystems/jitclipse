@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Automatic-Module-Name: io.jitclipse.assembly.ui.tests
+Bundle-SymbolicName: io.jitclipse.assembly.ui.tests;singleton:=true
+Bundle-Version: 1.0.1
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Fragment-Host: io.jitclipse.assembly.ui;bundle-version="1.0.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: .
+Require-Bundle: io.jitclipse.core.tests.commons;bundle-version="1.0.1"

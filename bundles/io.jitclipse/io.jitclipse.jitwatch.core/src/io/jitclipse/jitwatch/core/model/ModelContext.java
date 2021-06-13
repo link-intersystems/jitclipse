@@ -161,12 +161,12 @@ public class ModelContext {
 		return new AssemblyBlock(this, assemblyBlock);
 	}
 
-	public List<IAssemblyInstruction> getAssemblyInstructions(List<org.adoptopenjdk.jitwatch.model.assembly.AssemblyInstruction> instructions) {
-		return getList(instructions, this::createAssemblyInstruction);
+	public List<IAssemblyInstruction> getAssemblyInstructions(org.adoptopenjdk.jitwatch.model.assembly.AssemblyBlock assemblyBlock) {
+		return getList(assemblyBlock.getInstructions(), i -> createAssemblyInstruction(assemblyBlock, i));
 	}
 
-	private IAssemblyInstruction createAssemblyInstruction(org.adoptopenjdk.jitwatch.model.assembly.AssemblyInstruction assemblyInstruction) {
-		return new AssemblyInstruction(this, assemblyInstruction);
+	private IAssemblyInstruction createAssemblyInstruction(org.adoptopenjdk.jitwatch.model.assembly.AssemblyBlock assemblyBlock, org.adoptopenjdk.jitwatch.model.assembly.AssemblyInstruction instruction) {
+		return new AssemblyInstruction(this, assemblyBlock, instruction);
 	}
 
 }

@@ -1,0 +1,244 @@
+# {method} {0x0000028fc1864648} 'flush' '()V' in 'java/io/BufferedOutputStream'
+#           [sp+0x60]  (sp of caller)
+[Entry Point]
+0x0000028f8ff1b340: mov 0x8(%rdx),%r10d
+0x0000028f8ff1b344: movabs $0x800000000,%r12
+0x0000028f8ff1b34e: add %r12,%r10
+0x0000028f8ff1b351: xor %r12,%r12
+0x0000028f8ff1b354: cmp %r10,%rax
+0x0000028f8ff1b357: jne 0x0000028f88397480  ;   {runtime_call ic_miss_stub}
+0x0000028f8ff1b35d: data16 xchg %ax,%ax
+[Verified Entry Point]
+0x0000028f8ff1b360: mov %eax,-0x7000(%rsp)
+0x0000028f8ff1b367: push %rbp
+0x0000028f8ff1b368: sub $0x50,%rsp
+0x0000028f8ff1b36c: mov %rdx,0x20(%rsp)
+0x0000028f8ff1b371: mov (%rdx),%rax
+0x0000028f8ff1b374: mov %rax,%r10
+0x0000028f8ff1b377: and $0x7,%r10
+0x0000028f8ff1b37b: cmp $0x5,%r10
+0x0000028f8ff1b37f: jne 0x0000028f8ff1b46f
+0x0000028f8ff1b385: mov $0x240c8,%r11d  ;   {metadata('java/io/BufferedOutputStream')}
+0x0000028f8ff1b38b: movabs $0x800000000,%r10
+0x0000028f8ff1b395: add %r11,%r10
+0x0000028f8ff1b398: mov 0xb8(%r10),%r10
+0x0000028f8ff1b39f: mov %r10,%r11
+0x0000028f8ff1b3a2: or %r15,%r11
+0x0000028f8ff1b3a5: mov %r11,%r8
+0x0000028f8ff1b3a8: xor %rax,%r8
+0x0000028f8ff1b3ab: test $0xffffffffffffff87,%r8
+0x0000028f8ff1b3b2: jne 0x0000028f8ff1b4d1  ;*synchronization entry                                            ; - java.io.BufferedOutputStream::flush@-1 (line 142)
+0x0000028f8ff1b3b8: mov 0x20(%rsp),%r10
+0x0000028f8ff1b3bd: mov 0x18(%r10),%edi  ;*getfield count {reexecute=0 rethrow=0 return_oop=0}                                         ; - java.io.BufferedOutputStream::flushBuffer@1 (line 80)                                         ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b3c1: mov 0x10(%r10),%r10d  ;*getfield out {reexecute=0 rethrow=0 return_oop=0}                                          ; - java.io.BufferedOutputStream::flushBuffer@8 (line 81)                                          ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b3c5: test %edi,%edi
+0x0000028f8ff1b3c7: jg 0x0000028f8ff1b3e2  ;*ifle {reexecute=0 rethrow=0 return_oop=0}                                           ; - java.io.BufferedOutputStream::flushBuffer@4 (line 80)                                           ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b3c9: test %r10d,%r10d
+0x0000028f8ff1b3cc: jne 0x0000028f8ff1b430
+0x0000028f8ff1b3ce: mov $0xfffffff6,%edx
+0x0000028f8ff1b3d3: mov 0x20(%rsp),%rbp
+0x0000028f8ff1b3d8: data16 xchg %ax,%ax
+0x0000028f8ff1b3db: callq 0x0000028f88399100  ; ImmutableOopMap{rbp=Oop }                                              ;*invokevirtual flush {reexecute=0 rethrow=0 return_oop=0}                                              ; - java.io.BufferedOutputStream::flush@8 (line 143)                                              ;   {runtime_call UncommonTrapBlob}
+0x0000028f8ff1b3e0: ud2  ;*invokevirtual flush {reexecute=0 rethrow=0 return_oop=0}                         ; - java.io.BufferedOutputStream::flush@8 (line 143)
+0x0000028f8ff1b3e2: mov 0x20(%rsp),%r11
+0x0000028f8ff1b3e7: mov 0x1c(%r11),%ebp  ;*getfield buf {reexecute=0 rethrow=0 return_oop=0}                                         ; - java.io.BufferedOutputStream::flushBuffer@12 (line 81)                                         ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b3eb: mov 0x8(%r12,%r10,8),%r11d  ; implicit exception: dispatches to 0x0000028f8ff1b6a5
+0x0000028f8ff1b3f0: cmp $0x23258,%r11d  ;   {metadata('java/io/FileOutputStream')}
+0x0000028f8ff1b3f7: jne 0x0000028f8ff1b5bf
+0x0000028f8ff1b3fd: lea (%r12,%r10,8),%rdx  ;*invokevirtual write {reexecute=0 rethrow=0 return_oop=0}                                            ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                                            ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b401: mov 0x10(%rdx),%r10d  ;*getfield fd {reexecute=0 rethrow=0 return_oop=0}                                          ; - java.io.FileOutputStream::write@8 (line 354)                                          ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                                          ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b405: movzbl 0x19(%r12,%r10,8),%esi  ;*getfield append {reexecute=0 rethrow=0 return_oop=0}                                                   ; - java.io.FileDescriptor$1::getAppend@1 (line 84)                                                   ; - java.io.FileOutputStream::write@11 (line 354)                                                   ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                                                   ; - java.io.BufferedOutputStream::flush@1 (line 142)                                                   ; implicit exception: dispatches to 0x0000028f8ff1b6b6
+0x0000028f8ff1b40b: mov %rbp,%r8
+0x0000028f8ff1b40e: shl $0x3,%r8  ;*getfield buf {reexecute=0 rethrow=0 return_oop=0}                                  ; - java.io.BufferedOutputStream::flushBuffer@12 (line 81)                                  ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b412: xor %r9d,%r9d
+0x0000028f8ff1b415: mov 0x20(%rsp),%rbp
+0x0000028f8ff1b41a: nop
+0x0000028f8ff1b41b: callq 0x0000028f88397700  ; ImmutableOopMap{rbp=Oop [32]=Oop }                                              ;*invokevirtual writeBytes {reexecute=0 rethrow=0 return_oop=0}                                              ; - java.io.FileOutputStream::write@16 (line 354)                                              ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                                              ; - java.io.BufferedOutputStream::flush@1 (line 142)                                              ;   {optimized virtual_call}
+0x0000028f8ff1b420: movl $0x0,0x18(%rbp)  ;*putfield count {reexecute=0 rethrow=0 return_oop=0}                                          ; - java.io.BufferedOutputStream::flushBuffer@25 (line 82)                                          ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b427: mov 0x10(%rbp),%r10d  ;*getfield out {reexecute=0 rethrow=0 return_oop=0}                                          ; - java.io.BufferedOutputStream::flush@5 (line 143)
+0x0000028f8ff1b42b: test %r10d,%r10d
+0x0000028f8ff1b42e: je 0x0000028f8ff1b3ce  ;*return {reexecute=0 rethrow=0 return_oop=0}                                           ; - java.io.BufferedOutputStream::flushBuffer@28 (line 84)                                           ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b430: mov 0x8(%r12,%r10,8),%r11d
+0x0000028f8ff1b435: cmp $0x23258,%r11d  ;   {metadata('java/io/FileOutputStream')}
+0x0000028f8ff1b43c: jne 0x0000028f8ff1b4fc
+0x0000028f8ff1b442: mov $0x7,%r10d
+0x0000028f8ff1b448: mov 0x20(%rsp),%r11
+0x0000028f8ff1b44d: and (%r11),%r10
+0x0000028f8ff1b450: cmp $0x5,%r10
+0x0000028f8ff1b454: jne 0x0000028f8ff1b512
+0x0000028f8ff1b45a: add $0x50,%rsp
+0x0000028f8ff1b45e: pop %rbp
+0x0000028f8ff1b45f: mov 0x108(%r15),%r10
+0x0000028f8ff1b466: test %eax,(%r10)  ;   {poll_return} *** SAFEPOINT POLL ***
+0x0000028f8ff1b469: retq
+0x0000028f8ff1b46a: lock cmpxchg %r10,(%rdx)
+0x0000028f8ff1b46f: lea 0x40(%rsp),%rbx
+0x0000028f8ff1b474: mov (%rdx),%rax
+0x0000028f8ff1b477: test $0x2,%rax
+0x0000028f8ff1b47d: jne 0x0000028f8ff1b4a3
+0x0000028f8ff1b47f: or $0x1,%rax
+0x0000028f8ff1b483: mov %rax,(%rbx)
+0x0000028f8ff1b486: lock cmpxchg %rbx,(%rdx)
+0x0000028f8ff1b48b: je 0x0000028f8ff1b4b6
+0x0000028f8ff1b491: sub %rsp,%rax
+0x0000028f8ff1b494: and $0xfffffffffffff007,%rax
+0x0000028f8ff1b49b: mov %rax,(%rbx)
+0x0000028f8ff1b49e: jmpq 0x0000028f8ff1b4b6
+0x0000028f8ff1b4a3: mov %rax,%r10
+0x0000028f8ff1b4a6: xor %rax,%rax
+0x0000028f8ff1b4a9: lock cmpxchg %r15,0x7e(%r10)
+0x0000028f8ff1b4af: movq $0x3,(%rbx)
+0x0000028f8ff1b4b6: je 0x0000028f8ff1b3b8
+0x0000028f8ff1b4bc: lea 0x40(%rsp),%r8
+0x0000028f8ff1b4c1: mov %rdx,%rbp
+0x0000028f8ff1b4c4: data16 xchg %ax,%ax
+0x0000028f8ff1b4c7: callq 0x0000028f88463e00  ; ImmutableOopMap{rbp=Oop [32]=Oop }                                              ;*synchronization entry                                              ; - java.io.BufferedOutputStream::flush@-1 (line 142)                                              ;   {runtime_call _complete_monitor_locking_Java}
+0x0000028f8ff1b4cc: jmpq 0x0000028f8ff1b3b8
+0x0000028f8ff1b4d1: test $0x7,%r8
+0x0000028f8ff1b4d8: jne 0x0000028f8ff1b46a
+0x0000028f8ff1b4da: test $0x300,%r8
+0x0000028f8ff1b4e1: jne 0x0000028f8ff1b4f0
+0x0000028f8ff1b4e3: and $0x37f,%rax
+0x0000028f8ff1b4ea: mov %rax,%r11
+0x0000028f8ff1b4ed: or %r15,%r11
+0x0000028f8ff1b4f0: lock cmpxchg %r11,(%rdx)
+0x0000028f8ff1b4f5: jne 0x0000028f8ff1b4bc
+0x0000028f8ff1b4f7: jmpq 0x0000028f8ff1b3b8
+0x0000028f8ff1b4fc: mov $0xffffffde,%edx
+0x0000028f8ff1b501: mov 0x20(%rsp),%rbp
+0x0000028f8ff1b506: mov %r10d,0x20(%rsp)
+0x0000028f8ff1b50b: callq 0x0000028f88399100  ; ImmutableOopMap{rbp=Oop [32]=NarrowOop }                                              ;*invokevirtual flush {reexecute=0 rethrow=0 return_oop=0}                                              ; - java.io.BufferedOutputStream::flush@8 (line 143)                                              ;   {runtime_call UncommonTrapBlob}
+0x0000028f8ff1b510: ud2  ;*invokevirtual flush {reexecute=0 rethrow=0 return_oop=0}                         ; - java.io.BufferedOutputStream::flush@8 (line 143)
+0x0000028f8ff1b512: lea 0x40(%rsp),%rax
+0x0000028f8ff1b517: cmpq $0x0,(%rax)
+0x0000028f8ff1b51e: je 0x0000028f8ff1b59c
+0x0000028f8ff1b524: mov (%r11),%r10
+0x0000028f8ff1b527: test $0x2,%r10
+0x0000028f8ff1b52e: je 0x0000028f8ff1b594
+0x0000028f8ff1b530: xor %rax,%rax
+0x0000028f8ff1b533: or 0x8e(%r10),%rax
+0x0000028f8ff1b53a: jne 0x0000028f8ff1b59c
+0x0000028f8ff1b53c: mov 0x9e(%r10),%rax
+0x0000028f8ff1b543: or 0x96(%r10),%rax
+0x0000028f8ff1b54a: jne 0x0000028f8ff1b556
+0x0000028f8ff1b54c: movq $0x0,0x7e(%r10)
+0x0000028f8ff1b554: jmp 0x0000028f8ff1b59c
+0x0000028f8ff1b556: cmpq $0x0,0xa6(%r10)
+0x0000028f8ff1b561: je 0x0000028f8ff1b588
+0x0000028f8ff1b563: xor %rax,%rax
+0x0000028f8ff1b566: movq $0x0,0x7e(%r10)
+0x0000028f8ff1b56e: lock addl $0x0,(%rsp)
+0x0000028f8ff1b573: cmpq $0x0,0xa6(%r10)
+0x0000028f8ff1b57e: jne 0x0000028f8ff1b58d
+0x0000028f8ff1b580: lock cmpxchg %r15,0x7e(%r10)
+0x0000028f8ff1b586: jne 0x0000028f8ff1b58d
+0x0000028f8ff1b588: or $0x1,%eax
+0x0000028f8ff1b58b: jmp 0x0000028f8ff1b59c
+0x0000028f8ff1b58d: test $0x0,%eax
+0x0000028f8ff1b592: jmp 0x0000028f8ff1b59c
+0x0000028f8ff1b594: mov (%rax),%r10
+0x0000028f8ff1b597: lock cmpxchg %r10,(%r11)
+0x0000028f8ff1b59c: je 0x0000028f8ff1b45a
+0x0000028f8ff1b5a2: mov %r11,%rcx
+0x0000028f8ff1b5a5: lea 0x40(%rsp),%rdx  ;*synchronization entry                                         ; - java.io.BufferedOutputStream::flush@-1 (line 142)
+0x0000028f8ff1b5aa: mov %r15,%r8
+0x0000028f8ff1b5ad: movabs $0x7ffa0dd522d0,%r10
+0x0000028f8ff1b5b7: callq *%r10  ;*return {reexecute=0 rethrow=0 return_oop=0}                                 ; - java.io.BufferedOutputStream::flush@11 (line 144)
+0x0000028f8ff1b5ba: jmpq 0x0000028f8ff1b45a
+0x0000028f8ff1b5bf: mov $0xffffffde,%edx
+0x0000028f8ff1b5c4: mov %r10d,0x38(%rsp)
+0x0000028f8ff1b5c9: mov %edi,0x3c(%rsp)
+0x0000028f8ff1b5cd: xchg %ax,%ax
+0x0000028f8ff1b5cf: callq 0x0000028f88399100  ; ImmutableOopMap{rbp=NarrowOop [32]=Oop [56]=NarrowOop }                                              ;*invokevirtual write {reexecute=0 rethrow=0 return_oop=0}                                              ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                                              ; - java.io.BufferedOutputStream::flush@1 (line 142)                                              ;   {runtime_call UncommonTrapBlob}
+0x0000028f8ff1b5d4: ud2  ;*invokevirtual writeBytes {reexecute=0 rethrow=0 return_oop=0}                         ; - java.io.FileOutputStream::write@16 (line 354)                         ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                         ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b5d6: mov %rax,%rbx
+0x0000028f8ff1b5d9: mov $0x7,%r10d
+0x0000028f8ff1b5df: and 0x0(%rbp),%r10
+0x0000028f8ff1b5e3: cmp $0x5,%r10
+0x0000028f8ff1b5e7: jne 0x0000028f8ff1b5f6
+0x0000028f8ff1b5e9: mov %rbx,%rdx
+0x0000028f8ff1b5ec: add $0x50,%rsp
+0x0000028f8ff1b5f0: pop %rbp
+0x0000028f8ff1b5f1: jmpq 0x0000028f88463a80  ;   {runtime_call _rethrow_Java}
+0x0000028f8ff1b5f6: lea 0x40(%rsp),%rax
+0x0000028f8ff1b5fb: cmpq $0x0,(%rax)
+0x0000028f8ff1b602: je 0x0000028f8ff1b682
+0x0000028f8ff1b608: mov 0x0(%rbp),%r10
+0x0000028f8ff1b60c: test $0x2,%r10
+0x0000028f8ff1b613: je 0x0000028f8ff1b679
+0x0000028f8ff1b615: xor %rax,%rax
+0x0000028f8ff1b618: or 0x8e(%r10),%rax
+0x0000028f8ff1b61f: jne 0x0000028f8ff1b682
+0x0000028f8ff1b621: mov 0x9e(%r10),%rax
+0x0000028f8ff1b628: or 0x96(%r10),%rax
+0x0000028f8ff1b62f: jne 0x0000028f8ff1b63b
+0x0000028f8ff1b631: movq $0x0,0x7e(%r10)
+0x0000028f8ff1b639: jmp 0x0000028f8ff1b682
+0x0000028f8ff1b63b: cmpq $0x0,0xa6(%r10)
+0x0000028f8ff1b646: je 0x0000028f8ff1b66d
+0x0000028f8ff1b648: xor %rax,%rax
+0x0000028f8ff1b64b: movq $0x0,0x7e(%r10)
+0x0000028f8ff1b653: lock addl $0x0,(%rsp)
+0x0000028f8ff1b658: cmpq $0x0,0xa6(%r10)
+0x0000028f8ff1b663: jne 0x0000028f8ff1b672
+0x0000028f8ff1b665: lock cmpxchg %r15,0x7e(%r10)
+0x0000028f8ff1b66b: jne 0x0000028f8ff1b672
+0x0000028f8ff1b66d: or $0x1,%eax
+0x0000028f8ff1b670: jmp 0x0000028f8ff1b682
+0x0000028f8ff1b672: test $0x0,%eax
+0x0000028f8ff1b677: jmp 0x0000028f8ff1b682
+0x0000028f8ff1b679: mov (%rax),%r10
+0x0000028f8ff1b67c: lock cmpxchg %r10,0x0(%rbp)
+0x0000028f8ff1b682: je 0x0000028f8ff1b5e9
+0x0000028f8ff1b688: mov %rbp,%rcx
+0x0000028f8ff1b68b: lea 0x40(%rsp),%rdx  ;*synchronization entry                                         ; - java.io.BufferedOutputStream::flush@-1 (line 142)
+0x0000028f8ff1b690: mov %r15,%r8
+0x0000028f8ff1b693: movabs $0x7ffa0dd522d0,%r10
+0x0000028f8ff1b69d: callq *%r10
+0x0000028f8ff1b6a0: jmpq 0x0000028f8ff1b5e9
+0x0000028f8ff1b6a5: mov $0xfffffff6,%edx
+0x0000028f8ff1b6aa: mov %edi,0x28(%rsp)
+0x0000028f8ff1b6ae: nop
+0x0000028f8ff1b6af: callq 0x0000028f88399100  ; ImmutableOopMap{rbp=NarrowOop [32]=Oop }                                              ;*invokevirtual write {reexecute=0 rethrow=0 return_oop=0}                                              ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                                              ; - java.io.BufferedOutputStream::flush@1 (line 142)                                              ;   {runtime_call UncommonTrapBlob}
+0x0000028f8ff1b6b4: ud2  ;*invokevirtual write {reexecute=0 rethrow=0 return_oop=0}                         ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                         ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b6b6: mov $0xfffffff6,%edx
+0x0000028f8ff1b6bb: mov 0x20(%rsp),%rbp
+0x0000028f8ff1b6c0: data16 xchg %ax,%ax
+0x0000028f8ff1b6c3: callq 0x0000028f88399100  ; ImmutableOopMap{rbp=Oop }                                              ;*getfield append {reexecute=1 rethrow=0 return_oop=0}                                              ; - java.io.FileDescriptor$1::getAppend@1 (line 84)                                              ; - java.io.FileOutputStream::write@11 (line 354)                                              ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                                              ; - java.io.BufferedOutputStream::flush@1 (line 142)                                              ;   {runtime_call UncommonTrapBlob}
+0x0000028f8ff1b6c8: ud2  ;*getfield append {reexecute=0 rethrow=0 return_oop=0}                         ; - java.io.FileDescriptor$1::getAppend@1 (line 84)                         ; - java.io.FileOutputStream::write@11 (line 354)                         ; - java.io.BufferedOutputStream::flushBuffer@20 (line 81)                         ; - java.io.BufferedOutputStream::flush@1 (line 142)
+0x0000028f8ff1b6ca: hlt
+0x0000028f8ff1b6cb: hlt
+0x0000028f8ff1b6cc: hlt
+0x0000028f8ff1b6cd: hlt
+0x0000028f8ff1b6ce: hlt
+0x0000028f8ff1b6cf: hlt
+0x0000028f8ff1b6d0: hlt
+0x0000028f8ff1b6d1: hlt
+0x0000028f8ff1b6d2: hlt
+0x0000028f8ff1b6d3: hlt
+0x0000028f8ff1b6d4: hlt
+0x0000028f8ff1b6d5: hlt
+0x0000028f8ff1b6d6: hlt
+0x0000028f8ff1b6d7: hlt
+0x0000028f8ff1b6d8: hlt
+0x0000028f8ff1b6d9: hlt
+0x0000028f8ff1b6da: hlt
+0x0000028f8ff1b6db: hlt
+0x0000028f8ff1b6dc: hlt
+0x0000028f8ff1b6dd: hlt
+0x0000028f8ff1b6de: hlt
+0x0000028f8ff1b6df: hlt
+[Stub Code]
+0x0000028f8ff1b6e0: movabs $0x0,%rbx  ;   {no_reloc}
+0x0000028f8ff1b6ea: jmpq 0x0000028f8ff1b6ea  ;   {runtime_call}
+[Exception Handler]
+0x0000028f8ff1b6ef: jmpq 0x0000028f883d0000  ;   {runtime_call ExceptionBlob}
+[Deopt Handler Code]
+0x0000028f8ff1b6f4: callq 0x0000028f8ff1b6f9
+0x0000028f8ff1b6f9: subq $0x5,(%rsp)
+0x0000028f8ff1b6fe: jmpq 0x0000028f88398d20  ;   {runtime_call DeoptimizationBlob}
+0x0000028f8ff1b703: hlt
+0x0000028f8ff1b704: hlt
+0x0000028f8ff1b705: hlt
+0x0000028f8ff1b706: hlt
+0x0000028f8ff1b707: hlt ImmutableOopMap

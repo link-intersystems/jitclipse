@@ -18,4 +18,6 @@ public interface IAssemblyInstruction {
 	public List<String> getCommentLines();
 
 	public boolean isSafePoint();
+
+	public int getLine();
 }
