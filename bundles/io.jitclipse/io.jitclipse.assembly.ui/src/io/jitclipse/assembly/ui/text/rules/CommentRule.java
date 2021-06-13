@@ -13,33 +13,42 @@
  *******************************************************************************/
 package io.jitclipse.assembly.ui.text.rules;
 
+import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 
+import com.link_intersystems.eclipse.ui.jface.text.rules.AbstractPredicateRule;
 import com.link_intersystems.eclipse.ui.jface.text.rules.CharacterScannerUtil;
-import com.link_intersystems.eclipse.ui.jface.text.rules.IResetableCharacterScanner;
-import com.link_intersystems.eclipse.ui.jface.text.rules.SimplePredicateRule;
 
-public class CommentRule extends SimplePredicateRule {
-
-	public CommentRule() {
-		super(new Token(COMMENT));
-	}
+public class CommentRule extends AbstractPredicateRule {
 
 	private static final char COMMENT_START_CHAR = ';';
 	public final static String COMMENT = "__assembly_comment";
 
-	@Override
-	protected IToken doEvaluate(IResetableCharacterScanner scanner, boolean resume) {
-		int c = scanner.markAndRead();
+	private Token comment = new Token(COMMENT);
 
-		if(c == COMMENT_START_CHAR) {
-			CharacterScannerUtil.scanUntilEol(scanner);
-			return getSuccessToken();
-		}
-
-		return Token.UNDEFINED;
+	public CommentRule() {
 	}
 
+	@Override
+	public IToken getSuccessToken() {
+		return comment;
+	}
+
+	@Override
+	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
+		IToken token = Token.UNDEFINED;
+
+		int c = scanner.read();
+
+		if (c == COMMENT_START_CHAR) {
+			CharacterScannerUtil.scanUntilEol(scanner);
+			token = getSuccessToken();
+		} else {
+			scanner.unread();
+		}
+
+		return token;
+	}
 
 }

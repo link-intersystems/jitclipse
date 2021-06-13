@@ -15,32 +15,38 @@ package io.jitclipse.assembly.ui.text.rules;
 
 import static org.eclipse.jface.text.rules.ICharacterScanner.EOF;
 
+import org.eclipse.jface.text.rules.ICharacterScanner;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 
-import com.link_intersystems.eclipse.ui.jface.text.rules.IResetableCharacterScanner;
-import com.link_intersystems.eclipse.ui.jface.text.rules.SimplePredicateRule;
+import com.link_intersystems.eclipse.ui.jface.text.rules.AbstractPredicateRule;
 
-public class AddressRule extends SimplePredicateRule {
+public class AddressRule extends AbstractPredicateRule {
 
 	public final static String ADDRESS = "__assembly_address";
 	public static final String ADDRESS_REF = "__assembly_address_ref";
-	private Token addressRef;
+	private Token addressRefToken;
+	private Token addressToken;
 
 	public AddressRule() {
-		super(new Token(ADDRESS));
-		addressRef = new Token(ADDRESS_REF);
+		addressToken = new Token(ADDRESS);
+		addressRefToken = new Token(ADDRESS_REF);
 	}
 
 	@Override
-	protected IToken doEvaluate(IResetableCharacterScanner scanner, boolean resume) {
+	public IToken getSuccessToken() {
+		return addressToken;
+	}
+
+	@Override
+	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
 		IToken token = Token.UNDEFINED;
 
 		int column = scanner.getColumn();
 
-		IToken success = column == 0 ? getSuccessToken() : addressRef;
+		IToken success = column == 0 ? getSuccessToken() : addressRefToken;
 
-		int c = scanner.markAndRead();
+		int c = scanner.read();
 
 		if (c == '0') {
 			c = scanner.read();
@@ -54,8 +60,11 @@ public class AddressRule extends SimplePredicateRule {
 					}
 				}
 			} else {
-				scanner.reset();
+				scanner.unread();
+				scanner.unread();
 			}
+		} else {
+			scanner.unread();
 		}
 
 		return token;
