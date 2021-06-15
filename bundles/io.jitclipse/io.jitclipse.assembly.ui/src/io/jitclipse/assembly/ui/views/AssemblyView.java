@@ -18,6 +18,7 @@ import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
@@ -34,6 +35,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -44,6 +46,7 @@ import com.link_intersystems.eclipse.ui.jface.viewers.SelectionList;
 import io.jitclipse.assembly.ui.format.AssemblyFormat;
 import io.jitclipse.assembly.ui.text.rules.AssemblyScannerConfig;
 import io.jitclipse.core.model.IAssembly;
+import io.jitclipse.core.model.IClass;
 import io.jitclipse.core.model.ICompilation;
 import io.jitclipse.core.model.IMethod;
 
@@ -118,6 +121,12 @@ public class AssemblyView extends ViewPart implements ISelectionListener {
 		makeActions();
 		hookContextMenu();
 		contributeToActionBars();
+
+		IWorkbenchPartSite site = getSite();
+		ISelectionProvider selectionProvider = site.getSelectionProvider();
+		ISelection selection = selectionProvider.getSelection();
+
+		selectionChanged(site.getPart(), selection);
 	}
 
 	private void hookContextMenu() {
@@ -208,7 +217,14 @@ public class AssemblyView extends ViewPart implements ISelectionListener {
 				assemblyScannerConfig.configure(document);
 				viewer.setInput(document);
 			} else {
-				viewer.setInput(new Document(""));
+				IClass type = method.getType();
+				StringBuilder sb = new StringBuilder();
+				sb.append("#Assembly not available for ");
+				sb.append("\n#");
+				sb.append(type.getName());
+				sb.append('.');
+				sb.append(method.toSignatureString());
+				viewer.setInput(new Document(sb.toString()));
 			}
 
 		}

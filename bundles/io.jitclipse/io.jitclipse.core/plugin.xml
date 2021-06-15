@@ -144,7 +144,21 @@
       </factory>
       <factory
             adaptableType="io.jitclipse.core.model.allocation.IEliminatedAllocation"
-            class="io.jitclipse.core.model.internal.EliminatedAllocationFactory">
+            class="io.jitclipse.core.model.internal.EliminatedAllocationAdapterFactory">
+         <adapter
+               type="io.jitclipse.core.model.IMethod">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="io.jitclipse.core.model.lock.IOptimisedLock"
+            class="io.jitclipse.core.model.internal.OptimizedLockAdapterFactory">
+         <adapter
+               type="io.jitclipse.core.model.IMethod">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="io.jitclipse.core.model.suggestion.ISuggestion"
+            class="io.jitclipse.core.model.internal.SuggestionAdapterFactory">
          <adapter
                type="io.jitclipse.core.model.IMethod">
          </adapter>

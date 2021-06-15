@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import io.jitclipse.core.model.IMethod;
 import io.jitclipse.core.model.allocation.IEliminatedAllocation;
 
-public class EliminatedAllocationFactory implements IAdapterFactory {
+public class EliminatedAllocationAdapterFactory implements IAdapterFactory {
 
 
 	@Override

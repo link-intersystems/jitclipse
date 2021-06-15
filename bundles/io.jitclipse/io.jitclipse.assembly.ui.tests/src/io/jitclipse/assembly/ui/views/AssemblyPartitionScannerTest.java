@@ -3,7 +3,7 @@ package io.jitclipse.assembly.ui.views;
 import static io.jitclipse.assembly.ui.text.rules.AddressRule.ADDRESS;
 import static io.jitclipse.assembly.ui.text.rules.AddressRule.ADDRESS_REF;
 import static io.jitclipse.assembly.ui.text.rules.BlockRule.BLOCK;
-import static io.jitclipse.assembly.ui.text.rules.CommentRule.COMMENT;
+import static io.jitclipse.assembly.ui.text.rules.InstructionCommentRule.INSTRUCTION_COMMENT;
 import static io.jitclipse.assembly.ui.text.rules.InstructionRule.INSTRUCTION;
 import static io.jitclipse.assembly.ui.views.BufferedOutputStreamFlushDocument.BLOCK_LINE;
 import static io.jitclipse.assembly.ui.views.BufferedOutputStreamFlushDocument.COMMENT_LINE;
@@ -90,7 +90,7 @@ class AssemblyPartitionScannerTest {
 		scannerTestDriver.expectNextToken("0x0000028f88397480", ADDRESS_REF);
 		scannerTestDriver.exprectWhitespace();
 
-		scannerTestDriver.expectNextToken(";   {runtime_call ic_miss_stub}", COMMENT);
+		scannerTestDriver.expectNextToken(";   {runtime_call ic_miss_stub}", INSTRUCTION_COMMENT);
 	}
 
 	@Test

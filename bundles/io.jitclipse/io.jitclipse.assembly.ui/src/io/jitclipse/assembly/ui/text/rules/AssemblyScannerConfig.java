@@ -7,16 +7,21 @@ import com.link_intersystems.eclipse.ui.jface.text.rules.PartitioningScannerConf
 import com.link_intersystems.eclipse.ui.jface.text.rules.TokenConfig;
 import com.link_intersystems.eclipse.ui.jface.text.rules.WhitespacePredicateRule;
 
+/**
+ * @author rene.link
+ *
+ */
 public class AssemblyScannerConfig extends PartitioningScannerConfig {
 
-	private RGB assemblyBlock = new RGB(25, 100, 25);
-	private RGB assemblyAddress = new RGB(50, 50, 200);
-	private RGB assemblyAddressRef = new RGB(110, 110, 255);
-	private RGB assemblyInstruction = new RGB(200, 50, 50);
-	private RGB assemblyComment = new RGB(150, 150, 150);
+	private RGB assemblyBlock = new RGB(127, 127, 159);
+	private RGB assemblyAddress = new RGB(63, 63, 191);
+	private RGB assemblyAddressRef = new RGB(42, 0, 255);
+	private RGB assemblyInstruction = new RGB(127, 0, 85);
+	private RGB assemblyInstructionComment = new RGB(63, 127, 95);
+	private RGB assemblyComment = new RGB(63, 127, 95);
 
 	public AssemblyScannerConfig() {
-
+		// TODO
 		TokenConfig whitespaceTokenConfig = new TokenConfig(
 				new WhitespacePredicateRule(new DefaultWhitespaceDetector()));
 		addTokenConfig(whitespaceTokenConfig);
@@ -36,6 +41,10 @@ public class AssemblyScannerConfig extends PartitioningScannerConfig {
 		TokenConfig instructionTokenConfig = new TokenConfig(new InstructionRule(), InstructionRule.INSTRUCTION);
 		instructionTokenConfig.setForegroundColor(assemblyInstruction);
 		addTokenConfig(instructionTokenConfig);
+
+		TokenConfig instructionCommentTokenConfig = new TokenConfig(new InstructionCommentRule(), InstructionCommentRule.INSTRUCTION_COMMENT);
+		instructionCommentTokenConfig.setForegroundColor(assemblyInstructionComment);
+		addTokenConfig(instructionCommentTokenConfig);
 
 		TokenConfig commentTokenConfig = new TokenConfig(new CommentRule(), CommentRule.COMMENT);
 		commentTokenConfig.setForegroundColor(assemblyComment);

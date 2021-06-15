@@ -20,12 +20,15 @@ import org.eclipse.jface.text.rules.Token;
 import com.link_intersystems.eclipse.ui.jface.text.rules.AbstractPredicateRule;
 import com.link_intersystems.eclipse.ui.jface.text.rules.CharacterScannerUtil;
 
+public class InstructionCommentRule extends AbstractPredicateRule {
 
-public class CommentRule extends AbstractPredicateRule {
+	private static final char COMMENT_START_CHAR = ';';
+	public final static String INSTRUCTION_COMMENT = "__assembly_instruction_comment";
 
-	public final static String COMMENT = "__assembly_comment";
+	private Token comment = new Token(INSTRUCTION_COMMENT);
 
-	private Token comment = new Token(COMMENT);
+	public InstructionCommentRule() {
+	}
 
 	@Override
 	public IToken getSuccessToken() {
@@ -38,7 +41,7 @@ public class CommentRule extends AbstractPredicateRule {
 
 		int c = scanner.read();
 
-		if (c == '#' && scanner.getColumn() == 1) {
+		if (c == COMMENT_START_CHAR) {
 			CharacterScannerUtil.scanUntilEol(scanner);
 			token = getSuccessToken();
 		} else {
