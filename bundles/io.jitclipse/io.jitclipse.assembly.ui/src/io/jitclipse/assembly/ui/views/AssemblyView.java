@@ -1,21 +1,22 @@
 package io.jitclipse.assembly.ui.views;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IFindReplaceTarget;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -37,8 +38,9 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.texteditor.FindReplaceAction;
 
 import com.link_intersystems.eclipse.ui.jface.viewers.AdaptableSelectionList;
 import com.link_intersystems.eclipse.ui.jface.viewers.SelectionList;
@@ -58,12 +60,10 @@ public class AssemblyView extends ViewPart implements ISelectionListener {
 	IWorkbench workbench;
 
 	private SourceViewer viewer;
-	private Action action1;
-	private Action action2;
-
-	private IMethod method;
 
 	private AssemblyScannerConfig assemblyScannerConfig;
+
+	private FindReplaceAction findAndReplace;
 
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		@Override
@@ -144,51 +144,30 @@ public class AssemblyView extends ViewPart implements ISelectionListener {
 
 	private void contributeToActionBars() {
 		IActionBars bars = getViewSite().getActionBars();
+
+		bars.setGlobalActionHandler(ActionFactory.FIND.getId(), findAndReplace);
 		fillLocalPullDown(bars.getMenuManager());
 		fillLocalToolBar(bars.getToolBarManager());
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(new Separator());
-		manager.add(action2);
+		manager.add(findAndReplace);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(action2);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		manager.add(action1);
-		manager.add(action2);
 	}
 
 	private void makeActions() {
-		action1 = new Action() {
-			public void run() {
-				showMessage("Action 1 executed");
-			}
-		};
-		action1.setText("Action 1");
-		action1.setToolTipText("Action 1 tooltip");
-		action1.setImageDescriptor(
-				PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-
-		action2 = new Action() {
-			public void run() {
-				showMessage("Action 2 executed");
-			}
-		};
-		action2.setText("Action 2");
-		action2.setToolTipText("Action 2 tooltip");
-		action2.setImageDescriptor(workbench.getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-	}
-
-	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(), "Assembly", message);
+		Map<String, Object> entries = new HashMap<>();
+		entries.put("label", "Find");
+		MapResourceBundle mapResourceBundle = new MapResourceBundle(entries);
+		findAndReplace = new FindReplaceAction(mapResourceBundle, "", getSite().getShell(), //$NON-NLS-1$
+				viewer.getFindReplaceTarget());
 	}
 
 	@Override
@@ -205,8 +184,6 @@ public class AssemblyView extends ViewPart implements ISelectionListener {
 	}
 
 	private void setMethod(IMethod method) {
-		this.method = method;
-
 		if (method != null) {
 			IAssembly assembly = method.getLatestCompilation().map(ICompilation::getAssembly).orElse(null);
 			if (assembly != null) {
@@ -228,6 +205,16 @@ public class AssemblyView extends ViewPart implements ISelectionListener {
 			}
 
 		}
+
+		findAndReplace.update();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		if (IFindReplaceTarget.class.isAssignableFrom(adapter)) {
+			return (T) viewer.getFindReplaceTarget();
+		}
+		return super.getAdapter(adapter);
+	}
 }

@@ -21,7 +21,6 @@ public class AssemblyScannerConfig extends PartitioningScannerConfig {
 	private RGB assemblyComment = new RGB(63, 127, 95);
 
 	public AssemblyScannerConfig() {
-		// TODO
 		TokenConfig whitespaceTokenConfig = new TokenConfig(
 				new WhitespacePredicateRule(new DefaultWhitespaceDetector()));
 		addTokenConfig(whitespaceTokenConfig);
@@ -42,7 +41,8 @@ public class AssemblyScannerConfig extends PartitioningScannerConfig {
 		instructionTokenConfig.setForegroundColor(assemblyInstruction);
 		addTokenConfig(instructionTokenConfig);
 
-		TokenConfig instructionCommentTokenConfig = new TokenConfig(new InstructionCommentRule(), InstructionCommentRule.INSTRUCTION_COMMENT);
+		TokenConfig instructionCommentTokenConfig = new TokenConfig(new InstructionCommentRule(),
+				InstructionCommentRule.INSTRUCTION_COMMENT);
 		instructionCommentTokenConfig.setForegroundColor(assemblyInstructionComment);
 		addTokenConfig(instructionCommentTokenConfig);
 
