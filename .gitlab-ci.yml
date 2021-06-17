@@ -70,9 +70,9 @@ deploy:jdk11:
 p2-deploy:jdk11:
   stage: release
   script:
-    - mvn -s ci_settings.xml -Pdist install
-    - mvn -s ci_settings.xml -Pp2,dist help:effective-pom help:effective-settings
-    - mvn -s ci_settings.xml -Pp2,dist -pl :repository deploy
+    - xvfb-run mvn -s ci_settings.xml -Pdist install
+    - xvfb-run mvn -s ci_settings.xml -Pp2,dist help:effective-pom help:effective-settings
+    - xvfb-run mvn -s ci_settings.xml -Pp2,dist -pl :repository deploy
   when: manual
   only:
     refs:
