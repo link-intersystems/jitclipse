@@ -1,4 +1,4 @@
-# JITWatch eclipse integration
+# JITWatch Eclipse Integration
 
 ## Get it
 
