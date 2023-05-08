@@ -18,3 +18,7 @@ Drag the install button to your running Eclipse* workspace (*Requires Eclipse Ma
 ![Suggestions](res/suggestions.png "Suggestions")
 ![Timeline](res/timeline.png "Timeline")
 ![JITclipse Launch Configuration](res/JITWatchAs.png)´
+
+## Screencast
+
+![](res/JITclipse.mp4)
