@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>JITclipse Update Site</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1>JITclipse Update Site</h1>
+			</div>
+			<div class="col-12">
+				<div class="alert alert-primary" role="alert">
+					This URL is an Eclipse <strong>software repository</strong>; you
+					must use it in Eclipse (<a
+						href="https://help.eclipse.org/topic/org.eclipse.platform.doc.user/tasks/tasks-127.htm"
+						target="_blank">see how</a>).
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div style="position: relative">
+					<div id="url"
+						style="background-color: #FFFFFF; position: absolute; top: 117px; left: 77px; font-size: 12px; max-width: 420px; width: 420px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+					</div>
+					<img alt="" src="img/update-site.png">
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<script>
+		var url = $(location).attr('href');
+		var docName = url.substr(url.lastIndexOf('/') + 1) + '$';
+		var updateSiteBase = url.replace(new RegExp(docName), '');
+
+		$("#url").html(updateSiteBase);
+		$("#url").prop('title', updateSiteBase);
+	</script>
+</body>
+</html>
