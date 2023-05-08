@@ -1,13 +1,13 @@
 # JITWatch eclipse integration
 
-## Releases 
-
-- JITclipse 1.0.1 – What’s new
-
 ## Get it
 
 - [Eclipse Marketplace](https://marketplace.eclipse.org/content/jitclipse/index.html)
 - [Update Site](update-site/1.0.1)
+
+Drag the install button to your running Eclipse* workspace (*Requires Eclipse Marketplace Client):
+
+ [![Drag to your running Eclipse* workspace. *Requires Eclipse Marketplace Client](https://marketplace.eclipse.org/sites/all/themes/solstice/public/images/marketplace/btn-install.svg)](https://marketplace.eclipse.org/marketplace-client-intro?mpc_install=5405113 "Drag to your running Eclipse* workspace. *Requires Eclipse Marketplace Client")
 
 ## Screenshots
 
